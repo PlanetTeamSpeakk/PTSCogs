@@ -1,0 +1,7 @@
+{
+    "AUTHOR" : "PlanetTeamSpeak",
+    "INSTALL_MSG" : "Thanks for installing my meme cog!",
+    "NAME" : "memes",
+    "SHORT" : "Adds the meme command.",
+    "DESCRIPTION" : "Adds a meme command, use [p]meme to see a meme."
+}

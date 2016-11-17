@@ -1,0 +1,7 @@
+{
+    "AUTHOR" : "PlanetTeamSpeak",
+    "INSTALL_MSG" : "Thanks for installing my useful cog!",
+    "NAME" : "useful",
+    "SHORT" : "Adds some useful commands.",
+    "DESCRIPTION" : "Adds some useful commands, use [p]help useful to get started."
+}

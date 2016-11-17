@@ -1,0 +1,7 @@
+{
+    "AUTHOR" : "PlanetTeamSpeak",
+    "INSTALL_MSG" : "Thanks for installing my cmdcommands cog! Use [p]cmdcommands to get started.",
+    "NAME" : "cmdcommands",
+    "SHORT" : "Adds [p]cmdcommands.",
+    "DESCRIPTION" : "Makes you able to send commands to the command prompt using your discord bot."
+}
