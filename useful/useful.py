@@ -23,12 +23,6 @@ class useful:
     @commands.command(pass_context=True, name="defaultavatar", aliases=["defav", "defavatar"])
     async def defaultavatar(self, ctx, user : discord.Member):
         await self.bot.say("{}'s default avatar is: \n{}".format(user.mention, user.default_avatar_url))
-		
-    @commands.command()
-    @checks.admin_or_permissions()
-    async def announcehere(self, *, msg):
-        """Announces a message in the current channel."""
-        await self.bot.say("@everyone @here {}".format(msg))
 	
     @commands.command(pass_context=True, name="calc", aliases=["calculate"])
     async def _calc(self, ctx, num, operation, num2):
@@ -71,20 +65,11 @@ class useful:
             await self.bot.say("I'm unable to deliver your message. Sorry.")
         else:
             await self.bot.say("Your message has been sent.")
-        
-    @commands.command(pass_context=True)
-    async def shutdown(self, ctx):
-        """Shuts down the bot"""
-        await self.bot.say("Are you sure you want to shutdown the bot? (yes/no)")
-        answer = await self.bot.wait_for_message(timeout=15, author=ctx.message.author)
-        if answer is None:
-            await self.bot.say("Didn't shut down the bot, no response.")
-            return
-        elif "yes" not in answer.content.lower():
-            await self.bot.say("Didn't shut down the bot, answer was not yes.")
-            return
-        await self.bot.say("K, bye.")
-        sys.exit()
+            
+    @commands.command()
+    async def owner(self):
+        """Shows you who's boss!"""
+        await self.bot.say("My owner is **{}**.".format(ctx.message.server.owner))
 
 def setup(bot):
     bot.add_cog(useful(bot))
