@@ -69,7 +69,7 @@ class useful:
     @commands.command(pass_context=True)
     async def owner(self, ctx):
         """Shows you who's boss!"""
-        await self.bot.say("My owner is **{}**.".format(ctx.message.server.owner))
+        await self.bot.say("My owner is **{}**.".format(settings.owner))
 
 def setup(bot):
     bot.add_cog(useful(bot))
