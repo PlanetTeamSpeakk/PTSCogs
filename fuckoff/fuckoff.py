@@ -25,7 +25,10 @@ class fuckoff:
     @commands.command(pass_context=True, name="afoff", aliases=["anonymousfoff", "afuckoff", "anonymousfuckoff"])
     async def _afoff(self, ctx, user : discord.Member):
         """Displays an anonymous random fuck off message."""
-        await self.bot.delete_message(ctx.message)
+        try:
+            await self.bot.delete_message(ctx.message)
+        except discord.Forbidden:
+            await self.bot.send_message(ctx.message.server.owner, "I would like the manage messages permission, thanks!")
         await self.bot.say(randchoice(self.foffmsg) + " " + user.mention + ".")
 
     @commands.command(pass_context=True, name="ifoff", aliases=["itemfoff", "ifuckoff", "itemfuckoff"]) 
@@ -36,7 +39,10 @@ class fuckoff:
     @commands.command(pass_context=True, name="iafoff", aliases=["itemafoff", "iafuckoff", "ianonymousfuckoff", "itemanonymousfoff", "itemanonymousfuckoff"])
     async def _iafoff(self, *, item):
         """Displays an anonymous random fuck off message for items."""
-        await self.bot.delete_message(ctx.message)
+        try:
+            await self.bot.delete_message(ctx.message)
+        except discord.Forbidden:
+            await self.bot.send_message(ctx.message.server.owner, "I would like the manage messages permission, thanks!")
         await self.bot.say(randchoice(self.foffmsg) + " " + item + ".")
 
 def setup(bot):
