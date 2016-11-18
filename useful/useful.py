@@ -66,8 +66,8 @@ class useful:
         else:
             await self.bot.say("Your message has been sent.")
             
-    @commands.command()
-    async def owner(self):
+    @commands.command(pass_context=True)
+    async def owner(self, ctx):
         """Shows you who's boss!"""
         await self.bot.say("My owner is **{}**.".format(ctx.message.server.owner))
 
