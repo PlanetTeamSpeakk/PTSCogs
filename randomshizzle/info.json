@@ -1,0 +1,7 @@
+{
+    "AUTHOR" : "PlanetTeamSpeak",
+    "INSTALL_MSG" : "Thanks for installing my random cog!",
+    "NAME" : "random",
+    "SHORT" : "Adds some random commands.",
+    "DESCRIPTION" : "Adds some random commands, use [p]help randomshizzle to get started."
+}
