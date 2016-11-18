@@ -1,0 +1,7 @@
+{
+    "AUTHOR" : "PlanetTeamSpeak",
+    "INSTALL_MSG" : "Thanks for installing my serverinfo cog!",
+    "NAME" : "serverinfo",
+    "SHORT" : "Adds some serverinfo commands.",
+    "DESCRIPTION" : "Adds some serverinfo commands, use [p]server to get started."
+}
