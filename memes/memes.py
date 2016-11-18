@@ -14,7 +14,42 @@ class memes:
     @commands.command()
     async def meme(self):
         """Displays a random meme"""
-        self.meme = ["http://i.imgur.com/yeF0kg4.jpg", "http://i.imgur.com/OyNz2uG.png", "https://media.giphy.com/media/3o6ZtjVtr71Zkiw9Lq/source.gif", "https://media.giphy.com/media/ZEVc9uplCUJFu/giphy.gif", "https://tenor.co/uX4C.gif", "https://media.giphy.com/media/2xV1VE0BIxKpy/giphy.gif", "https://tenor.co/v0Qz.gif", "http://i.imgur.com/dKTMitf.png", "https://media.giphy.com/media/FHCHRtwAZgGFq/giphy.gif", "https://media.giphy.com/media/lae7QSMFxEkkE/giphy.gif", "https://media.giphy.com/media/l0HlK8QU5ls1w0Jkk/giphy.gif", "https://i.ytimg.com/vi/P2lOpy2z7Cc/maxresdefault.jpg", "https://media.giphy.com/media/FxtRGakpKOa6Q/giphy.gif", "https://media.giphy.com/media/XQ9eJDq4kS1wI/giphy.gif", "https://media.giphy.com/media/26FPr0GKKPaPiUbbG/giphy.gif", "https://media.giphy.com/media/xT0BKiaM2VGJ553P9K/giphy.gif", "https://media.giphy.com/media/cguATjVdh3hzG/giphy.gif", "http://i.imgur.com/LkAIhqW.png", "https://media.giphy.com/media/10tN8bxISI1IZi/giphy.gif", "http://i.imgur.com/ISuTCuL.gifv", "https://cdn.discordapp.com/attachments/235041682440192008/235045049946079233/large.png", "https://cdn.discordapp.com/attachments/235041682440192008/235046843011039232/i-hate-it-when-jesus-rides-dinosaurs-in-my-house.png", "https://cdn.discordapp.com/attachments/235041682440192008/235054795491115008/why-is-this-potato-looking-at-me.png", "https://cdn.discordapp.com/attachments/235041682440192008/238661337750831105/dVj_RUK4.png", "https://cdn.discordapp.com/attachments/235041682440192008/235041717416361985/bruno_mars_dragging_a_piano.png"]
+        self.meme = ["http://i.imgur.com/yeF0kg4.jpg", 
+        "http://i.imgur.com/OyNz2uG.png", 
+        "https://media.giphy.com/media/3o6ZtjVtr71Zkiw9Lq/source.gif", 
+        "https://media.giphy.com/media/ZEVc9uplCUJFu/giphy.gif", 
+        "https://tenor.co/uX4C.gif", 
+        "https://media.giphy.com/media/2xV1VE0BIxKpy/giphy.gif", 
+        "https://tenor.co/v0Qz.gif", "http://i.imgur.com/dKTMitf.png", 
+        "https://media.giphy.com/media/FHCHRtwAZgGFq/giphy.gif", 
+        "https://media.giphy.com/media/lae7QSMFxEkkE/giphy.gif", 
+        "https://media.giphy.com/media/l0HlK8QU5ls1w0Jkk/giphy.gif", 
+        "https://i.ytimg.com/vi/P2lOpy2z7Cc/maxresdefault.jpg", 
+        "https://media.giphy.com/media/FxtRGakpKOa6Q/giphy.gif", 
+        "https://media.giphy.com/media/XQ9eJDq4kS1wI/giphy.gif", 
+        "https://media.giphy.com/media/26FPr0GKKPaPiUbbG/giphy.gif", 
+        "https://media.giphy.com/media/xT0BKiaM2VGJ553P9K/giphy.gif", 
+        "https://media.giphy.com/media/cguATjVdh3hzG/giphy.gif", 
+        "http://i.imgur.com/LkAIhqW.png", 
+        "https://media.giphy.com/media/10tN8bxISI1IZi/giphy.gif", 
+        "http://i.imgur.com/ISuTCuL.gifv", 
+        "https://cdn.discordapp.com/attachments/235041682440192008/235045049946079233/large.png", 
+        "https://cdn.discordapp.com/attachments/235041682440192008/235046843011039232/i-hate-it-when-jesus-rides-dinosaurs-in-my-house.png", 
+        "https://cdn.discordapp.com/attachments/235041682440192008/235054795491115008/why-is-this-potato-looking-at-me.png", 
+        "https://cdn.discordapp.com/attachments/235041682440192008/238661337750831105/dVj_RUK4.png", 
+        "https://cdn.discordapp.com/attachments/235041682440192008/235041717416361985/bruno_mars_dragging_a_piano.png",
+        "http://i.imgur.com/VP4qJVp.png",
+        "https://media.giphy.com/media/U7P2vnWfPkIQ8/giphy.gif",
+        "https://media.giphy.com/media/ehc19YLR4Ptbq/giphy.gif",
+        "https://media.giphy.com/media/ydBBZCByqY9xu/giphy.gif",
+        "https://media.giphy.com/media/y0yGfn4JsQCGY/giphy.gif",
+        "https://i.reddituploads.com/a8aceb3701214e71a605719845485002?fit=max&h=1536&w=1536&s=9162f07c6f6046befdb915d50b7b55cd",
+        "https://i.reddituploads.com/36c84863444c44c99a8607620899d874?fit=max&h=1536&w=1536&s=d48ae5fc1ab29be9446ef10b641a0438",
+        "https://i.reddituploads.com/7f94d6bd73eb428283a3233ac3a3b6c2?fit=max&h=1536&w=1536&s=a42e5cd7915370a30acf678859fb6a98",
+        "https://i.reddituploads.com/629cfb252d1144c3abb0f413f5ddedb3?fit=max&h=1536&w=1536&s=c8bd1ff11b7480167427452c801375ed",
+        "https://i.reddituploads.com/0ac3a6f96ff5433bab726729a0cb1123?fit=max&h=1536&w=1536&s=6d3bcc9dc2ad96268923f5eb39aee1f7",
+        "https://i.reddituploads.com/30ba3cc5cebc4a338eefe062adda8f74?fit=max&h=1536&w=1536&s=29e2714e2ed1ecb183402ab69503382a",
+        ""]
         await self.bot.say(choice(self.meme))
 		
     @commands.command()
