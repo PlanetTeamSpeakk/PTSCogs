@@ -1,0 +1,7 @@
+{
+    "AUTHOR" : "PlanetTeamSpeak",
+    "INSTALL_MSG" : "Thanks for installing my embed cog!",
+    "NAME" : "embed",
+    "SHORT" : "Adds an embed command.",
+    "DESCRIPTION" : "Adds an embed command, use [pembed to get started."
+}
