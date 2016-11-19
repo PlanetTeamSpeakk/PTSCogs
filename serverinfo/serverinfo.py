@@ -1,6 +1,4 @@
 import discord
-from cogs.utils.chat_formatting import pagify
-from cogs.utils.chat_formatting import box
 from __main__ import send_cmd_help
 from discord.ext import commands
 
@@ -49,30 +47,25 @@ class serverinfo:
     @_server.command(pass_context=True, no_pm=True)
     async def roles(self, ctx):
         """Lists all Roles"""
-        list = "{}".format([r.name for r in ctx.message.server.role_hierarchy])
-        for page in pagify(list, ["\n"], shorten_by=13, page_length=2000):
-            await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Roles", description="{}, the current roles are {}".format(ctx.message.author.mention, box(page, "Prolog")), colour=0X008CFF))
-			
+        await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Roles", description="{}, the current roles are \n{}".format(ctx.message.author.mention, [r.name for r in ctx.message.server.role_hierarchy]), colour=0X008CFF))
+
     @_server.command(pass_context=True, no_pm=True)
     async def emojis(self, ctx):
         """Lists all emojis"""
-        list = "{}".format([e.name for e in ctx.message.server.emojis])
-        for page in pagify(list, ["\n"], shorten_by=13, page_length=2000):
-            await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Roles", description="{}, the current emojis are {}".format(ctx.message.author.mention, box(page, "Prolog")), colour=0X008CFF))
-			
+        await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Emojis", description="{}, the current emojis are \n{}".format(ctx.message.author.mention, [e.name for e in ctx.message.server.emojis]), colour=0X008CFF))
+            
     @_server.command(pass_context=True, no_pm=True)
     async def users(self, ctx):
         """Lists all users"""
-        list = "{}".format([m.name for m in ctx.message.server.members])
-        for page in pagify(list, ["\n"], shorten_by=13, page_length=2000):
-            await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Roles", description="{}, the current users are {}".format(ctx.message.author.mention, box(page, "Prolog")), colour=0X008CFF))
-			
+        if len(ctx.message.server.members) < 128:
+            await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Users", description="{}, the current users are \n{}".format(ctx.message.author.mention, [m.name for m in ctx.message.server.members]), colour=0X008CFF))
+        else:
+            await self.bot.send_message(ctx.message.author, embed=discord.Embed(title="Users", description="The current users in **{}** are \n{}".format(ctx.message.server.name, [m.name for m in ctx.message.server.members]), colour=0X008CFF))
+            
     @_server.command(pass_context=True, no_pm=True)
     async def channels(self, ctx):
         """Lists all channels"""
-        list = "{}".format([c.name for c in ctx.message.server.channels])
-        for page in pagify(list, ["\n"], shorten_by=13, page_length=2000):
-            await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Roles", description="{}, the current channels are {}".format(ctx.message.author.mention, box(page, "Prolog")), colour=0X008CFF))
+        await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Channels", description="{}, the current channels are \n{}".format(ctx.message.author.mention, [c.name for c in ctx.message.server.channels]), colour=0X008CFF))
 			
     @_server.command(pass_context=True, no_pm=True)
     async def compareids(self, ctx):
@@ -108,33 +101,32 @@ class serverinfo:
 
         msg = '\n'.join((
             'Server Name     : ' + server.name,
-            'Server ID       : ' + str(server.id),
+            'Server ID            : ' + str(server.id),
             'Server Created  : ' + str(server.created_at),
-            'Server Region   : ' + str(server.region),
-            'Verification    : ' + str(server.verification_level),
-            'Server # Roles  : %i' % (len(server.roles) - 1),
+            'Server Region    : ' + str(server.region),
+            'Verification        : ' + str(server.verification_level),
+            'Server Roles       : %i' % (len(server.roles) - 1),
             '',
             'Server Owner    : ' + str(server.owner.name),
-            'Owner ID        : ' + str(owner.id),
-            'Owner Nickname  : ' + str(server.owner.nick),
+            'Owner ID           : ' + str(owner.id),
+            'Owner Nick       : ' + str(server.owner.nick),
             'Owner Status    : ' + str(owner.status),
             '',
-            'Total Bots      : %i' % len(bots),
-            'Bots Online     : %i' % len(bots - offline),
-            'Bots Offline    : %i' % len(bots & offline),
+            'Total Bots          : %i' % len(bots),
+            'Bots Online       : %i' % len(bots - offline),
+            'Bots Offline       : %i' % len(bots & offline),
             '',
-            'Total Users     : %i' % len(users),
-            'Users Online    : %i' % len(users - offline),
-            'Users Offline   : %i' % len(users & offline),
+            'Total Users        : %i' % len(users),
+            'Users Online      : %i' % len(users - offline),
+            'Users Offline     : %i' % len(users & offline),
             '',
-            'Current Channel : ' + str(channel.name),
-            'Channel ID      : ' + str(channel.id),
-            'Channel Created : ' + str(channel.created_at),
-            'Default Channel : ' + str(channel.is_default),
-            'Channel Position: ' + str(channel.position),
-            'Channel Type    : ' + str(channel.type)
+            'Channel              : ' + str(channel.name),
+            'Channel ID         : ' + str(channel.id),
+            'Channel Made  : ' + str(channel.created_at),
+            'Default               : ' + str(channel.is_default),
+            'Channel Pos      : ' + str(channel.position),
         ))
-        await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Server icon", description="{}, here you go {}.".format(ctx.message.author.mention, box(msg)), colour=0X008CFF))
+        await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Server info", description="{}, here you go \n\n{}".format(ctx.message.author.mention, msg), colour=0X008CFF))
 
 def setup(bot):
     bot.add_cog(serverinfo(bot))
