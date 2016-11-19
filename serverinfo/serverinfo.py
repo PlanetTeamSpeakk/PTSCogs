@@ -19,73 +19,75 @@ class serverinfo:
     @_server.command(pass_context=True, no_pm=True)
     async def owner(self, ctx):
         """Tells you who's the boss on this server"""
-        await self.bot.say("The server owner is {}.".format(ctx.message.server.owner.mention))
-		
+        await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Server owner", description="{}, the server owner is {}.".format(ctx.message.author.mention, ctx.message.server.owner.mention), colour=0X008CFF))
+        
     @_server.command(pass_context=True, no_pm=True)
     async def name(self, ctx):
         """Shows you the server name."""
-        await self.bot.say("The servername is `{}`.".format(ctx.message.server))
+        await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Server name", description="{}, the server name is {}.".format(ctx.message.author.mention, ctx.message.server), colour=0X008CFF))
 		
     @_server.command(pass_context=True, no_pm=True)
     async def sid(self, ctx):
         """Shows you the server ID."""
-        await self.bot.say("The server ID is `{}`.".format(ctx.message.server.id))
-		
+        await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Server ID", description="{}, the Server ID is {}.".format(ctx.message.author.mention, ctx.message.server.id), colour=0X008CFF))
+        
     @_server.command(pass_context=True, no_pm=True)
     async def channelname(self, ctx):
         """Shows you the channel name."""
-        await self.bot.say("The channelname is `#{}`.".format(ctx.message.channel))
+        await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Channel name", description="{}, the channelname is #{}.".format(ctx.message.author.mention, ctx.message.channel.name), colour=0X008CFF))
 		
     @_server.command(pass_context=True, no_pm=True)
     async def cid(self, ctx):
         """Shows you the channel ID."""
-        await self.bot.say("The channel ID is `{}`.".format(ctx.message.channel.id))
-		
+        await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Channel ID", description="{}, the Channel ID is {}.".format(ctx.message.author.mention, ctx.message.channel.id), colour=0X008CFF))
+        
     @_server.command(pass_context=True, no_pm=True)
     async def time(self, ctx):
         """Shows you the server time."""
-        await self.bot.say("The server time is `{}`.".format(ctx.message.timestamp))
-		
+        await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Server time", description="{}, the server time is {}.".format(ctx.message.author.mention, ctx.message.timestamp), colour=0X008CFF))
+        
     @_server.command(pass_context=True, no_pm=True)
     async def roles(self, ctx):
         """Lists all Roles"""
         list = "{}".format([r.name for r in ctx.message.server.role_hierarchy])
         for page in pagify(list, ["\n"], shorten_by=13, page_length=2000):
-            await self.bot.say("The current roles are:\n{}".format(box(page, "Prolog")))
+            await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Roles", description="{}, the current roles are {}".format(ctx.message.author.mention, box(page, "Prolog")), colour=0X008CFF))
 			
     @_server.command(pass_context=True, no_pm=True)
     async def emojis(self, ctx):
         """Lists all emojis"""
         list = "{}".format([e.name for e in ctx.message.server.emojis])
         for page in pagify(list, ["\n"], shorten_by=13, page_length=2000):
-            await self.bot.say("The current custom emojis are:\n{}".format(box(page, "Prolog")))
+            await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Roles", description="{}, the current emojis are {}".format(ctx.message.author.mention, box(page, "Prolog")), colour=0X008CFF))
 			
     @_server.command(pass_context=True, no_pm=True)
     async def users(self, ctx):
         """Lists all users"""
         list = "{}".format([m.name for m in ctx.message.server.members])
         for page in pagify(list, ["\n"], shorten_by=13, page_length=2000):
-            await self.bot.say("The current users are:\n{}".format(box(page, "Prolog")))
+            await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Roles", description="{}, the current users are {}".format(ctx.message.author.mention, box(page, "Prolog")), colour=0X008CFF))
 			
     @_server.command(pass_context=True, no_pm=True)
     async def channels(self, ctx):
         """Lists all channels"""
         list = "{}".format([c.name for c in ctx.message.server.channels])
         for page in pagify(list, ["\n"], shorten_by=13, page_length=2000):
-            await self.bot.say("The current channels are:\n{}".format(box(page, "Prolog")))
+            await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Roles", description="{}, the current channels are {}".format(ctx.message.author.mention, box(page, "Prolog")), colour=0X008CFF))
 			
     @_server.command(pass_context=True, no_pm=True)
     async def compareids(self, ctx):
         """Compares the id of the server and the channel to see if the channel is the default one."""
         if ctx.message.server.id == ctx.message.channel.id:
-            await self.bot.say("The ids of the channel and the server are the same, so this is the default channel.\n(SID=`{}`, CID=`{}`)".format(ctx.message.server.id, ctx.message.channel.id))
+            await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Channel is default", description=
+            "{}, the ids of the channel and the server are the same, so this is the default channel.\n(SID=`{}`, CID=`{}`)".format(ctx.message.author.mention, ctx.message.server.id, ctx.message.channel.id), colour=0X008CFF))
         else:
-            await self.bot.say("The ids of the channel and the server are not the same, this is not the default channel. If there is a #general try it in that channel first.\n(SID=`{}`, CID=`{}`)".format(ctx.message.server.id, ctx.message.channel.id))
-
+            await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Channel isn't default", description=
+            "{}, The ids of the channel and the server are not the same, this is not the default channel. If there is a #general try it in that channel first.\n(SID=`{}`, CID=`{}`)".format(ctx.message.author.mention, ctx.message.server.id, ctx.message.channel.id), colour=0X008CFF))
+            
     @_server.command(pass_context=True, no_pm=True)
     async def icon(self, ctx):
         """Shows the server icon."""
-        await self.bot.say("{} the server icon is {}".format(ctx.message.author.mention, ctx.message.server.icon_url))
+        await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Server icon", description="{}, the server icon is {}.".format(ctx.message.author.mention, ctx.message.server.icon_url), colour=0X008CFF))
         
     @_server.command(pass_context=True, allow_pm=False)
     async def info(self, ctx):
@@ -132,7 +134,7 @@ class serverinfo:
             'Channel Position: ' + str(channel.position),
             'Channel Type    : ' + str(channel.type)
         ))
-        await self.bot.say(box(msg))
+        await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Server icon", description="{}, here you go {}.".format(ctx.message.author.mention, box(msg)), colour=0X008CFF))
 
 def setup(bot):
     bot.add_cog(serverinfo(bot))
