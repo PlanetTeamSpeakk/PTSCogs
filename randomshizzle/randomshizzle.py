@@ -72,19 +72,6 @@ class randomshizzle:
     async def ipunch(self, *, item):
         """I'll punch anything!"""
         await self.bot.say("*Punches " + item + "* \nGet punched, SON!")
-		
-    @commands.command()
-    async def ascii(self, *, text):
-        """Turn any text into ASCII!"""
-        msg = str(figlet_format(text, font='cybermedium'))
-        if msg[0] == " ":
-            msg = "." + msg[1:]
-        error = figlet_format('LOL, that\'s a bit too long.',
-                              font='cybermedium')
-        if len(msg) > 2000:
-            await self.bot.say(box(error))
-        else:
-            await self.bot.say(box(msg))
 
     @commands.command()
     async def face(self):
