@@ -4,10 +4,6 @@ import discord
 import datetime
 from random import choice
 from cogs.utils.chat_formatting import box
-try:
-    from pyfiglet import figlet_format
-except:
-    figlet_format = None
 
 class randomshizzle:
     """Random shizzle."""
@@ -126,6 +122,4 @@ class randomshizzle:
         await self.bot.say("Deal with it\nhttp://i.imgur.com/mZ5lElF.jpg")
 
 def setup(bot):
-    if figlet_format is None:
-        raise NameError("You need to run `pip3 install pyfiglet`.")
     bot.add_cog(randomshizzle(bot))
