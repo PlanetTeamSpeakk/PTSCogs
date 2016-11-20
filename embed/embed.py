@@ -2,7 +2,6 @@ import discord
 from .utils import checks
 from __main__ import send_cmd_help
 from discord.ext import commands
-from .utils import cmdlogger
 
 class embed:
     """embed"""
