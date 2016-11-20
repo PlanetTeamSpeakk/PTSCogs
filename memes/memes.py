@@ -59,7 +59,7 @@ class memes:
 
     @commands.command()
     async def yesno(self):
-        """Displays an anonymous random fuck off message for items."""
+        """Says yes or no with a dank meme."""
         self.yesno = ["yes. https://media.giphy.com/media/l46CabMtEkqUtrzkA/giphy.gif", "yes. https://media.giphy.com/media/l3vRhtXnCLgypqh7a/giphy.gif", "yes. https://media.giphy.com/media/l3vR3ACyHLgbOIjZe/source.gif", "no. https://media.giphy.com/media/3oz8xM4Qy4IVCelqZq/source.gif", "no. https://media.giphy.com/media/KaXENSCPjqnK0/giphy.gif", "no. https://media.giphy.com/media/T5QOxf0IRjzYQ/giphy.gif"]
         await self.bot.say("I say " + choice(self.yesno))
 		
