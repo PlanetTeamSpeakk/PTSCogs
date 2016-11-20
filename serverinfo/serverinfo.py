@@ -17,46 +17,55 @@ class serverinfo:
     @_server.command(pass_context=True, no_pm=True)
     async def owner(self, ctx):
         """Tells you who's the boss on this server"""
+        
         await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Server owner", description="{}, the server owner is {}.".format(ctx.message.author.mention, ctx.message.server.owner.mention), colour=0X008CFF))
         
     @_server.command(pass_context=True, no_pm=True)
     async def name(self, ctx):
         """Shows you the server name."""
+        
         await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Server name", description="{}, the server name is {}.".format(ctx.message.author.mention, ctx.message.server), colour=0X008CFF))
 		
     @_server.command(pass_context=True, no_pm=True)
     async def sid(self, ctx):
         """Shows you the server ID."""
+        
         await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Server ID", description="{}, the Server ID is {}.".format(ctx.message.author.mention, ctx.message.server.id), colour=0X008CFF))
         
     @_server.command(pass_context=True, no_pm=True)
     async def channelname(self, ctx):
         """Shows you the channel name."""
+        
         await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Channel name", description="{}, the channelname is #{}.".format(ctx.message.author.mention, ctx.message.channel.name), colour=0X008CFF))
 		
     @_server.command(pass_context=True, no_pm=True)
     async def cid(self, ctx):
         """Shows you the channel ID."""
+        
         await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Channel ID", description="{}, the Channel ID is {}.".format(ctx.message.author.mention, ctx.message.channel.id), colour=0X008CFF))
         
     @_server.command(pass_context=True, no_pm=True)
     async def time(self, ctx):
         """Shows you the server time."""
+        
         await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Server time", description="{}, the server time is {}.".format(ctx.message.author.mention, ctx.message.timestamp), colour=0X008CFF))
         
     @_server.command(pass_context=True, no_pm=True)
     async def roles(self, ctx):
         """Lists all Roles"""
+        
         await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Roles", description="{}, the current roles are \n{}".format(ctx.message.author.mention, [r.name for r in ctx.message.server.role_hierarchy]), colour=0X008CFF))
 
     @_server.command(pass_context=True, no_pm=True)
     async def emojis(self, ctx):
         """Lists all emojis"""
+        
         await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Emojis", description="{}, the current emojis are \n{}".format(ctx.message.author.mention, [e.name for e in ctx.message.server.emojis]), colour=0X008CFF))
             
     @_server.command(pass_context=True, no_pm=True)
     async def users(self, ctx):
         """Lists all users"""
+        
         if len(ctx.message.server.members) < 128:
             await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Users", description="{}, the current users are \n{}".format(ctx.message.author.mention, [m.name for m in ctx.message.server.members]), colour=0X008CFF))
         else:
@@ -65,11 +74,13 @@ class serverinfo:
     @_server.command(pass_context=True, no_pm=True)
     async def channels(self, ctx):
         """Lists all channels"""
+        
         await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Channels", description="{}, the current channels are \n{}".format(ctx.message.author.mention, [c.name for c in ctx.message.server.channels]), colour=0X008CFF))
 			
     @_server.command(pass_context=True, no_pm=True)
     async def compareids(self, ctx):
         """Compares the id of the server and the channel to see if the channel is the default one."""
+        
         if ctx.message.server.id == ctx.message.channel.id:
             await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Channel is default", description=
             "{}, the ids of the channel and the server are the same, so this is the default channel.\n(SID=`{}`, CID=`{}`)".format(ctx.message.author.mention, ctx.message.server.id, ctx.message.channel.id), colour=0X008CFF))
@@ -80,11 +91,13 @@ class serverinfo:
     @_server.command(pass_context=True, no_pm=True)
     async def icon(self, ctx):
         """Shows the server icon."""
+        
         await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Server icon", description="{}, the server icon is {}.".format(ctx.message.author.mention, ctx.message.server.icon_url), colour=0X008CFF))
         
     @_server.command(pass_context=True, allow_pm=False)
     async def info(self, ctx):
         """Show server info."""
+        
         server = ctx.message.server
         channel = ctx.message.channel
         members = set(server.members)
