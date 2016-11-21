@@ -97,49 +97,37 @@ class serverinfo:
     @_server.command(pass_context=True, allow_pm=False)
     async def info(self, ctx):
         """Show server info."""
-        
-        server = ctx.message.server
-        channel = ctx.message.channel
-        members = set(server.members)
-
-        owner = server.owner
-
+        members = set(ctx.message.server.members)
         offline = filter(lambda m: m.status is discord.Status.offline, members)
         offline = set(offline)
-
         bots = filter(lambda m: m.bot, members)
         bots = set(bots)
-
         users = members - bots
-
-        msg = '\n'.join((
-            'Server Name     : ' + server.name,
-            'Server ID            : ' + str(server.id),
-            'Server Created  : ' + str(server.created_at),
-            'Server Region    : ' + str(server.region),
-            'Verification        : ' + str(server.verification_level),
-            'Server Roles       : %i' % (len(server.roles) - 1),
-            '',
-            'Server Owner    : ' + str(server.owner.name),
-            'Owner ID           : ' + str(owner.id),
-            'Owner Nick       : ' + str(server.owner.nick),
-            'Owner Status    : ' + str(owner.status),
-            '',
-            'Total Bots          : %i' % len(bots),
-            'Bots Online       : %i' % len(bots - offline),
-            'Bots Offline       : %i' % len(bots & offline),
-            '',
-            'Total Users        : %i' % len(users),
-            'Users Online      : %i' % len(users - offline),
-            'Users Offline     : %i' % len(users & offline),
-            '',
-            'Channel              : ' + str(channel.name),
-            'Channel ID         : ' + str(channel.id),
-            'Channel Made  : ' + str(channel.created_at),
-            'Default               : ' + str(channel.is_default),
-            'Channel Pos      : ' + str(channel.position),
-        ))
-        await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Server info", description="{}, here you go \n\n{}".format(ctx.message.author.mention, msg), colour=0X008CFF))
+        servericon = ctx.message.server.icon_url
+        
+        em = discord.Embed(description="{}, here you go:".format(ctx.message.author.mention), color=0X008CFF, title="Server Info")
+        em.set_thumbnail(url=servericon, height="32", width="32")
+        em.add_field(name="Server Name", value=str(ctx.message.server.name))
+        em.add_field(name="Server ID", value=str(ctx.message.server.id))
+        em.add_field(name="Server Created", value=str(ctx.message.server.created_at))
+        em.add_field(name="Server Region", value=str(ctx.message.server.region))
+        em.add_field(name="Server Verification", value=str(ctx.message.server.verification_level))
+        em.add_field(name="Server Roles", value=str(len(ctx.message.server.roles) -1))
+        em.add_field(name="Server Owner", value=str(ctx.message.server.owner.name))
+        em.add_field(name="Owner ID", value=str(ctx.message.server.owner.id))
+        em.add_field(name="Owner Nick", value=str(ctx.message.server.owner.nick))
+        em.add_field(name="Owner Status", value=str(ctx.message.server.owner.status))
+        em.add_field(name="Total Bots", value=str(len(bots)))
+        em.add_field(name="Bots Online", value=str(len(bots - offline)))
+        em.add_field(name="Bots Offline", value=str(len(bots & offline)))
+        em.add_field(name="Total Users", value=str(len(users)))
+        em.add_field(name="Online Users", value=str(len(users - offline)))
+        em.add_field(name="Offline Users", value=str(len(users & offline)))
+        em.add_field(name="Channel Name", value=str(ctx.message.channel.name))
+        em.add_field(name="Channel ID", value=str(ctx.message.channel.id))
+        em.add_field(name="Channel Default", value=str(ctx.message.channel.is_default))
+        em.add_field(name="Channel Position", value=str(ctx.message.channel.position))
+        await self.bot.say(embed=em)
 
 def setup(bot):
     bot.add_cog(serverinfo(bot))
