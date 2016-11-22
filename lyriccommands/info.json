@@ -1,0 +1,7 @@
+{
+    "AUTHOR" : "PlanetTeamSpeak",
+    "INSTALL_MSG" : "Thanks for installing my lyriccommands cog!",
+    "NAME" : "lyriccommands",
+    "SHORT" : "Adds some lyric commands.",
+    "DESCRIPTION" : "Adds some lyric commands, use [p]songlist to get started."
+}
