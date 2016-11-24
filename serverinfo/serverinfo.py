@@ -124,7 +124,18 @@ class serverinfo:
         em.add_field(name="Channel ID", value=str(ctx.message.channel.id))
         em.add_field(name="Channel Default", value=str(ctx.message.channel.is_default))
         em.add_field(name="Channel Position", value=str(ctx.message.channel.position + 1))
-        await self.bot.say(embed=em)   
+        await self.bot.say(embed=em)
 
+    @_server.command(pass_context=True, no_pm=True)
+    async def channelinfo(self, ctx, channel : discord.Channel = None):
+        if channel == None:
+            channel = ctx.message.channel
+        em = discord.Embed(description="{}, here you go:".format(ctx.message.author.mention), title="Channel Info", color=0X008CFF)
+        em.add_field(name="Channel Name", value=str(channel.name))
+        em.add_field(name="Channel ID", value=str(channel.id))
+        em.add_field(name="Channel Default", value=str(channel.is_default))
+        em.add_field(name="Channel Position", value=str(channel.position + 1))
+        await self.bot.say(embed=em)
+            
 def setup(bot):
     bot.add_cog(serverinfo(bot))
