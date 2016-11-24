@@ -124,10 +124,13 @@ class serverinfo:
         em.add_field(name="Channel ID", value=str(ctx.message.channel.id))
         em.add_field(name="Channel Default", value=str(ctx.message.channel.is_default))
         em.add_field(name="Channel Position", value=str(ctx.message.channel.position + 1))
+        em.add_field(name="Channel Topic", valu=(ctx.message.channel.topic))
         await self.bot.say(embed=em)
 
     @_server.command(pass_context=True, no_pm=True)
     async def channelinfo(self, ctx, channel : discord.Channel = None):
+        passed = (ctx.message.timestamp - channel.created_at).days
+        channel_created_at = ("Created on {} ({} days ago!)".format(channel.created_at.strftime("%d %b %Y %H:%M"), passed))
         if channel == None:
             channel = ctx.message.channel
         em = discord.Embed(description="{}, here you go:".format(ctx.message.author.mention), title="Channel Info", color=0X008CFF)
@@ -135,7 +138,36 @@ class serverinfo:
         em.add_field(name="Channel ID", value=str(channel.id))
         em.add_field(name="Channel Default", value=str(channel.is_default))
         em.add_field(name="Channel Position", value=str(channel.position + 1))
+        em.add_field(name="Channel Topic", valu=(channel.topic))
+        em.set_footer(text=channel_created_at)
         await self.bot.say(embed=em)
+        
+    @_server.command(pass_context=True, no_pm=True)
+    async def membercount(self, ctx):
+        """Counts the users"""
+        members = set(ctx.message.server.members)
+        bots = filter(lambda m: m.bot, members)
+        bots = set(bots)
+        users = members - bots
+        await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Server Membercount", description="{}, there are currently **{}** users and **{}** bots with a total of **{}** members in this server.".format(ctx.message.author.mention, len(users), len(bots), len(ctx.message.server.members)), colour=0X008CFF))
+        
+    @_server.command(pass_context=True, no_pm=True)
+    async def channelcount(self, ctx):
+        """Counts the users"""
+        chans = ctx.message.server.channels
+        textchans = [x for x in ctx.message.server.channels if x.type == discord.ChannelType.text]
+        voicechans = [x for x in ctx.message.server.channels if x.type == discord.ChannelType.voice]
+        await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Server Channelcount", description="{}, there are currently **{}** text channels and **{}** voice channels with a total of **{}** channels in this server.".format(ctx.message.author.mention, len(textchans), len(voicechans), len(chans)), colour=0X008CFF))
             
+    @_server.command(pass_context=True, no_pm=True)
+    async def rolecount(self, ctx):
+        """Counts the roles"""
+        await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Server Rolecount", description="{}, there are currently **{}** roles in this server.".format(ctx.message.author.mention, len(ctx.message.server.role_hierarchy)), colour=0X008CFF))
+        
+    @_server.command(pass_context=True, no_pm=True)
+    async def emojicount(self, ctx):
+        """Counts the emojis"""
+        await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Server Emojicount", description="{}, there are currently **{}** emojis in this server.".format(ctx.message.author.mention, len(ctx.message.server.emojis)), colour=0X008CFF))
+        
 def setup(bot):
     bot.add_cog(serverinfo(bot))
