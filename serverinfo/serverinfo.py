@@ -48,25 +48,33 @@ class serverinfo:
     @_server.command(pass_context=True, no_pm=True)
     async def roles(self, ctx):
         """Lists all Roles"""
-        await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Roles", description="{}, the current roles are \n{}".format(ctx.message.author.mention, [r.name for r in ctx.message.server.role_hierarchy]), colour=0X008CFF))
+        comma = ", "
+        roles = [r.name for r in ctx.message.server.role_hierarchy]
+        await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Roles", description="{}, the current roles are \n{}.".format(ctx.message.author.mention, comma.join(roles)), colour=0X008CFF))
 
     @_server.command(pass_context=True, no_pm=True)
     async def emojis(self, ctx):
         """Lists all emojis"""
-        await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Emojis", description="{}, the current emojis are \n{}".format(ctx.message.author.mention, [e.name for e in ctx.message.server.emojis]), colour=0X008CFF))
+        comma = ", "
+        emojis = [e.name for e in ctx.message.server.emojis]
+        await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Emojis", description="{}, the current emojis are \n{}.".format(ctx.message.author.mention, comma.join(emojis)), colour=0X008CFF))
             
     @_server.command(pass_context=True, no_pm=True)
     async def users(self, ctx):
         """Lists all users"""
+        comma = ", "
+        members = [m.name for m in ctx.message.server.members]
         if len(ctx.message.server.members) < 128:
-            await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Users", description="{}, the current users are \n{}".format(ctx.message.author.mention, [m.name for m in ctx.message.server.members]), colour=0X008CFF))
+            await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Users", description="{}, the current users are \n{}.".format(ctx.message.author.mention, comma.join(members)), colour=0X008CFF))
         else:
-            await self.bot.send_message(ctx.message.author, embed=discord.Embed(title="Users", description="The current users in **{}** are \n{}".format(ctx.message.server.name, [m.name for m in ctx.message.server.members]), colour=0X008CFF))
+            await self.bot.send_message(ctx.message.author, embed=discord.Embed(title="Users", description="The current users in **{}** are \n{}.".format(ctx.message.server.name, comma.join(members)), colour=0X008CFF))
             
     @_server.command(pass_context=True, no_pm=True)
     async def channels(self, ctx):
         """Lists all channels"""
-        await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Channels", description="{}, the current channels are \n{}".format(ctx.message.author.mention, [c.name for c in ctx.message.server.channels]), colour=0X008CFF))
+        comma = ", "
+        chans = [c.name for c in ctx.message.server.channels]
+        await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Channels", description="{}, the current channels are \n{}.".format(ctx.message.author.mention, comma.join(chans)), colour=0X008CFF))
 			
     @_server.command(pass_context=True, no_pm=True)
     async def compareids(self, ctx):
