@@ -47,8 +47,7 @@ class memes:
         "https://i.reddituploads.com/7f94d6bd73eb428283a3233ac3a3b6c2?fit=max&h=1536&w=1536&s=a42e5cd7915370a30acf678859fb6a98",
         "https://i.reddituploads.com/629cfb252d1144c3abb0f413f5ddedb3?fit=max&h=1536&w=1536&s=c8bd1ff11b7480167427452c801375ed",
         "https://i.reddituploads.com/0ac3a6f96ff5433bab726729a0cb1123?fit=max&h=1536&w=1536&s=6d3bcc9dc2ad96268923f5eb39aee1f7",
-        "https://i.reddituploads.com/30ba3cc5cebc4a338eefe062adda8f74?fit=max&h=1536&w=1536&s=29e2714e2ed1ecb183402ab69503382a",
-        ""]
+        "https://i.reddituploads.com/30ba3cc5cebc4a338eefe062adda8f74?fit=max&h=1536&w=1536&s=29e2714e2ed1ecb183402ab69503382a",]
         await self.bot.say(choice(self.meme))
 		
     @commands.command()
@@ -62,14 +61,13 @@ class memes:
         self.yesno = ["yes. https://media.giphy.com/media/l46CabMtEkqUtrzkA/giphy.gif", "yes. https://media.giphy.com/media/l3vRhtXnCLgypqh7a/giphy.gif", "yes. https://media.giphy.com/media/l3vR3ACyHLgbOIjZe/source.gif", "no. https://media.giphy.com/media/3oz8xM4Qy4IVCelqZq/source.gif", "no. https://media.giphy.com/media/KaXENSCPjqnK0/giphy.gif", "no. https://media.giphy.com/media/T5QOxf0IRjzYQ/giphy.gif"]
         await self.bot.say("I say " + choice(self.yesno))
         
-    @commands.command(pass_context=True)
-    async def datboi(self, ctx):
+    @commands.command()
+    async def datboi(self):
         """Here come dat boi,
         
         Oh shit waddup"""
         await self.bot.say("Here come dat boi.")
         ohshit = await self.bot.say("Oh shit")
-        await self.bot.say("http://i1.kym-cdn.com/photos/images/newsfeed/001/112/704/8a8.jpg")
         W = "\U0001f1fc"
         A = "\U0001f1e6"
         D = "\U0001f1e9"
@@ -78,9 +76,44 @@ class memes:
         await self.bot.add_reaction(ohshit, W)
         await self.bot.add_reaction(ohshit, A)
         await self.bot.add_reaction(ohshit, D)
-        await self.bot.add_reaction(ohshit, D)
         await self.bot.add_reaction(ohshit, U)
         await self.bot.add_reaction(ohshit, P)
-
+        await self.bot.say("http://i1.kym-cdn.com/photos/images/newsfeed/001/112/704/8a8.jpg")
+        
+    async def on_message(self, message):
+        if "ayy" in message.content.split():
+            L = "\U0001f1f1"
+            M = "\U0001f1f2"
+            A = "\U0001f1e6"
+            O = "\U0001f1f4"
+            await self.bot.add_reaction(message, L)
+            await self.bot.add_reaction(message, M)
+            await self.bot.add_reaction(message, A)
+            await self.bot.add_reaction(message, O)
+            
+        if "oh shit" in message.content.lower():
+            W = "\U0001f1fc"
+            A = "\U0001f1e6"
+            D = "\U0001f1e9"
+            U = "\U0001f1fa"
+            P = "\U0001f1f5"
+            await self.bot.add_reaction(message, W)
+            await self.bot.add_reaction(message, A)
+            await self.bot.add_reaction(message, D)
+            await self.bot.add_reaction(message, U)
+            await self.bot.add_reaction(message, P)
+            
+        if "o shit" in message.content.lower():
+            W = "\U0001f1fc"
+            A = "\U0001f1e6"
+            D = "\U0001f1e9"
+            U = "\U0001f1fa"
+            P = "\U0001f1f5"
+            await self.bot.add_reaction(message, W)
+            await self.bot.add_reaction(message, A)
+            await self.bot.add_reaction(message, D)
+            await self.bot.add_reaction(message, U)
+            await self.bot.add_reaction(message, P)
+            
 def setup(bot):
     bot.add_cog(memes(bot))
