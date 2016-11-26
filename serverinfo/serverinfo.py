@@ -102,6 +102,10 @@ class serverinfo:
         bots = set(bots)
         users = members - bots
         servericon = ctx.message.server.icon_url
+        channel_passed = (ctx.message.timestamp - ctx.message.channel.created_at).days 
+        server_passed = (ctx.message.timestamp - ctx.message.server.created_at).days
+        channel_created_at = ("Created on {} ({} days ago!)".format(ctx.message.channel.created_at.strftime("%d %b %Y %H:%M"), channel_passed))
+        server_created_at = ("Created on {} ({} days ago!)".format(ctx.message.server.created_at.strftime("%d %b %Y %H:%M"), server_passed))
         try:
             em = discord.Embed(description="{}, here you go:".format(ctx.message.author.mention), color=0X008CFF, title="Server Info")
             em.set_thumbnail(url=servericon)
@@ -112,6 +116,7 @@ class serverinfo:
             em.add_field(name="Server Verification", value=str(ctx.message.server.verification_level))
             em.add_field(name="Server Roles", value=str(len(ctx.message.server.roles) -1))
             em.add_field(name="Server Owner", value=str(ctx.message.server.owner.name))
+            em.add_field(name="Server Created At", value=str(server_created_at))
             em.add_field(name="Owner ID", value=str(ctx.message.server.owner.id))
             em.add_field(name="Owner Nick", value=str(ctx.message.server.owner.nick))
             em.add_field(name="Owner Status", value=str(ctx.message.server.owner.status))
@@ -125,33 +130,14 @@ class serverinfo:
             em.add_field(name="Channel ID", value=str(ctx.message.channel.id))
             em.add_field(name="Channel Default", value=str(ctx.message.channel.is_default))
             em.add_field(name="Channel Position", value=str(ctx.message.channel.position + 1))
-            em.add_field(name="Channel Topic", value=(ctx.message.channel.topic))
+            em.add_field(name="Channel Created At", value=str(channel_created_at))
+            if ctx.message.channel.topic != None:
+                em.add_field(name="Channel Topic", value=(ctx.message.channel.topic))
+            else:
+                pass
             await self.bot.say(embed=em)
         except discord.HTTPException:
-            em = discord.Embed(description="{}, here you go:".format(ctx.message.author.mention), color=0X008CFF, title="Server Info", url="")
-            em.set_thumbnail(url=servericon)
-            em.add_field(name="Server Name", value=str(ctx.message.server.name))
-            em.add_field(name="Server ID", value=str(ctx.message.server.id))
-            em.add_field(name="Server Created", value=str(ctx.message.server.created_at) + " ({} days ago)".format((ctx.message.timestamp - ctx.message.server.created_at).days))
-            em.add_field(name="Server Region", value=str(ctx.message.server.region))
-            em.add_field(name="Server Verification", value=str(ctx.message.server.verification_level))
-            em.add_field(name="Server Roles", value=str(len(ctx.message.server.roles) -1))
-            em.add_field(name="Server Owner", value=str(ctx.message.server.owner.name))
-            em.add_field(name="Owner ID", value=str(ctx.message.server.owner.id))
-            em.add_field(name="Owner Nick", value=str(ctx.message.server.owner.nick))
-            em.add_field(name="Owner Status", value=str(ctx.message.server.owner.status))
-            em.add_field(name="Total Bots", value=str(len(bots)))
-            em.add_field(name="Bots Online", value=str(len(bots - offline)))
-            em.add_field(name="Bots Offline", value=str(len(bots & offline)))
-            em.add_field(name="Total Users", value=str(len(users)))
-            em.add_field(name="Online Users", value=str(len(users - offline)))
-            em.add_field(name="Offline Users", value=str(len(users & offline)))
-            em.add_field(name="Channel Name", value=str(ctx.message.channel.name))
-            em.add_field(name="Channel ID", value=str(ctx.message.channel.id))
-            em.add_field(name="Channel Default", value=str(ctx.message.channel.is_default))
-            em.add_field(name="Channel Position", value=str(ctx.message.channel.position + 1))
-            em.add_field(name="Channel Topic", value="None")
-            await self.bot.say(embed=em)
+            await self.bot.say("An unknown error occured while sending the embedded message, maybe try giving me the `embed links` permission?")
 
     @_server.command(pass_context=True, no_pm=True)
     async def channelinfo(self, ctx, channel : discord.Channel = None):
@@ -159,7 +145,7 @@ class serverinfo:
             channel = ctx.message.channel
         passed = (ctx.message.timestamp - channel.created_at).days
         try:
-            channel_created_at = ("Created on {} ({} days ago!)".format(channel.created_at.strftime("%d %b %Y %H:%M"), passed))            
+            channel_created_at = ("Created on {} ({} days ago!)".format(channel.created_at.strftime("%d %b %Y %H:%M"), passed))
             em = discord.Embed(description="{}, here you go:".format(ctx.message.author.mention), title="Channel Info", color=0X008CFF)
             em.add_field(name="Channel Name", value=str(channel.name))
             em.add_field(name="Channel ID", value=str(channel.id))
@@ -205,6 +191,43 @@ class serverinfo:
     async def emojicount(self, ctx):
         """Counts the emojis"""
         await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Server Emojicount", description="{}, there are currently **{}** emojis in this server.".format(ctx.message.author.mention, len(ctx.message.server.emojis)), colour=0X008CFF))
+        
+    @_server.command(pass_context=True)
+    async def userinfo(self, ctx, user:discord.Member=None):
+        """Shows you the info for the given user, or yours if you didn't give a user."""
+        if user == None:
+            user = ctx.message.author
+        comma = ", "
+        roles = [r.name for r in user.roles]
+        em = discord.Embed(description="{} here you go:".format(ctx.message.author.mention), title="User Info", color=0X008CFF)
+        if user.avatar_url:
+            em.set_thumbnail(url=user.avatar_url)
+        else:
+            em.set_thumbnail(url=user.default_avatar_url)
+        em.add_field(name="Name", value=user.name)
+        em.add_field(name="Discriminator", value=user.discriminator)
+        if user.nick:
+            em.add_field(name="Nickname", value=user.nick)
+        else:
+            em.add_field(name="Nickname", value="None")
+        em.add_field(name="ID", value=user.id)
+        em.add_field(name="Status", value=user.status)
+        if user.game:
+            em.add_field(name="Playing", value=user.game)
+        else:
+            em.add_field(name="Playing", value="Nothing")
+        em.add_field(name="Is AFK", value=user.is_afk)
+        em.add_field(name="Is bot", value=user.bot)
+        em.add_field(name="Highest role color", value=user.color)
+        em.add_field(name="Serverwide muted", value=user.mute)
+        em.add_field(name="Serverwide deafened", value=user.deaf)
+        em.add_field(name="Joined discord at", value=user.created_at.strftime("%d %b %Y %H:%M"))
+        em.add_field(name="Joined server at", value=user.joined_at.strftime("%d %b %Y %H:%M"))
+        if user.roles != []:
+            em.add_field(name="Roles", value=comma.join(roles))
+        else:
+            em.add_field(name="Roles", value="None")
+        await self.bot.say(embed=em)
         
 def setup(bot):
     bot.add_cog(serverinfo(bot))
