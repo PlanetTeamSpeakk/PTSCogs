@@ -125,7 +125,7 @@ class cmdcommands:
                 print('Succesfully downloaded emptycog.py')
             except Exception as e:
                 print(e)
-                print("Error occured, did not download emptycog.py, go to https://raw.githubusercontent.com/PlanetTeamSpeakk/PTSCogs/master/emptycog.py press ctrl+s and save it in the bot's root folder.")
+                print("Error occured, did not download emptycog.py, go to https://raw.githubusercontent.com/PlanetTeamSpeakk/PTSCogs/master/emptycog.py press ctrl+s and save it in the data/cmdcommands folder.")
         else:
             print('Found emptycog.py, this is good.')
             
