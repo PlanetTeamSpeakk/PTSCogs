@@ -18,11 +18,14 @@ class useful:
 
     @commands.command(pass_context=True, name="avatar", aliases=["av"])
     async def avatar(self, ctx, user : discord.Member):
-        await self.bot.say("{}'s current avatar is: \n{}".format(user.mention, user.avatar_url))
-		
-    @commands.command(pass_context=True, name="defaultavatar", aliases=["defav", "defavatar"])
-    async def defaultavatar(self, ctx, user : discord.Member):
-        await self.bot.say("{}'s default avatar is: \n{}".format(user.mention, user.default_avatar_url))
+        if user.avatar_url:
+            avatar = user.avatar_url
+        else:
+            avatar = user.default_avatar_url
+        em = discord.Embed(color=discord.Color.red())
+        em.add_field(name=user.mention + "'s avatar", value=avatar)
+        em.set_image(url=avatar, height="128", width="128")
+        await self.bot.say(embed=em)
 	
     @commands.command(pass_context=True, name="calc", aliases=["calculate"])
     async def _calc(self, ctx, num, operation, num2):
@@ -67,9 +70,79 @@ class useful:
             await self.bot.say("Your message has been sent.")
             
     @commands.command(pass_context=True)
-    async def owner(self, ctx):
+    async def botowner(self, ctx):
         """Shows you who's boss!"""
-        await self.bot.say("My owner is **{}**.".format(settings.owner))
+        await self.bot.say("My owner is <@{}>.".format(settings.owner))
+        
+    @commands.command(pass_context=True)
+    async def saytts(self, ctx, *, msg):
+        """Sends a message with text to speech."""
+        try:
+            await self.bot.send_message(ctx.message.channel, tts=True, content=msg)
+        except discord.Forbidden:
+            await self.bot.say("Can't send tts message.")
+            
+    @commands.command(pass_context=True)
+    async def invite(self, ctx):
+        """Sends you a link to invite the bot to your server."""
+        url = await get_oauth_url(self)
+        self.bot.oauth_url = url
+        await self.bot.say(""
+        "{}, to invite the bot to your server use this link:\n"
+        "{}&permissions=-1"
+        "\n**BEWARE** You need the 'manage server' permission to add bots.".format(ctx.message.author.mention, url))
+        
+    @commands.command(pass_context=True)
+    async def genoauth(self, ctx, client_id:int, perms=None):
+        """Generates an oauth url (aka invite link) for your bot, for permissions goto https://discordapi.com/permissions.html. Or just put 'all' or 'admin'."""
+        url = discord.utils.oauth_url(client_id)
+        if perms == "all":
+            await self.bot.say(""
+            "{}, here you go:\n"
+            "{}&permissions=-1".format(ctx.message.author.mention, url))
+        elif perms == "admin":
+            await self.bot.say(""
+            "{}, here you go:\n"
+            "{}&permissions=8".format(ctx.message.author.mention, url))
+        elif perms:
+            await self.bot.say(""
+            "{}, here you go:\n"
+            "{}&permissions={}".format(ctx.message.author.mention, url, perms))
+        else:
+            await self.bot.say(""
+            "{}, here you go:\n"
+            "{}".format(ctx.message.author.mention, url))
+            
+    @commands.command(pass_context=True)
+    async def genbotoauth(self, ctx, bot:discord.Member, perms=None):
+        """Generates an oauth url (aka invite link) for your bot, for permissions goto https://discordapi.com/permissions.html. Or just put 'all' or 'admin'."""
+        url = discord.utils.oauth_url(bot.id)
+        if bot.bot == False:
+            await self.bot.say("User is not a bot.")
+            return
+        if perms == "all":
+            await self.bot.say(""
+            "{}, here you go:\n"
+            "{}&permissions=-1".format(ctx.message.author.mention, url))
+        elif perms == "admin":
+            await self.bot.say(""
+            "{}, here you go:\n"
+            "{}&permissions=8".format(ctx.message.author.mention, url))
+        elif perms:
+            await self.bot.say(""
+            "{}, here you go:\n"
+            "{}&permissions={}".format(ctx.message.author.mention, url, perms))
+        else:
+            await self.bot.say(""
+            "{}, here you go:\n"
+            "{}".format(ctx.message.author.mention, url))
+
+async def get_oauth_url(self):
+    try:
+        data = await self.bot.application_info()
+    except AttributeError:
+        return "Your discord.py is outdated. Couldn't retrieve invite link."
+    return discord.utils.oauth_url(data.id)
 
 def setup(bot):
     bot.add_cog(useful(bot))
