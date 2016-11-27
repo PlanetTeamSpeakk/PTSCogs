@@ -63,11 +63,12 @@ class memes:
         self.yesno = ["yes. https://media.giphy.com/media/l46CabMtEkqUtrzkA/giphy.gif", "yes. https://media.giphy.com/media/l3vRhtXnCLgypqh7a/giphy.gif", "yes. https://media.giphy.com/media/l3vR3ACyHLgbOIjZe/source.gif", "no. https://media.giphy.com/media/3oz8xM4Qy4IVCelqZq/source.gif", "no. https://media.giphy.com/media/KaXENSCPjqnK0/giphy.gif", "no. https://media.giphy.com/media/T5QOxf0IRjzYQ/giphy.gif"]
         await self.bot.say("I say " + choice(self.yesno))
         
-    @commands.command()
-    async def datboi(self):
+    @commands.command(pass_context=True)
+    async def datboi(self, ctx):
         """Here come dat boi,
         
         Oh shit waddup"""
+
         await self.bot.say("Here come dat boi.")
         ohshit = await self.bot.say("Oh shit")
         W = "\U0001f1fc"
@@ -80,7 +81,19 @@ class memes:
         await self.bot.add_reaction(ohshit, D)
         await self.bot.add_reaction(ohshit, U)
         await self.bot.add_reaction(ohshit, P)
-        await self.bot.say("http://i1.kym-cdn.com/photos/images/newsfeed/001/112/704/8a8.jpg")
+        self.datboiLoaded = os.path.exists('data/memes/datboi.png')
+        if not self.datboiLoaded:
+            try:
+                async with aiohttp.get("http://i.imgur.com/KEb9OJv.jpg") as r:
+                    image = await r.content.read()
+                with open('data/memes/datboi.png', 'wb') as f:
+                    f.write(image)
+            except Exception as e:
+                print(e)
+                print("Memes error D: I couldn't download the file, so we're gonna use the url instead.")
+            await self.bot.send_file(ctx.message.channel, fp="data/memes/datboi.png", filename="datboi.png")
+        else:
+            await self.bot.send_file(ctx.message.channel, fp="data/memes/datboi.png", filename="datboi.png")
         
     async def on_message(self, message):
         if "ayy" in message.content.split():
