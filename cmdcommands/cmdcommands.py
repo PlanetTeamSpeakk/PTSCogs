@@ -4,6 +4,8 @@ from .utils import checks
 from discord.ext import commands
 from __main__ import send_cmd_help
 from subprocess import check_output, CalledProcessError
+import os
+import aiohttp
 
 class cmdcommands:
     """Commands for the owner to run using the CommandPrompt!"""
@@ -86,7 +88,7 @@ class cmdcommands:
     async def emptycog(self, ctx, cogname):
         """Makes an empty cog for you."""
         try:
-            output = check_output("copy emptycog.py cogs\{}.py".format(cogname), shell=True)
+            output = check_output("copy data\cmdcommands\emptycog.py cogs\{}.py".format(cogname), shell=True)
             await self.bot.say("Cog `{}.py` created, do you want to open the cog to edit it? (yes/no)".format(cogname))
             answer = await self.bot.wait_for_message(timeout=15, author=ctx.message.author)
             if answer is None:
@@ -110,6 +112,29 @@ class cmdcommands:
         except CalledProcessError as error:
             output = error.output
             await self.bot.say(error.output)
+            
+    async def on_ready(self):
+        self.emptycogLoaded = os.path.exists('data/cmdcommands/emptycog.py')
+        if not self.emptycogLoaded:
+            print('Emptycog.py was not found, trying to download')
+            try:
+                async with aiohttp.get("https://raw.githubusercontent.com/PlanetTeamSpeakk/PTSCogs/master/emptycog.py") as r:
+                    emptycog = await r.content.read()
+                with open('data/cmdcommands/emptycog.py','wb') as f:
+                    f.write(emptycog)
+                print('Succesfully downloaded emptycog.py')
+            except Exception as e:
+                print(e)
+                print("Error occured, did not download emptycog.py, go to https://raw.githubusercontent.com/PlanetTeamSpeakk/PTSCogs/master/emptycog.py press ctrl+s and save it in the bot's root folder.")
+        else:
+            print('Found emptycog.py, this is good.')
+            
+def check_folders():
+    if not os.path.exists("data/cmdcommands"):
+        print("Creating data/cmdcommands folder...")
+        os.makedirs("data/cmdcommands")
 
 def setup(bot):
+    check_folders()
+    n = cmdcommands(bot)
     bot.add_cog(cmdcommands(bot))
