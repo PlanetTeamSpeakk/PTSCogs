@@ -3,6 +3,8 @@ from random import randint
 from random import choice as choice
 import random
 import discord
+import aiohttp
+import os
 
 class memes:
     """Dank memes."""
@@ -82,14 +84,49 @@ class memes:
         
     async def on_message(self, message):
         if "ayy" in message.content.split():
-            L = "\U0001f1f1"
-            M = "\U0001f1f2"
-            A = "\U0001f1e6"
-            O = "\U0001f1f4"
-            await self.bot.add_reaction(message, L)
-            await self.bot.add_reaction(message, M)
-            await self.bot.add_reaction(message, A)
-            await self.bot.add_reaction(message, O)
+            self.lmaoLoaded = os.path.exists('data/memes/maolmao.png')
+            use_url = "false"
+            if not self.lmaoLoaded:
+                try:
+                    async with aiohttp.get("http://i.imgur.com/yfkKXGQ.png") as r:
+                        image = await r.content.read()
+                    with open('data/memes/maolmao.png','wb') as f:
+                        f.write(image)
+                    L = "\U0001f1f1"
+                    M = "\U0001f1f2"
+                    A = "\U0001f1e6"
+                    O = "\U0001f1f4"
+                    await self.bot.send_file(message.channel, fp="data/memes/maolmao.png", filename="maolmao.png")
+                    await self.bot.add_reaction(message, L)
+                    await self.bot.add_reaction(message, M)
+                    await self.bot.add_reaction(message, A)
+                    await self.bot.add_reaction(message, O)
+                    
+                except Exception as e:
+                    print(e)
+                    print("Memes error D: I couldn't download the file, so we're gonna use the url instead.")
+                    L = "\U0001f1f1"
+                    M = "\U0001f1f2"
+                    A = "\U0001f1e6"
+                    O = "\U0001f1f4"
+                    await self.bot.send_message(message.channel, "http://i.imgur.com/yfkKXGQ.png")
+                    await self.bot.add_reaction(message, L)
+                    await self.bot.add_reaction(message, M)
+                    await self.bot.add_reaction(message, A)
+                    await self.bot.add_reaction(message, O)
+            else:
+                L = "\U0001f1f1"
+                M = "\U0001f1f2"
+                A = "\U0001f1e6"
+                O = "\U0001f1f4"
+                if os.path.exists('data/memes/maolmao.png'):
+                    await self.bot.send_file(message.channel, fp="data/memes/maolmao.png", filename="maolmao.png")
+                else:
+                    await self.bot.send_message(message.channel, "http://i.imgur.com/yfkKXGQ.png")
+                await self.bot.add_reaction(message, L)
+                await self.bot.add_reaction(message, M)
+                await self.bot.add_reaction(message, A)
+                await self.bot.add_reaction(message, O)       
             
         if "oh shit" in message.content.lower():
             W = "\U0001f1fc"
@@ -115,5 +152,12 @@ class memes:
             await self.bot.add_reaction(message, U)
             await self.bot.add_reaction(message, P)
             
+def check_folders():
+    if not os.path.exists("data/memes"):
+        print("Creating data/memes folder...")
+        os.makedirs("data/memes")
+        
 def setup(bot):
-    bot.add_cog(memes(bot))
+    check_folders()
+    n = memes(bot)
+    bot.add_cog(n)
