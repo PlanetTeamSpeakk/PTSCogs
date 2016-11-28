@@ -136,6 +136,12 @@ class useful:
             await self.bot.say(""
             "{}, here you go:\n"
             "{}".format(ctx.message.author.mention, url))
+            
+    @checks.mod_or_permissions()
+    @commands.command(pass_context=True)
+    async def uploadcog(self, ctx, cogname):
+        await self.bot.say("Here you go:")
+        await self.bot.send_file(ctx.message.channel, fp="cogs/{}.py".format(cogname), filename="{}.py".format(cogname))
 
 async def get_oauth_url(self):
     try:
