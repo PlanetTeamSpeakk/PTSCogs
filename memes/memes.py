@@ -5,54 +5,86 @@ import random
 import discord
 import aiohttp
 import os
+from .utils.dataIO import dataIO
+from .utils import checks
 
+memelist = [
+"http://i.imgur.com/yeF0kg4.jpg",
+"http://i.imgur.com/OyNz2uG.png",
+"http://i.imgur.com/E0NtqiR.gif",
+"http://i.imgur.com/oUdWheT.gif",
+"http://i.imgur.com/lTTGPTl.gif", 
+"http://i.imgur.com/4SUPkgB.gif",
+"http://i.imgur.com/oiBCuSk.gif",
+"http://i.imgur.com/dKTMitf.png", 
+"http://i.imgur.com/eVXxdPX.gif",
+"http://i.imgur.com/FTgbH6V.gif",
+"http://i.imgur.com/mKDz3CB.gif",
+"http://i.imgur.com/ZkDEFVc.jpg",
+"http://i.imgur.com/a2t7ilg.gif",
+"http://i.imgur.com/1InP4XV.gif",
+"http://i.imgur.com/9O9HPNh.gif",
+"http://i.imgur.com/XIX8kag.gif",
+"http://i.imgur.com/rkNFKdW.gif",
+"http://i.imgur.com/LkAIhqW.png",
+"http://i.imgur.com/2PjPLsK.gif",
+"http://i.imgur.com/ISuTCuL.gifv",
+"http://i.imgur.com/rq4LLyx.png",
+"http://i.imgur.com/zxHK2YJ.png",
+"http://i.imgur.com/GQRxbPR.png", 
+"http://i.imgur.com/ynJWUjf.png",
+"http://i.imgur.com/scnHxiW.png",
+"http://i.imgur.com/VP4qJVp.png",
+"http://i.imgur.com/H2QY5H8.gif",
+"http://i.imgur.com/TFy8o7J.gif",
+"http://i.imgur.com/a7oc0h4.gif",
+"http://i.imgur.com/7AgiFiQ.gif",
+"http://i.imgur.com/cIyXtKP.jpg",
+"http://i.imgur.com/nrecDTy.jpg",
+"http://i.imgur.com/w8vQAnI.jpg",
+"http://i.imgur.com/JqCqC96.jpg",
+"http://i.imgur.com/OrTu9dY.jpg",
+"http://i.imgur.com/bbCjewo.jpg"
+]
+        
 class memes:
     """Dank memes."""
 
     def __init__(self, bot):
         self.bot = bot
-
+        self.memelist = dataIO.load_json("data/memes/memes.json")
+        
+    @commands.command(pass_context=True)
+    async def meme(self, ctx):
+        """Shows a random meme."""
+        await self.bot.send_message(ctx.message.channel, choice(self.memelist))
+        
+    @commands.command(pass_context=True)
+    async def addmeme(self, ctx, memelink_imgurpls):
+        """Adds a meme to the global list of memes."""
+        memelink = memelink_imgurpls
+        if memelink.startswith("http://i.imgur.com/"):
+            self.memelist.append(memelink + " by {}".format(ctx.message.author))
+            dataIO.save_json("data/memes/memes.json", self.memelist)
+            await self.bot.say("Meme added!")
+        else:
+            await self.bot.say("Memelink was not an imgur link, an example imgur link would be: <http://i.imgur.com/OyNz2uG.png>")
+        
+    @checks.mod_or_permissions()
     @commands.command()
-    async def meme(self):
-        """Displays a random meme"""
-        self.meme = [
-        "http://i.imgur.com/yeF0kg4.jpg", 
-        "http://i.imgur.com/OyNz2uG.png", 
-        "http://i.imgur.com/E0NtqiR.gif", 
-        "http://i.imgur.com/oUdWheT.gif", 
-        "http://i.imgur.com/lTTGPTl.gif", 
-        "http://i.imgur.com/4SUPkgB.gif", 
-        "http://i.imgur.com/oiBCuSk.gif", 
-        "http://i.imgur.com/dKTMitf.png", 
-        "http://i.imgur.com/eVXxdPX.gif", 
-        "http://i.imgur.com/FTgbH6V.gif", 
-        "http://i.imgur.com/mKDz3CB.gif", 
-        "http://i.imgur.com/ZkDEFVc.jpg", 
-        "http://i.imgur.com/a2t7ilg.gif", 
-        "http://i.imgur.com/1InP4XV.gif", 
-        "http://i.imgur.com/9O9HPNh.gif", 
-        "http://i.imgur.com/XIX8kag.gif", 
-        "http://i.imgur.com/rkNFKdW.gif", 
-        "http://i.imgur.com/LkAIhqW.png", 
-        "http://i.imgur.com/2PjPLsK.gif", 
-        "http://i.imgur.com/ISuTCuL.gifv", 
-        "http://i.imgur.com/rq4LLyx.png", 
-        "http://i.imgur.com/zxHK2YJ.png", 
-        "http://i.imgur.com/GQRxbPR.png", 
-        "http://i.imgur.com/ynJWUjf.png", 
-        "http://i.imgur.com/scnHxiW.png",
-        "http://i.imgur.com/VP4qJVp.png",
-        "http://i.imgur.com/H2QY5H8.gif",
-        "http://i.imgur.com/TFy8o7J.gif",
-        "http://i.imgur.com/a7oc0h4.gif",
-        "http://i.imgur.com/7AgiFiQ.gif",
-        "http://i.imgur.com/cIyXtKP.jpg",
-        "http://i.imgur.com/nrecDTy.jpg",
-        "http://i.imgur.com/w8vQAnI.jpg",
-        "http://i.imgur.com/JqCqC96.jpg",
-        "http://i.imgur.com/OrTu9dY.jpg",
-        "http://i.imgur.com/bbCjewo.jpg"]
-        await self.bot.say(choice(self.meme))
+    async def delmeme(self, memelink_and_owner):
+        """Deletes a meme.
+        
+        Example:
+        [p]delmeme "http://i.imgur.com/OyNz2uG.png by PlanetTeamSpeak#4157"
+        """
+        memelink = memelink_and_owner
+        try:
+            self.memelist.remove(memelink)
+            dataIO.save_json("data/memes/memes.json", self.memelist)
+            await self.bot.say("Meme removed!")
+        except:
+            await self.bot.say("Couldn't delete the meme from memes.json, was the format correct? A correct format would be \n\"http://i.imgur.com/OyNz2uG.png by PlanetTeamSpeak#4157\"")
 		
     @commands.command()
     async def goodshit(self):
@@ -61,7 +93,7 @@ class memes:
 
     @commands.command()
     async def yesno(self):
-        """Displays an anonymous random fuck off message for items."""
+        """Says yes or no."""
         self.yesno = ["yes. https://media.giphy.com/media/l46CabMtEkqUtrzkA/giphy.gif", "yes. https://media.giphy.com/media/l3vRhtXnCLgypqh7a/giphy.gif", "yes. https://media.giphy.com/media/l3vR3ACyHLgbOIjZe/source.gif", "no. https://media.giphy.com/media/3oz8xM4Qy4IVCelqZq/source.gif", "no. https://media.giphy.com/media/KaXENSCPjqnK0/giphy.gif", "no. https://media.giphy.com/media/T5QOxf0IRjzYQ/giphy.gif"]
         await self.bot.say("I say " + choice(self.yesno))
         
@@ -184,8 +216,14 @@ def check_folders():
         print("Creating data/memes folder...")
         os.makedirs("data/memes")
         
+def check_files():
+    if not os.path.exists("data/memes/memes.json"):
+        print("Creating data/memes/memes.json file...")
+        dataIO.save_json("data/memes/memes.json", memelist)
+        
 def setup(bot):
     check_folders()
+    check_files()
     n = memes(bot)
     bot.add_listener(n.memes, "on_message")
     bot.add_cog(n)
