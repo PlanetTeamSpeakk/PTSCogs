@@ -123,133 +123,65 @@ class embed:
     @checks.mod_or_permissions()
     async def true(self, ctx, color, title, description, footer):
         """Embeds a message in the current channel."""
-        await self.bot.say("@everyone @here, announcement!")
         try:
             await self.bot.delete_message(ctx.message)
         except discord.Forbidden:
             pass
-        if color == "red":
-            try:
-                em = discord.Embed(description=description, color=discord.Color.red(), title=title)
-                avatar = ctx.message.author.avatar_url
-                author = ctx.message.author.name
-                em.set_author(name=author, icon_url=avatar)
-                em.set_footer(text=footer)
-                await self.bot.say(embed=em)
-                return
-            except discord.NotFound:
-                await self.bot.say("Couldn't find the message to embed, did it get deleted?")
-                return
-            except discord.HTTPException:
-                await self.bot.say("Hmm, an unknown error occured when embedding.")
-                return
-        elif color == "blue":
-            try:
-                em = discord.Embed(description=description, color=discord.Color.blue(), title=title)
-                avatar = ctx.message.author.avatar_url
-                author = ctx.message.author.name
-                em.set_author(name=author, icon_url=avatar)
-                em.set_footer(text=footer)
-                await self.bot.say(embed=em)
-                return
-            except discord.NotFound:
-                await self.bot.say("Couldn't find the message to embed, did it get deleted?")
-                return
-            except discord.HTTPException:
-                await self.bot.say("Hmm, an unknown error occured when embedding.")
-                return
-        elif color == "green":
-            try:
-                em = discord.Embed(description=description, color=discord.Color.green(), title=title)
-                avatar = ctx.message.author.avatar_url
-                author = ctx.message.author.name
-                em.set_author(name=author, icon_url=avatar)
-                em.set_footer(text=footer)
-                await self.bot.say(embed=em)
-                return
-            except discord.NotFound:
-                await self.bot.say("Couldn't find the message to embed, did it get deleted?")
-                return
-            except discord.HTTPException:
-                await self.bot.say("Hmm, an unknown error occured when embedding.")
-                return
-        elif color == "gold":
-            try:
-                em = discord.Embed(description=description, color=discord.Color.gold(), title=title)
-                avatar = ctx.message.author.avatar_url
-                author = ctx.message.author.name
-                em.set_author(name=author, icon_url=avatar)
-                em.set_footer(text=footer)
-                await self.bot.say(embed=em)
-                return
-            except discord.NotFound:
-                await self.bot.say("Couldn't find the message to embed, did it get deleted?")
-                return
-            except discord.HTTPException:
-                await self.bot.say("Hmm, an unknown error occured when embedding.")
-                return
-        elif color == "purple":
-            try:
-                em = discord.Embed(description=description, color=discord.Color.purple(), title=title)
-                avatar = ctx.message.author.avatar_url
-                author = ctx.message.author.name
-                em.set_author(name=author, icon_url=avatar)
-                em.set_footer(text=footer)
-                await self.bot.say(embed=em)
-                return
-            except discord.NotFound:
-                await self.bot.say("Couldn't find the message to embed, did it get deleted?")
-                return
-            except discord.HTTPException:
-                await self.bot.say("Hmm, an unknown error occured when embedding.")
-                return
-        elif color == "dark_red":
-            try:
-                em = discord.Embed(description=description, color=discord.Color.dark_red(), title=title)
-                avatar = ctx.message.author.avatar_url
-                author = ctx.message.author.name
-                em.set_author(name=author, icon_url=avatar)
-                em.set_footer(text=footer)
-                await self.bot.say(embed=em)
-                return
-            except discord.NotFound:
-                await self.bot.say("Couldn't find the message to embed, did it get deleted?")
-                return
-            except discord.HTTPException:
-                await self.bot.say("Hmm, an unknown error occured when embedding.")
-                return
+        if color == "blue":
+            color = 0X3498DB
         elif color == "dark_blue":
-            try:
-                em = discord.Embed(description=description, color=discord.Color.dark_blue(), title=title)
-                avatar = ctx.message.author.avatar_url
-                author = ctx.message.author.name
-                em.set_author(name=author, icon_url=avatar)
-                em.set_footer(text=footer)
-                await self.bot.say(embed=em)
-                return
-            except discord.NotFound:
-                await self.bot.say("Couldn't find the message to embed, did it get deleted?")
-                return
-            except discord.HTTPException:
-                await self.bot.say("Hmm, an unknown error occured when embedding.")
-                return
+            color = 0X206694
+        elif color == "dark_gold":
+            color = 0XC27C0E
         elif color == "dark_green":
-            try:
-                em = discord.Embed(description=description, color=discord.Color.dark_green(), title=title)
-                avatar = ctx.message.author.avatar_url
-                author = ctx.message.author.name
-                em.set_author(name=author, icon_url=avatar)
-                em.set_footer(text=footer)
-                await self.bot.say(embed=em)
-                return
-            except discord.NotFound:
-                await self.bot.say("Couldn't find the message to embed, did it get deleted?")
-                return
-            except discord.HTTPException:
-                await self.bot.say("Hmm, an unknown error occured when embedding.")
-                return
-        else:
-            await self.bot.say("That's not a valid color, use {}embed help to view help.".format(ctx.prefix))
+            color = 0X1F8B4C
+        elif color == "dark_grey":
+            color = 0X607D8B
+        elif color == "dark_magenta":
+            color = 0XAD1457
+        elif color == "dark_orange":
+            color = 0XA84300
+        elif color == "dark_purple":
+            color = 0X71368A
+        elif color == "dark_red":
+            color = 0X992D22
+        elif color == "dark_teal":
+            color = 0X11806A
+        elif color == "darker_grey":
+            color = 0X546E7A
+        elif color == "default":
+            color = 0X000000
+        elif color == "gold":
+            color = 0XF1C40F
+        elif color == "green":
+            color = 0X2ECC71
+        elif color == "light_grey":
+            color = 0X979C9f
+        elif color == "lighter_grey":
+            color = 0X95A5A6
+        elif color == "magenta":
+            color = 0XE91E63
+        elif color == "orange":
+            color = 0XE67E22
+        elif color == "purple":
+            color = 0X9B59B6
+        elif color == "red":
+            color = 0XE74C3C
+        elif color == "teal":
+            color = 0X1ABC9C
+        try:
+            em = discord.Embed(description=description, color=color, title=title)
+            avatar = ctx.message.author.avatar_url
+            author = ctx.message.author.name
+            em.set_author(name=author, icon_url=avatar)
+            em.set_footer(text=footer)
+            await self.bot.say("@everyone, @here, announcement!", embed=em)
+            return
+        except discord.NotFound:
+            await self.bot.say("Couldn't find the message to embed, did it get deleted?")
+            return
+        except discord.HTTPException:
+            await self.bot.say("Hmm, an unknown error occured when embedding.")
             return
             
 def setup(bot):
