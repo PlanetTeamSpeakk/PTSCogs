@@ -9,6 +9,8 @@ import discord.utils
 import time
 import datetime
 import sys
+import glob
+from .utils.chat_formatting import pagify, box
 
 class useful:
     """Useful stuffz!"""
@@ -140,9 +142,36 @@ class useful:
     @checks.mod_or_permissions()
     @commands.command(pass_context=True)
     async def uploadcog(self, ctx, cogname):
+        """Uploads a cog for you to use, for a list of cogs use [p]show_cogs"""
         await self.bot.say("Here you go:")
         await self.bot.send_file(ctx.message.channel, fp="cogs/{}.py".format(cogname), filename="{}.py".format(cogname))
+        
+    # copied from the owner cog since the command there was owner only and here it isn't :3
+    @commands.command()
+    async def show_cogs(self):
+        """Shows loaded/unloaded cogs"""
+        loaded = [c.__module__.split(".")[1] for c in self.bot.cogs.values()]
+        unloaded = [c.split(".")[1] for c in self._list_cogs()
+                    if c.split(".")[1] not in loaded]
 
+        if not unloaded:
+            unloaded = ["None"]
+
+        msg = ("+ Loaded\n"
+               "{}\n\n"
+               "- Unloaded\n"
+               "{}"
+               "".format(", ".join(sorted(loaded)),
+                         ", ".join(sorted(unloaded)))
+               )
+        for page in pagify(msg, [" "], shorten_by=16):
+            await self.bot.say(box(page.lstrip(" "), lang="diff"))
+
+    def _list_cogs(self):
+        cogs = [os.path.basename(f) for f in glob.glob("cogs/*.py")]
+        return ["cogs." + os.path.splitext(f)[0] for f in cogs]
+
+            
 async def get_oauth_url(self):
     try:
         data = await self.bot.application_info()
