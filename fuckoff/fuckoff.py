@@ -1,12 +1,6 @@
 from discord.ext import commands
-from .utils import checks
-from __main__ import send_cmd_help, settings
 from random import randint
 from random import choice as randchoice
-import random
-import aiohttp
-import asyncio
-import os
 import discord
 import discord.utils
 
@@ -20,7 +14,7 @@ class fuckoff:
     @commands.command(pass_context=True, name="foff", aliases=["fuckoff"])
     async def _foff(self, ctx, user : discord.Member):
         """Displays a random fuck off message."""
-        await self.bot.say(randchoice(self.foffmsg) + " " + user.mention + ". \n\nBy yours truely " + ctx.message.author.mention + ".")
+        await self.bot.say("{} {}.\n\nBy yours truely {}.".format(randchoice(self.foffmsg), user.mention, ctx.message.author.mention))
 
     @commands.command(pass_context=True, name="afoff", aliases=["anonymousfoff", "afuckoff", "anonymousfuckoff"])
     async def _afoff(self, ctx, user : discord.Member):
@@ -28,22 +22,22 @@ class fuckoff:
         try:
             await self.bot.delete_message(ctx.message)
         except discord.Forbidden:
-            await self.bot.send_message(ctx.message.server.owner, "I would like the manage messages permission, thanks!")
-        await self.bot.say(randchoice(self.foffmsg) + " " + user.mention + ".")
+            pass
+        await self.bot.say("{} {}. ".format(randchoice(self.foffmsg), user.mention))
 
     @commands.command(pass_context=True, name="ifoff", aliases=["itemfoff", "ifuckoff", "itemfuckoff"]) 
     async def _ifoff(self, ctx, *, item):
         """Displays a random fuck off message for items."""
-        await self.bot.say(randchoice(self.foffmsg) + " " + item + ". \n\nBy yours truely " + ctx.message.author.mention + ".")
+        await self.bot.say("{} {}.\n\nBy yours truely {}.".format(randchoice(self.foffmsg), item, ctx.message.author.mention))
 
     @commands.command(pass_context=True, name="iafoff", aliases=["itemafoff", "iafuckoff", "ianonymousfuckoff", "itemanonymousfoff", "itemanonymousfuckoff"])
-    async def _iafoff(self, *, item):
-        """Displays an anonymous random fuck off message for items."""
+    async def _afoff(self, ctx, *, item : str):
+        """Displays an anonymous random fuck off message."""
         try:
             await self.bot.delete_message(ctx.message)
         except discord.Forbidden:
-            await self.bot.send_message(ctx.message.server.owner, "I would like the manage messages permission, thanks!")
-        await self.bot.say(randchoice(self.foffmsg) + " " + item + ".")
+            pass
+        await self.bot.say("{} {}. ".format(randchoice(self.foffmsg), item))
 
 def setup(bot):
     bot.add_cog(fuckoff(bot))
