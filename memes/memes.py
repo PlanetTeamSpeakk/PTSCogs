@@ -44,7 +44,8 @@ memelist = [
 "http://i.imgur.com/w8vQAnI.jpg",
 "http://i.imgur.com/JqCqC96.jpg",
 "http://i.imgur.com/OrTu9dY.jpg",
-"http://i.imgur.com/bbCjewo.jpg"
+"http://i.imgur.com/bbCjewo.jpg",
+"http://i.imgur.com/aWsJTdC.gif"
 ]
         
 class memes:
