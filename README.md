@@ -92,12 +92,12 @@ Some dank commands.
 - Reacts to ayy.
 - Reacts to o shit
 - Reacts to oh shit.
-
+- Reacts to feels bad man.
 
 ## Assistance
 Need help? Have an idea for a new cog or a new command for any of the already existing cogs?
 Post an issue or contact me (PlanetTeamSpeak#4157) on 
 
-[The official Red - Discord Bot server](https://discord.gg/0k4npTwMvTpv9wrh). Or
+[The official Red - Discord Bot server](https://discord.gg/geqnqEP). Or
 
 [My server (Impulse Music)](https://discord.gg/tzsmCyk).
