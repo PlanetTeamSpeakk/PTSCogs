@@ -94,6 +94,61 @@ Some dank commands.
 - Reacts to oh shit.
 - Reacts to feels bad man.
 
+### Randomshizzle
+Some random commands that don't really serve a purpose.
+
+#### Randomshizzle Commands
+- `[p]cooldog` the cooldog copypasta.
+- `[p]flipitem <item>` flips anything.
+- `[p]soundsfromspace` gives a link to the spoopy <http://github.audio> website.
+- `[p]punch <@user>` punches a user.
+- `[p]ipunch <item>` punches everything.
+- `[p]triggered` TRIGGEREDDDD.
+- `[p]kys` the lenny kys copypasta.
+
+### Serverinfo
+Some commands about the server.
+
+#### Serverinfo Commands
+- `[p]server owner` shows you the server owner.
+- `[p]server name` for if you for some reason can't read the servername yourself, like if you're a total dipshit.
+- `[p]server sid` shows you the server ID.
+- `[p]server channelname` again for if you're a total dipshit and can't read the channelname yourself.
+- `[p]server cid` shows you the channel ID.
+- `[p]server time` I dunno.
+- `[p]server roles` shows you all of the server roles.
+- `[p]server emojis` shows you all of the custom server emojis.
+- `[p]server users` shows you all of the server users, unless there are more than 32 than it dm's you the users to prevent spam.
+- `[p]server channels` shows you all of the server channels.
+- `[p]server compareids` compares the server and channel ID's to see if it is default, could've used is_default but too late now.
+- `[p]server icon` gives you a link to the server icon.
+- `[p]server info` shows you about everything you want to know about the server.
+- `[p]server channelinfo [#channel]` shows you the information for the given channel, if none for the channel you're in.
+- `[p]server userinfo [@user]` shows you information for the given user, if none it gives it for you.
+
+### Spam
+Some spam commands.
+
+#### Spam Commands
+- `[p]spam <@user> <spamtext> [amount]`¹ spams the user x amounts of times, default is 4.
+- `[p]aspam <@user> <spamtext [amount]`¹ spams the user x amounts of times but doesn't show your name, default is, again, 4.
+- `[p]cspam <spamtext [amount]`¹ spams x times in the channel, default is 4.
+- `[p]acspam <spamtext> amount`¹ spams x times in the channel but deletes the message containing the command and doesn't show your name, default is again 4.
+
+### Useful
+Some useful commands.
+
+#### Useful Commands
+- `[p]avatar <@user>` shows you the avatar of the given user.
+- `[p]calc <num1> <operation> <num2>` calculates something for you, current operations are -, /, ****, and x (x is just another way for ****)
+- `[p]suggest` suggests something to the bot owner, just another way of using `[p]contact`.
+- `[p]botowner` shows you who's boss.
+- `[p]invite` sends you an invite link for the bot.
+- `[p]genoauth <client_id> [perms]` generates an oauth url for the given client ID, perms can be calculated at <https://discordapi.com/permissions.html>
+- `[p]genbotoauth <@bot> [perms]` generates an oauth url for the given bot, doesn't always work.
+- `[p]uploadcog <cogname>` uploads a cog the bot uses to discord.
+- `[p]show_cogs` shows all the cogs, just like `[p]cogs` but not owneronly.
+
 ## Assistance
 Need help? Have an idea for a new cog or a new command for any of the already existing cogs?
 Post an issue or contact me (PlanetTeamSpeak#4157) on 
