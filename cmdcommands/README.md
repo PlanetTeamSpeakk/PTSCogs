@@ -1,7 +1,7 @@
-### CMDCommands
+# CMDCommands
 Some commands that run from the command prompt, currently windows only, most of them are not meant for a VPS but if you're selfhosting the bot there's no problemo.
 
-#### CMDCommands Commands
+## CMDCommands Commands
 - `[p]cmdcommands cmd <cmd command>`¹ runs a command from the commandprompt.
 - `[p]cmdcommands md <directoryname>`¹ creates a directory with the given name, a folder.
 - `[p]cmdcommands pip3install <packagename>`¹ install pip3 packages, like if a cog says you need to run pip3 install Packagename you can use this.
