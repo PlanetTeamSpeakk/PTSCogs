@@ -87,7 +87,7 @@ class useful:
     @commands.command(pass_context=True)
     async def invite(self, ctx):
         """Sends you a link to invite the bot to your server."""
-        url = await get_oauth_url(self)
+        url = discord.utils.oauth_url(self.bot.user.id)
         self.bot.oauth_url = url
         await self.bot.say(""
         "{}, to invite the bot to your server use this link:\n"
@@ -117,9 +117,11 @@ class useful:
             
     @commands.command(pass_context=True)
     async def genbotoauth(self, ctx, bot:discord.Member, perms=None):
-        """Generates an oauth url (aka invite link) for your bot, for permissions goto https://discordapi.com/permissions.html. Or just put 'all' or 'admin'."""
+        """Generates an oauth url (aka invite link) for your bot.
+        For permissions goto https://discordapi.com/permissions.html. Or just put 'all' or 'admin'.
+        Doesn't always work"""
         url = discord.utils.oauth_url(bot.id)
-        if bot.bot == False:
+        if not bot.bot:
             await self.bot.say("User is not a bot.")
             return
         if perms == "all":
@@ -170,14 +172,6 @@ class useful:
     def _list_cogs(self):
         cogs = [os.path.basename(f) for f in glob.glob("cogs/*.py")]
         return ["cogs." + os.path.splitext(f)[0] for f in cogs]
-
-            
-async def get_oauth_url(self):
-    try:
-        data = await self.bot.application_info()
-    except AttributeError:
-        return "Your discord.py is outdated. Couldn't retrieve invite link."
-    return discord.utils.oauth_url(data.id)
 
 def setup(bot):
     bot.add_cog(useful(bot))
