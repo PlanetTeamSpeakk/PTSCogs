@@ -17,7 +17,7 @@ class spam:
             await self.bot.say("Hell nah, I ain't spamming him.")
             return
         if user.id == settings.owner:
-            await self.bot.say("Hell nah, I ain't spamming him. If you want to spam my owner use the `suggest` command!")
+            await self.bot.say("Hell nah, I ain't spamming him. If you want to spam my owner use the `contact` command!")
             return
         if number >> 8:
             await self.bot.say("Hell nah, not past 8 for fck sakes.")
