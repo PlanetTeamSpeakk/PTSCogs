@@ -13,7 +13,8 @@
   8. [Serverinfo](#serverinfo)
   9. [Spam](#spam)
   10. [Useful](#useful)
-4. [Assistance](#assistance)
+4. [Annotations](#annotations)
+5. [Assistance](#assistance)
 
 ## Description
 This is a repository with all of the cogs I make, some are fun others are for serious things.
@@ -38,22 +39,22 @@ Need more help with installation? [Assistance](#assistance)
 Some commands that run from the command prompt, currently windows only, most of them are not meant for a VPS but if you're selfhosting the bot there's no problemo.
 
 #### CMDCommands Commands
-- `[p]cmdcommands cmd <cmd command>` runs a command from the commandprompt.
-- `[p]cmdcommands md <directoryname>` creates a directory with the given name, a folder.
-- `[p]cmdcommands pip3install <packagename>` install pip3 packages, like if a cog says you need to run pip3 install Packagename you can use this.
-- `[p]cmdcommands pipinstall <packagename>` same as pip3install but for pip instead of pip3.
-- `[p]cmdcommands pip3upgrade <packagename>` same as pip3install but also adds --upgrade behind the packagename to indicate it has to be updated.
-- `[p]cmdcommands pipupgrade <packagename>` same as pip3upgrade but for pip instead of pip3.
-- `[p]cmdcommands emptycog <cogname>` creates an emptycog for you.
-- `[p]cmdcommands startcog` starts a cog for you to edit, requires standard open software for .py files to be a .py editor.
+- `[p]cmdcommands cmd <cmd command>`¹ runs a command from the commandprompt.
+- `[p]cmdcommands md <directoryname>`¹ creates a directory with the given name, a folder.
+- `[p]cmdcommands pip3install <packagename>`¹ install pip3 packages, like if a cog says you need to run pip3 install Packagename you can use this.
+- `[p]cmdcommands pipinstall <packagename>`¹ same as pip3install but for pip instead of pip3.
+- `[p]cmdcommands pip3upgrade <packagename>`¹ same as pip3install but also adds --upgrade behind the packagename to indicate it has to be updated.
+- `[p]cmdcommands pipupgrade <packagename>`¹ same as pip3upgrade but for pip instead of pip3.
+- `[p]cmdcommands emptycog <cogname>¹` creates an emptycog for you.
+- `[p]cmdcommands startcog <cogname>`¹ starts a cog for you to edit, requires standard open software for .py files to be a .py editor.
 
 ### Embed
 Embeds a message for you, can be an announcement.
 
 #### Embed Commands
-- `[p]embed` dm's you help for the embed command.
-- `[p]embed true <color> <title> <description> <footer>` it is all explained pretty well in the embed command.
-- `[p]embed false <color> <title> <description> <footer>` it is all explained pretty well in the embed command. 
+- `[p]embed`² dm's you help for the embed command.
+- `[p]embed true <color> <title> <description> <footer>`² it is all explained pretty well in the embed command.
+- `[p]embed false <color> <title> <description> <footer>`² it is all explained pretty well in the embed command. 
 
 ### Fuckoff
 Tell someone to fuck off.
@@ -85,7 +86,7 @@ Some dank commands.
 #### Memes Commands
 - `[p]meme` shows you a random meme.
 - `[p]addmeme` adds a meme to the meme list, must be hosted on imgur (to prevent non-image links)
-- `[p]delmeme` deletes a meme from the meme list.
+- `[p]delmeme`² deletes a meme from the meme list.
 - `[p]goodshit` shows the goodshit copypasta.
 - `[p]yesno` says yes or no with a meme.
 - `[p]datboi` oh shit waddup.
@@ -130,10 +131,10 @@ Some commands about the server.
 Some spam commands.
 
 #### Spam Commands
-- `[p]spam <@user> <spamtext> [amount]`¹ spams the user x amounts of times, default is 4.
-- `[p]aspam <@user> <spamtext [amount]`¹ spams the user x amounts of times but doesn't show your name, default is, again, 4.
-- `[p]cspam <spamtext [amount]`¹ spams x times in the channel, default is 4.
-- `[p]acspam <spamtext> amount`¹ spams x times in the channel but deletes the message containing the command and doesn't show your name, default is again 4.
+- `[p]spam <@user> <spamtext> [amount]`² spams the user x amounts of times, default is 4.
+- `[p]aspam <@user> <spamtext [amount]`² spams the user x amounts of times but doesn't show your name, default is, again, 4.
+- `[p]cspam <spamtext [amount]`² spams x times in the channel, default is 4.
+- `[p]acspam <spamtext> amount`² spams x times in the channel but deletes the message containing the command and doesn't show your name, default is again 4.
 
 ### Useful
 Some useful commands.
@@ -148,6 +149,10 @@ Some useful commands.
 - `[p]genbotoauth <@bot> [perms]` generates an oauth url for the given bot, doesn't always work.
 - `[p]uploadcog <cogname>` uploads a cog the bot uses to discord.
 - `[p]show_cogs` shows all the cogs, just like `[p]cogs` but not owneronly.
+
+## Annotations
+¹ bot owner only.
+² moderators only.
 
 ## Assistance
 Need help? Have an idea for a new cog or a new command for any of the already existing cogs?
