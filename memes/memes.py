@@ -282,31 +282,35 @@ class memes:
                 print("Memes error, couldn't download the letitgo airhorn song, I suggest disabling the airhornsong command.")
                 return
         server = ctx.message.server
-        if self.bot.is_voice_connected(server):
-            try:
-                vcdc = self.bot.voice_client_in(server)
-                await vcdc.disconnect()
-                await asyncio.sleep(0.5)
-                letitgo_join = await self.bot.join_voice_channel(ctx.message.author.voice_channel)
-                letitgo = letitgo_join.create_ffmpeg_player("data/memes/airhornsongs/letitgo.mp3")
-                letitgo.start()
-                await asyncio.sleep(218)
-                vcdc = self.bot.voice_client_in(server)
-                await vcdc.disconnect()
-                return
-            except:
-                return
+        if ctx.message.author.voice_channel:
+            if self.bot.is_voice_connected(server):
+                try:
+                    vcdc = self.bot.voice_client_in(server)
+                    await vcdc.disconnect()
+                    await asyncio.sleep(0.5)
+                    letitgo_join = await self.bot.join_voice_channel(ctx.message.author.voice_channel)
+                    letitgo = letitgo_join.create_ffmpeg_player("data/memes/airhornsongs/letitgo.mp3")
+                    letitgo.start()
+                    await asyncio.sleep(218)
+                    vcdc = self.bot.voice_client_in(server)
+                    await vcdc.disconnect()
+                    return
+                except:
+                    return
+            else:
+                try:
+                    letitgo_join = await self.bot.join_voice_channel(ctx.message.author.voice_channel)
+                    letitgo = letitgo_join.create_ffmpeg_player("data/memes/airhornsongs/letitgo.mp3")
+                    letitgo.start()
+                    await asyncio.sleep(218)
+                    vcdc = self.bot.voice_client_in(server)
+                    await vcdc.disconnect()
+                    return
+                except:
+                    return
         else:
-            try:
-                letitgo_join = await self.bot.join_voice_channel(ctx.message.author.voice_channel)
-                letitgo = letitgo_join.create_ffmpeg_player("data/memes/airhornsongs/letitgo.mp3")
-                letitgo.start()
-                await asyncio.sleep(218)
-                vcdc = self.bot.voice_client_in(server)
-                await vcdc.disconnect()
-                return
-            except:
-                return
+            await self.bot.say("You're not in a voice channel.")
+            return
                 
     @_airhornsong.command(pass_context=True)
     async def turndownforwhat(self, ctx):
@@ -323,31 +327,35 @@ class memes:
                 print("Memes error, couldn't download the turndownforwhat airhorn song, I suggest disabling the airhornsong command.")
                 return
         server = ctx.message.server
-        if self.bot.is_voice_connected(server):
-            try:
-                vcdc = self.bot.voice_client_in(server)
-                await vcdc.disconnect()
-                await asyncio.sleep(0.5)
-                turndownforwhat_join = await self.bot.join_voice_channel(ctx.message.author.voice_channel)
-                turndownforwhat = turndownforwhat_join.create_ffmpeg_player("data/memes/airhornsongs/turndownforwhat.mp3")
-                turndownforwhat.start()
-                await asyncio.sleep(192)
-                vcdc = self.bot.voice_client_in(server)
-                await vcdc.disconnect()
-                return
-            except:
-                return
+        if ctx.message.author.voice_channel:
+            if self.bot.is_voice_connected(server):
+                try:
+                    vcdc = self.bot.voice_client_in(server)
+                    await vcdc.disconnect()
+                    await asyncio.sleep(0.5)
+                    turndownforwhat_join = await self.bot.join_voice_channel(ctx.message.author.voice_channel)
+                    turndownforwhat = turndownforwhat_join.create_ffmpeg_player("data/memes/airhornsongs/turndownforwhat.mp3")
+                    turndownforwhat.start()
+                    await asyncio.sleep(192)
+                    vcdc = self.bot.voice_client_in(server)
+                    await vcdc.disconnect()
+                    return
+                except:
+                    return
+            else:
+                try:
+                    turndownforwhat_join = await self.bot.join_voice_channel(ctx.message.author.voice_channel)
+                    turndownforwhat = turndownforwhat_join.create_ffmpeg_player("data/memes/airhornsongs/turndownforwhat.mp3")
+                    turndownforwhat.start()
+                    await asyncio.sleep(192)
+                    vcdc = self.bot.voice_client_in(server)
+                    await vcdc.disconnect()
+                    return
+                except:
+                    return
         else:
-            try:
-                turndownforwhat_join = await self.bot.join_voice_channel(ctx.message.author.voice_channel)
-                turndownforwhat = turndownforwhat_join.create_ffmpeg_player("data/memes/airhornsongs/turndownforwhat.mp3")
-                turndownforwhat.start()
-                await asyncio.sleep(192)
-                vcdc = self.bot.voice_client_in(server)
-                await vcdc.disconnect()
-                return
-            except:
-                return
+            await self.bot.say("You're not in a voice channel.")
+            return
                 
     @_airhornsong.command(pass_context=True)
     async def darudesandstorm(self, ctx):
@@ -364,31 +372,35 @@ class memes:
                 print("Memes error, couldn't download the darudesandstorm airhorn song, I suggest disabling the airhornsong command.")
                 return
         server = ctx.message.server
-        if self.bot.is_voice_connected(server):
-            try:
-                vcdc = self.bot.voice_client_in(server)
-                await vcdc.disconnect()
-                await asyncio.sleep(0.5)
-                darudesandstorm_join = await self.bot.join_voice_channel(ctx.message.author.voice_channel)
-                darudesandstorm = darudesandstorm_join.create_ffmpeg_player("data/memes/airhornsongs/darudesandstorm.mp3")
-                darudesandstorm.start()
-                await asyncio.sleep(89)
-                vcdc = self.bot.voice_client_in(server)
-                await vcdc.disconnect()
-                return
-            except:
-                return
+        if ctx.message.author.voice_channel:
+            if self.bot.is_voice_connected(server):
+                try:
+                    vcdc = self.bot.voice_client_in(server)
+                    await vcdc.disconnect()
+                    await asyncio.sleep(0.5)
+                    darudesandstorm_join = await self.bot.join_voice_channel(ctx.message.author.voice_channel)
+                    darudesandstorm = darudesandstorm_join.create_ffmpeg_player("data/memes/airhornsongs/darudesandstorm.mp3")
+                    darudesandstorm.start()
+                    await asyncio.sleep(89)
+                    vcdc = self.bot.voice_client_in(server)
+                    await vcdc.disconnect()
+                    return
+                except:
+                    return
+            else:
+                try:
+                    darudesandstorm_join = await self.bot.join_voice_channel(ctx.message.author.voice_channel)
+                    darudesandstorm = darudesandstorm_join.create_ffmpeg_player("data/memes/airhornsongs/darudesandstorm.mp3")
+                    darudesandstorm.start()
+                    await asyncio.sleep(89)
+                    vcdc = self.bot.voice_client_in(server)
+                    await vcdc.disconnect()
+                    return
+                except:
+                    return
         else:
-            try:
-                darudesandstorm_join = await self.bot.join_voice_channel(ctx.message.author.voice_channel)
-                darudesandstorm = darudesandstorm_join.create_ffmpeg_player("data/memes/airhornsongs/darudesandstorm.mp3")
-                darudesandstorm.start()
-                await asyncio.sleep(89)
-                vcdc = self.bot.voice_client_in(server)
-                await vcdc.disconnect()
-                return
-            except:
-                return
+            await self.bot.say("You're not in a voice channel.")
+            return
                 
     @_airhornsong.command(pass_context=True)
     async def sonic(self, ctx):
@@ -405,31 +417,80 @@ class memes:
                 print("Memes error, couldn't download the sonic airhorn song, I suggest disabling the airhornsong command.")
                 return
         server = ctx.message.server
-        if self.bot.is_voice_connected(server):
-            try:
-                vcdc = self.bot.voice_client_in(server)
-                await vcdc.disconnect()
-                await asyncio.sleep(0.5)
-                sonic_join = await self.bot.join_voice_channel(ctx.message.author.voice_channel)
-                sonic = sonic_join.create_ffmpeg_player("data/memes/airhornsongs/sonic.mp3")
-                sonic.start()
-                await asyncio.sleep(80)
-                vcdc = self.bot.voice_client_in(server)
-                await vcdc.disconnect()
-                return
-            except:
-                return
+        if ctx.message.author.voice_channel:
+            if self.bot.is_voice_connected(server):
+                try:
+                    vcdc = self.bot.voice_client_in(server)
+                    await vcdc.disconnect()
+                    await asyncio.sleep(0.5)
+                    sonic_join = await self.bot.join_voice_channel(ctx.message.author.voice_channel)
+                    sonic = sonic_join.create_ffmpeg_player("data/memes/airhornsongs/sonic.mp3")
+                    sonic.start()
+                    await asyncio.sleep(80)
+                    vcdc = self.bot.voice_client_in(server)
+                    await vcdc.disconnect()
+                    return
+                except:
+                    return
+            else:
+                try:
+                    sonic_join = await self.bot.join_voice_channel(ctx.message.author.voice_channel)
+                    sonic = sonic_join.create_ffmpeg_player("data/memes/airhornsongs/sonic.mp3")
+                    sonic.start()
+                    await asyncio.sleep(80)
+                    vcdc = self.bot.voice_client_in(server)
+                    await vcdc.disconnect()
+                    return
+                except:
+                    return
         else:
+            await self.bot.say("You're not in a voice channel.")
+            return
+            
+    @commands.command(pass_context=True)
+    async def sadpiano(self, ctx):
+        """Plays sad piano for you."""
+        self.sadpianoLoaded = os.path.exists("data/memes/sadpiano.mp3")
+        if not self.sadpianoLoaded:
             try:
-                sonic_join = await self.bot.join_voice_channel(ctx.message.author.voice_channel)
-                sonic = sonic_join.create_ffmpeg_player("data/memes/airhornsongs/sonic.mp3")
-                sonic.start()
-                await asyncio.sleep(80)
-                vcdc = self.bot.voice_client_in(server)
-                await vcdc.disconnect()
+                async with aiohttp.get("https://raw.githubusercontent.com/PlanetTeamSpeakk/PTSCogs/master/sadpiano.mp3") as r:
+                    sadpiano = await r.content.read()
+                with open('data/memes/sadpiano.mp3', 'wb') as f:
+                    f.write(sadpiano)
+            except Exception as e:
+                print(e)
+                print("Memes error, couldn't download the sad piano song, I suggest disabling the airhornsong command.")
                 return
-            except:
-                return
+        server = ctx.message.server
+        if ctx.message.author.voice_channel:
+            if self.bot.is_voice_connected(server):
+                try:
+                    vcdc = self.bot.voice_client_in(server)
+                    await vcdc.disconnect()
+                    await asyncio.sleep(0.5)
+                    sadpiano_join = await self.bot.join_voice_channel(ctx.message.author.voice_channel)
+                    sadpiano = sadpiano_join.create_ffmpeg_player("data/memes/sadpiano.mp3")
+                    sadpiano.start()
+                    await asyncio.sleep(252)
+                    vcdc = self.bot.voice_client_in(server)
+                    await vcdc.disconnect()
+                    return
+                except:
+                    return
+            else:
+                try:
+                    sadpiano_join = await self.bot.join_voice_channel(ctx.message.author.voice_channel)
+                    sadpiano = sadpiano_join.create_ffmpeg_player("data/memes/sadpiano.mp3")
+                    sadpiano.start()
+                    await asyncio.sleep(252)
+                    vcdc = self.bot.voice_client_in(server)
+                    await vcdc.disconnect()
+                    return
+                except:
+                    return
+        else:
+            await self.bot.say("You're not in a voice channel.")
+            return
         
     async def memes(self, message):
         if "ayy" in message.content.split():
