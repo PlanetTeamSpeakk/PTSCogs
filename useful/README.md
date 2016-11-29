@@ -3,7 +3,7 @@ Some useful commands.
 
 ## Useful Commands
 - `[p]avatar <@user>` shows you the avatar of the given user.
-- `[p]calc <num1> <operation> <num2>` calculates something for you, current operations are -, /, ****, and x (x is just another way for ****)
+- `[p]calc <num1> <operation> <num2>` calculates something for you, current operations are -, /, \*, and x (x is just another way for \*)
 - `[p]suggest` suggests something to the bot owner, just another way of using `[p]contact`.
 - `[p]botowner` shows you who's boss.
 - `[p]invite` sends you an invite link for the bot.
@@ -13,7 +13,7 @@ Some useful commands.
 - `[p]show_cogs` shows all the cogs, just like `[p]cogs` but not owneronly.
 
 ## Assistance
-Need help? Have an idea for a new cog or a new command for any of the already existing cogs?
+Need help? Have an idea for a new cog or a new command for this cog?
 Post an issue or contact me (PlanetTeamSpeak#4157) on 
 
 [The official Red - Discord Bot server](https://discord.gg/geqnqEP). Or
