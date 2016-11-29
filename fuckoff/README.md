@@ -8,7 +8,7 @@ Tell someone to fuck off.
 - `[p]iafoff <item>` same as the afoff command but for items.
 
 ## Assistance
-Need help? Have an idea for a new cog or a new command for any of the already existing cogs?
+Need help? Have an idea for a new cog or a new command for this cog?
 Post an issue or contact me (PlanetTeamSpeak#4157) on 
 
 [The official Red - Discord Bot server](https://discord.gg/geqnqEP). Or
