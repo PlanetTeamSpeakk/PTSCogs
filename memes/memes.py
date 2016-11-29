@@ -372,7 +372,7 @@ class memes:
                 darudesandstorm_join = await self.bot.join_voice_channel(ctx.message.author.voice_channel)
                 darudesandstorm = darudesandstorm_join.create_ffmpeg_player("data/memes/airhornsongs/darudesandstorm.mp3")
                 darudesandstorm.start()
-                await asyncio.sleep(129)
+                await asyncio.sleep(89)
                 vcdc = self.bot.voice_client_in(server)
                 await vcdc.disconnect()
                 return
@@ -383,7 +383,7 @@ class memes:
                 darudesandstorm_join = await self.bot.join_voice_channel(ctx.message.author.voice_channel)
                 darudesandstorm = darudesandstorm_join.create_ffmpeg_player("data/memes/airhornsongs/darudesandstorm.mp3")
                 darudesandstorm.start()
-                await asyncio.sleep(129)
+                await asyncio.sleep(89)
                 vcdc = self.bot.voice_client_in(server)
                 await vcdc.disconnect()
                 return
@@ -413,7 +413,7 @@ class memes:
                 sonic_join = await self.bot.join_voice_channel(ctx.message.author.voice_channel)
                 sonic = sonic_join.create_ffmpeg_player("data/memes/airhornsongs/sonic.mp3")
                 sonic.start()
-                await asyncio.sleep(120)
+                await asyncio.sleep(80)
                 vcdc = self.bot.voice_client_in(server)
                 await vcdc.disconnect()
                 return
@@ -424,7 +424,7 @@ class memes:
                 sonic_join = await self.bot.join_voice_channel(ctx.message.author.voice_channel)
                 sonic = sonic_join.create_ffmpeg_player("data/memes/airhornsongs/sonic.mp3")
                 sonic.start()
-                await asyncio.sleep(120)
+                await asyncio.sleep(80)
                 vcdc = self.bot.voice_client_in(server)
                 await vcdc.disconnect()
                 return
