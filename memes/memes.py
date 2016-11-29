@@ -8,7 +8,20 @@ import os
 import asyncio
 from .utils.dataIO import dataIO
 from .utils import checks
-from cogs.audio import *
+from __main__ import send_cmd_help
+try:
+    import youtube_dl
+except:
+    youtube_dl = None
+try:
+    if not discord.opus.is_loaded():
+        discord.opus.load_opus('libopus-0.dll')
+except OSError:  # Incorrect bitness
+    opus = False
+except:  # Missing opus
+    opus = None
+else:
+    opus = True
 
 memelist = [
 "http://i.imgur.com/yeF0kg4.jpg",
@@ -49,6 +62,21 @@ memelist = [
 "http://i.imgur.com/bbCjewo.jpg",
 "http://i.imgur.com/aWsJTdC.gif"
 ]
+
+youtube_dl_options = {
+    'source_address': '0.0.0.0',
+    'format': 'bestaudio/best',
+    'extractaudio': True,
+    'audioformat': "mp3",
+    'outtmpl': '%(id)s',
+    'noplaylist': True,
+    'nocheckcertificate': True,
+    'ignoreerrors': True,
+    'quiet': True,
+    'no_warnings': True,
+    'outtmpl': "data/audio/cache/%(id)s",
+    'default_search': 'auto'
+}
         
 class memes:
     """Dank memes."""
@@ -110,7 +138,6 @@ class memes:
         """Here come dat boi,
         
         Oh shit waddup"""
-
         await self.bot.say("Here come dat boi.")
         ohshit = await self.bot.say("Oh shit")
         W = "\U0001f1fc"
@@ -224,7 +251,185 @@ class memes:
             except:
                 return
                 
-    
+    @commands.group(name="airhornsong", pass_context=True)
+    async def _airhornsong(self, ctx):
+        """Some air horn songs."""
+        if not ctx.invoked_subcommand:
+            send_cmd_help(ctx)
+            
+    @_airhornsong.command()
+    async def credits(self):
+        """Some credits to the song makers."""
+        await self.bot.say("All songs are made by Cyranek \n<https://www.youtube.com/channel/UCMYTaTc_gVRyGF6LWzdIsqA>")
+        
+    @_airhornsong.command()
+    async def list(self):
+        """Shows you the current list of airhorn songs."""
+        await self.bot.say("You can currently choose from:\nletitgo\nturndownforwhat\ndarudesandstorm\nsonic")
+            
+    @_airhornsong.command(pass_context=True)
+    async def letitgo(self, ctx):
+        """Plays let it go airhorn version."""
+        self.letitgoLoaded = os.path.exists("data/memes/airhornsongs/letitgo.mp3")
+        if not self.letitgoLoaded:
+            try:
+                async with aiohttp.get("https://raw.githubusercontent.com/PlanetTeamSpeakk/PTSCogs/master/airhornsongs/letitgo.mp3") as r:
+                    letitgo = await r.content.read()
+                with open('data/memes/airhornsongs/letitgo.mp3', 'wb') as f:
+                    f.write(letitgo)
+            except Exception as e:
+                print(e)
+                print("Memes error, couldn't download the letitgo airhorn song, I suggest disabling the airhornsong command.")
+                return
+        server = ctx.message.server
+        if self.bot.is_voice_connected(server):
+            try:
+                vcdc = self.bot.voice_client_in(server)
+                await vcdc.disconnect()
+                await asyncio.sleep(0.5)
+                letitgo_join = await self.bot.join_voice_channel(ctx.message.author.voice_channel)
+                letitgo = letitgo_join.create_ffmpeg_player("data/memes/airhornsongs/letitgo.mp3")
+                letitgo.start()
+                await asyncio.sleep(218)
+                vcdc = self.bot.voice_client_in(server)
+                await vcdc.disconnect()
+                return
+            except:
+                return
+        else:
+            try:
+                letitgo_join = await self.bot.join_voice_channel(ctx.message.author.voice_channel)
+                letitgo = letitgo_join.create_ffmpeg_player("data/memes/airhornsongs/letitgo.mp3")
+                letitgo.start()
+                await asyncio.sleep(218)
+                vcdc = self.bot.voice_client_in(server)
+                await vcdc.disconnect()
+                return
+            except:
+                return
+                
+    @_airhornsong.command(pass_context=True)
+    async def turndownforwhat(self, ctx):
+        """Plays the turn down for what song airhorn version."""
+        self.turndownforwhatLoaded = os.path.exists("data/memes/airhornsongs/turndownforwhat.mp3")
+        if not self.turndownforwhatLoaded:
+            try:
+                async with aiohttp.get("https://raw.githubusercontent.com/PlanetTeamSpeakk/PTSCogs/master/airhornsongs/turndownforwhat.mp3") as r:
+                    turndownforwhat = await r.content.read()
+                with open('data/memes/airhornsongs/turndownforwhat.mp3', 'wb') as f:
+                    f.write(turndownforwhat)
+            except Exception as e:
+                print(e)
+                print("Memes error, couldn't download the turndownforwhat airhorn song, I suggest disabling the airhornsong command.")
+                return
+        server = ctx.message.server
+        if self.bot.is_voice_connected(server):
+            try:
+                vcdc = self.bot.voice_client_in(server)
+                await vcdc.disconnect()
+                await asyncio.sleep(0.5)
+                turndownforwhat_join = await self.bot.join_voice_channel(ctx.message.author.voice_channel)
+                turndownforwhat = turndownforwhat_join.create_ffmpeg_player("data/memes/airhornsongs/turndownforwhat.mp3")
+                turndownforwhat.start()
+                await asyncio.sleep(192)
+                vcdc = self.bot.voice_client_in(server)
+                await vcdc.disconnect()
+                return
+            except:
+                return
+        else:
+            try:
+                turndownforwhat_join = await self.bot.join_voice_channel(ctx.message.author.voice_channel)
+                turndownforwhat = turndownforwhat_join.create_ffmpeg_player("data/memes/airhornsongs/turndownforwhat.mp3")
+                turndownforwhat.start()
+                await asyncio.sleep(192)
+                vcdc = self.bot.voice_client_in(server)
+                await vcdc.disconnect()
+                return
+            except:
+                return
+                
+    @_airhornsong.command(pass_context=True)
+    async def darudesandstorm(self, ctx):
+        """Plays the darude sandstorm song airhorn version."""
+        self.darudesandstormLoaded = os.path.exists("data/memes/airhornsongs/darudesandstorm.mp3")
+        if not self.darudesandstormLoaded:
+            try:
+                async with aiohttp.get("https://raw.githubusercontent.com/PlanetTeamSpeakk/PTSCogs/master/airhornsongs/darudesandstorm.mp3") as r:
+                    darudesandstorm = await r.content.read()
+                with open('data/memes/airhornsongs/darudesandstorm.mp3', 'wb') as f:
+                    f.write(darudesandstorm)
+            except Exception as e:
+                print(e)
+                print("Memes error, couldn't download the darudesandstorm airhorn song, I suggest disabling the airhornsong command.")
+                return
+        server = ctx.message.server
+        if self.bot.is_voice_connected(server):
+            try:
+                vcdc = self.bot.voice_client_in(server)
+                await vcdc.disconnect()
+                await asyncio.sleep(0.5)
+                darudesandstorm_join = await self.bot.join_voice_channel(ctx.message.author.voice_channel)
+                darudesandstorm = darudesandstorm_join.create_ffmpeg_player("data/memes/airhornsongs/darudesandstorm.mp3")
+                darudesandstorm.start()
+                await asyncio.sleep(129)
+                vcdc = self.bot.voice_client_in(server)
+                await vcdc.disconnect()
+                return
+            except:
+                return
+        else:
+            try:
+                darudesandstorm_join = await self.bot.join_voice_channel(ctx.message.author.voice_channel)
+                darudesandstorm = darudesandstorm_join.create_ffmpeg_player("data/memes/airhornsongs/darudesandstorm.mp3")
+                darudesandstorm.start()
+                await asyncio.sleep(129)
+                vcdc = self.bot.voice_client_in(server)
+                await vcdc.disconnect()
+                return
+            except:
+                return
+                
+    @_airhornsong.command(pass_context=True)
+    async def sonic(self, ctx):
+        """Plays sonic song airhorn version."""
+        self.sonicLoaded = os.path.exists("data/memes/airhornsongs/sonic.mp3")
+        if not self.sonicLoaded:
+            try:
+                async with aiohttp.get("https://raw.githubusercontent.com/PlanetTeamSpeakk/PTSCogs/master/airhornsongs/sonic.mp3") as r:
+                    sonic = await r.content.read()
+                with open('data/memes/airhornsongs/sonic.mp3', 'wb') as f:
+                    f.write(sonic)
+            except Exception as e:
+                print(e)
+                print("Memes error, couldn't download the sonic airhorn song, I suggest disabling the airhornsong command.")
+                return
+        server = ctx.message.server
+        if self.bot.is_voice_connected(server):
+            try:
+                vcdc = self.bot.voice_client_in(server)
+                await vcdc.disconnect()
+                await asyncio.sleep(0.5)
+                sonic_join = await self.bot.join_voice_channel(ctx.message.author.voice_channel)
+                sonic = sonic_join.create_ffmpeg_player("data/memes/airhornsongs/sonic.mp3")
+                sonic.start()
+                await asyncio.sleep(120)
+                vcdc = self.bot.voice_client_in(server)
+                await vcdc.disconnect()
+                return
+            except:
+                return
+        else:
+            try:
+                sonic_join = await self.bot.join_voice_channel(ctx.message.author.voice_channel)
+                sonic = sonic_join.create_ffmpeg_player("data/memes/airhornsongs/sonic.mp3")
+                sonic.start()
+                await asyncio.sleep(120)
+                vcdc = self.bot.voice_client_in(server)
+                await vcdc.disconnect()
+                return
+            except:
+                return
         
     async def memes(self, message):
         if "ayy" in message.content.split():
@@ -315,6 +520,9 @@ def check_folders():
     if not os.path.exists("data/memes/airhorns"):
         print("Creating data/memes/airhorns folder...")
         os.makedirs("data/memes/airhorns")
+    if not os.path.exists("data/memes/airhornsongs"):
+        print("Creating data/memes/airhornsongs folder...")
+        os.makedirs("data/memes/airhornsongs")
         
 def check_files():
     if not os.path.exists("data/memes/memes.json"):
