@@ -1,5 +1,5 @@
 # Harambe
-#DixOutForHarambe
+<#DixOutForHarambe>
 
 ## Harambe Commands
 - `[p]harambe` shows you a little text for harambe. Our dix will forever be out for you Harambe.
