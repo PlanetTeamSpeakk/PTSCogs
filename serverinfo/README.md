@@ -19,7 +19,7 @@ Some commands about the server.
 - `[p]server userinfo [@user]` shows you information for the given user, if none it gives it for you.
 
 ## Assistance
-Need help? Have an idea for a new cog or a new command for any of the already existing cogs?
+Need help? Have an idea for a new cog or a new command for this cog?
 Post an issue or contact me (PlanetTeamSpeak#4157) on 
 
 [The official Red - Discord Bot server](https://discord.gg/geqnqEP). Or
