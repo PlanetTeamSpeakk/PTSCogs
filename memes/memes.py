@@ -5,8 +5,10 @@ import random
 import discord
 import aiohttp
 import os
+import asyncio
 from .utils.dataIO import dataIO
 from .utils import checks
+from cogs.audio import *
 
 memelist = [
 "http://i.imgur.com/yeF0kg4.jpg",
@@ -54,6 +56,11 @@ class memes:
     def __init__(self, bot):
         self.bot = bot
         self.memelist = dataIO.load_json("data/memes/memes.json")
+        self.airhorn = [
+        "data/memes/airhorns/airhorn1.mp3",
+        "data/memes/airhorns/airhorn2.mp3",
+        "data/memes/airhorns/airhorn3.mp3"
+        ]
         
     @commands.command(pass_context=True)
     async def meme(self, ctx):
@@ -129,6 +136,95 @@ class memes:
             await self.bot.send_file(ctx.message.channel, fp="data/memes/datboi.png", filename="datboi.png")
         else:
             await self.bot.send_file(ctx.message.channel, fp="data/memes/datboi.png", filename="datboi.png")
+            
+    @commands.command(pass_context=True, name="airhorn")
+    async def _airhorn(self, ctx):
+        """Plays an airhorn in the voice channel you're in."""
+        self.ah1Loaded = os.path.exists('data/memes/airhorns/airhorn1.mp3')
+        self.ah2Loaded = os.path.exists('data/memes/airhorns/airhorn2.mp3')
+        self.ah3Loaded = os.path.exists('data/memes/airhorns/airhorn3.mp3')
+        if not self.ah1Loaded:
+            try:
+                async with aiohttp.get("https://raw.githubusercontent.com/PlanetTeamSpeakk/PTSCogs/master/airhorns/airhorn1.mp3") as r:
+                    ah1 = await r.content.read()
+                with open('data/memes/airhorns/airhorn1.mp3', 'wb') as f:
+                    f.write(ah1)
+            except Exception as e:
+                print(e)
+                print("Memes error, couldn't download the airhorn sounds, I suggest disabling the airhorn command.")
+                return
+        elif not self.ah2Loaded:
+            try:
+                async with aiohttp.get("https://raw.githubusercontent.com/PlanetTeamSpeakk/PTSCogs/master/airhorns/airhorn2.mp3") as r:
+                    ah1 = await r.content.read()
+                with open('data/memes/airhorns/airhorn2.mp3', 'wb') as f:
+                    f.write(ah1)
+            except Exception as e:
+                print(e)
+                print("Memes error, couldn't download the airhorn sounds, I suggest disabling the airhorn command.")
+                return
+        elif not self.ah3Loaded:
+            try:
+                async with aiohttp.get("https://raw.githubusercontent.com/PlanetTeamSpeakk/PTSCogs/master/airhorns/airhorn3.mp3") as r:
+                    ah1 = await r.content.read()
+                with open('data/memes/airhorns/airhorn3.mp3', 'wb') as f:
+                    f.write(ah1)
+            except Exception as e:
+                print(e)
+                print("Memes error, couldn't download the airhorn sounds, I suggest disabling the airhorn command.")
+                await self.bot.say("Couldn't download the airhorn sounds, I suggest disabling the airhorn command.")
+                return
+        if not ctx.message.author.voice_channel:
+            await self.bot.say("You're not in a voice channel, how am I supposed to play you an airhorn if you're not in a voice channel?")
+            return
+        elif ctx.message.author.self_deaf:
+            await self.bot.say("You're deafened, I am not gonna play an airhorn to annoy everyone in the voice channel but you.")
+            return
+        elif ctx.message.author.deaf:
+            await self.bot.say("You're deafened, I am not gonna play an airhorn to annoy everyone in the voice channel but you. Maybe ask a moderator to undeafen you?")
+            return
+        server = ctx.message.server
+        if self.bot.is_voice_connected(server):
+            try:
+                airhornchoice = choice(self.airhorn)
+                vcdc = self.bot.voice_client_in(server)
+                await vcdc.disconnect()
+                await asyncio.sleep(0.5)
+                airhorn_join = await self.bot.join_voice_channel(ctx.message.author.voice_channel)
+                airhorn = airhorn_join.create_ffmpeg_player(airhornchoice)
+                airhorn.start()
+                ahplaying = True
+                if airhornchoice == "data/memes/airhorns/airhorn1.mp3":
+                    await asyncio.sleep(1.75)
+                elif airhornchoice == "data/memes/airhorns/airhorn2.mp3":
+                    await asyncio.sleep(1.5)
+                else:
+                    await asyncio.sleep(3)
+                vcdc = self.bot.voice_client_in(server)
+                await vcdc.disconnect()
+                ahplaying = False
+                return
+            except:
+                return
+        else:
+            try:
+                airhornchoice = choice(self.airhorn)
+                airhorn_join = await self.bot.join_voice_channel(ctx.message.author.voice_channel)
+                airhorn = airhorn_join.create_ffmpeg_player(airhornchoice)
+                airhorn.start()
+                if airhornchoice == "data/memes/airhorns/airhorn1.mp3":
+                    await asyncio.sleep(1.75)
+                elif airhornchoice == "data/memes/airhorns/airhorn2.mp3":
+                    await asyncio.sleep(1.5)
+                else:
+                    await asyncio.sleep(3)
+                vcdc = self.bot.voice_client_in(server)
+                await vcdc.disconnect()
+                return
+            except:
+                return
+                
+    
         
     async def memes(self, message):
         if "ayy" in message.content.split():
@@ -216,6 +312,9 @@ def check_folders():
     if not os.path.exists("data/memes"):
         print("Creating data/memes folder...")
         os.makedirs("data/memes")
+    if not os.path.exists("data/memes/airhorns"):
+        print("Creating data/memes/airhorns folder...")
+        os.makedirs("data/memes/airhorns")
         
 def check_files():
     if not os.path.exists("data/memes/memes.json"):
