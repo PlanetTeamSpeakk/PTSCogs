@@ -85,11 +85,13 @@ Some dank commands.
 
 #### Memes Commands
 - `[p]meme` shows you a random meme.
-- `[p]addmeme` adds a meme to the meme list, must be hosted on imgur (to prevent non-image links)
+- `[p]addmeme` adds a meme to the meme list, must be hosted on imgur (to prevent non-image links).
 - `[p]delmeme`² deletes a meme from the meme list.
 - `[p]goodshit` shows the goodshit copypasta.
 - `[p]yesno` says yes or no with a meme.
 - `[p]datboi` oh shit waddup.
+- `[p]airhorn` plays a random airhorn sound.
+- `[p]airhornsong <songname>` plays a airhornsong for a list of songs type in `[p]airhornsong list`.
 - Reacts to ayy.
 - Reacts to o shit
 - Reacts to oh shit.
