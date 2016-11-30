@@ -13,6 +13,7 @@
   8. [Serverinfo](#serverinfo)
   9. [Spam](#spam)
   10. [Useful](#useful)
+  11. [Marry](#marry)
 4. [Annotations](#annotations)
 5. [Assistance](#assistance)
 
@@ -152,9 +153,24 @@ Some useful commands.
 - `[p]uploadcog <cogname>` uploads a cog the bot uses to discord.
 - `[p]show_cogs` shows all the cogs, just like `[p]cogs` but not owneronly.
 
+### Marry
+You can now marry your loved one!
+
+#### Marry Commands
+- `[p]marry <@yourlovedone>` marry your loved one!
+- `[p]divorce <divorce_id>` divorce your ex.
+- `[p]forcemarry <yourlovedone>`¹ marry your loved one without having them to agree.
+
 ## Annotations
 ¹ bot owner only.
+
 ² moderators only.
+
+<> Needed.
+
+[] Optional.
+
+[p] means prefix.
 
 ## Assistance
 Need help? Have an idea for a new cog or a new command for any of the already existing cogs?
