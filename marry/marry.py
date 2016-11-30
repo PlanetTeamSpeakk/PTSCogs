@@ -28,9 +28,9 @@ class marry:
         await self.bot.say(married_role.id)
         await self.bot.add_roles(ctx.message.author, married_role)
         await self.bot.add_roles(yourlovedone, married_role)
-        await self.bot.send_message(ctx.message.author, "Your divorce id is {0}, don't ever give this to anyone or they can divorce you!\nTo divorce type {1}divorce {0} to divorce.".format(married_role.id, ctx.prefix))
+        await self.bot.send_message(ctx.message.author, "Your divorce id is {0}, don't ever give this to anyone or they can divorce you!\nTo divorce type {1}divorce {0}.".format(married_role.id, ctx.prefix))
         if not yourlovedone.bot:
-            await self.bot.send_message(yourlovedone, "Your divorce id is {0}, don't ever give this to anyone or they can divorce you!\nTo divorce type {1}divorce {0} to divorce.".format(married_role.id, ctx.prefix))
+            await self.bot.send_message(yourlovedone, "Your divorce id is {0}, don't ever give this to anyone or they can divorce you!\nTo divorce type {1}divorce {0}.".format(married_role.id, ctx.prefix))
         else:
             pass
         await self.bot.say("{} is now married to {}, congratulations!".format(ctx.message.author.mention, yourlovedone.mention))
@@ -47,12 +47,15 @@ class marry:
                 pass
         else:
             pass
+        if lovedone.id == person.id:
+            await self.bot.say("You can't let someone marry him/herself that would be weird wouldn't it?")
+            return
         married_role = await self.bot.create_role(server=ctx.message.server,  name="{} ❤ {}".format(person.name, lovedone.name), colour=discord.Colour(value=0XFF00EE), mentionable=True, hoist=True)
         await self.bot.add_roles(person, married_role)
         await self.bot.add_roles(lovedone, married_role)
-        await self.bot.send_message(person, "Your divorce id is {0}, don't ever give this to anyone or they can divorce you!\nTo divorce type {1}divorce {0} to divorce.".format(married_role.id, ctx.prefix))
+        await self.bot.send_message(person, "Your divorce id is {0}, don't ever give this to anyone or they can divorce you!\nTo divorce type {1}divorce {0}.".format(married_role.id, ctx.prefix))
         if not lovedone.bot:
-            await self.bot.send_message(lovedone, "Your divorce id is {0}, don't ever give this to anyone or they can divorce you!\nTo divorce type {1}divorce {0} to divorce.".format(married_role.id, ctx.prefix))
+            await self.bot.send_message(lovedone, "Your divorce id is {0}, don't ever give this to anyone or they can divorce you!\nTo divorce type {1}divorce {0}.".format(married_role.id, ctx.prefix))
         else:
             pass
         await self.bot.say("{} is now married to {}, congratulations!".format(person.mention, lovedone.mention))
