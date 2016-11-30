@@ -4,7 +4,7 @@ You can now marry your loved one!
 ## Marry Commands
 - `[p]marry <@yourlovedone>` marry your loved one!
 - `[p]divorce <divorce_id>` divorce your ex.
-- `[p]forcemarry <yourlovedone>`¹ marry your loved one without having them to agree.
+- `[p]forcemarry <person> <lovedone>`¹ marry someone to his or her loved one.
 
 ## Annotations
 ¹ bot owner only.
