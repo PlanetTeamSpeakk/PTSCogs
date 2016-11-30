@@ -34,9 +34,9 @@ class marry:
         
     @checks.is_owner()
     @commands.command(pass_context=True)
-    async def forcemarry(self, ctx, yourlovedone:discord.Member):
+    async def forcemarry(self, ctx, person:discord.Member, lovedone:discord.Member):
         """Now you can finally marry your loved one."""
-        if yourlovedone.id == self.bot.user.id:
+        if lovedone.id == self.bot.user.id:
             if ctx.message.author.id != settings.owner:
                 await self.bot.say("I only marry my owner!")
                 return
@@ -44,15 +44,15 @@ class marry:
                 pass
         else:
             pass
-        married_role = await self.bot.create_role(server=ctx.message.server,  name="{} ❤ {}".format(ctx.message.author.name, yourlovedone.name),  colour=discord.Colour(value=0XFF00EE), mentionable=True, hoist=True)
-        await self.bot.add_roles(ctx.message.author, married_role)
-        await self.bot.add_roles(yourlovedone, married_role)
-        await self.bot.send_message(ctx.message.author, "Your divorce id is {0}, don't ever give this to anyone or they can divorce you! To type {1}divorce {0} to divorce.".format(married_role.id, ctx.prefix))
+        married_role = await self.bot.create_role(server=ctx.message.server,  name="{} ❤ {}".format(person, lovedone.name),  colour=discord.Colour(value=0XFF00EE), mentionable=True, hoist=True)
+        await self.bot.add_roles(person, married_role)
+        await self.bot.add_roles(lovedone, married_role)
+        await self.bot.send_message(person, "Your divorce id is {0}, don't ever give this to anyone or they can divorce you! To type {1}divorce {0} to divorce.".format(married_role.id, ctx.prefix))
         if not yourlovedone.bot:
-            await self.bot.send_message(yourlovedone, "Your divorce id is {0}, don't ever give this to anyone or they can divorce you! To type {1}divorce {0} to divorce.".format(married_role.id, ctx.prefix))
+            await self.bot.send_message(lovedone, "Your divorce id is {0}, don't ever give this to anyone or they can divorce you! To type {1}divorce {0} to divorce.".format(married_role.id, ctx.prefix))
         else:
             pass
-        await self.bot.say("{} is now married to {}, congratulations!".format(ctx.message.author.mention, yourlovedone.mention))
+        await self.bot.say("{} is now married to {}, congratulations!".format(person, lovedone.mention))
         
     @commands.command(pass_context=True)
     async def divorce(self, ctx, divorce_id):
