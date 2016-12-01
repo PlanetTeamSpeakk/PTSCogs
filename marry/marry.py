@@ -48,7 +48,7 @@ class marry:
             await self.bot.send_message(yourlovedone, "Your divorce id is `{0}`, don't ever give this to anyone or they can divorce you!\nTo divorce type `{1}divorce {0}`.".format(married_role.id, ctx.prefix))
         else:
             pass
-        marchan = discord.utils.find(lambda c: c.name == 'marriage', ctx.message.server.channels, type=discord.ChannelType.text)
+        marchan = discord.utils.find(lambda c: c.name == 'marriage', ctx.message.server.channels)
         if marchan:
             await self.bot.say("You're now married, congratulations!")
             await self.bot.send_message(marchan, "{} married {} congratulations!".format(ctx.message.author.mention, yourlovedone.mention))
@@ -97,7 +97,7 @@ class marry:
             await self.bot.send_message(lovedone, "**{0}** married you to **{1}**.\nYour divorce id is `{2}`, don't ever give this to anyone or they can divorce you!\nTo divorce type `{3}divorce {2}`.".format(ctx.message.author.name, lovedone.name, married_role.id, ctx.prefix))
         else:
             pass
-        marchan = discord.utils.find(lambda c: c.name == 'marriage', ctx.message.server.channels, type=discord.ChannelType.text)
+        marchan = discord.utils.find(lambda c: c.name == 'marriage', ctx.message.server.channels)
         if marchan:
             await self.bot.say("You're now married, congratulations!")
             await self.bot.send_message(marchan, "{} was forced to marry {}.".format(person.mention, lovedone.mention))
