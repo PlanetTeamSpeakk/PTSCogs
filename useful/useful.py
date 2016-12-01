@@ -1,16 +1,11 @@
 from discord.ext import commands
 from .utils import checks
 from __main__ import settings
-import aiohttp
-import asyncio
 import os
 import discord
-import discord.utils
-import time
-import datetime
-import sys
 import glob
 from .utils.chat_formatting import pagify, box
+import re
 
 class useful:
     """Useful stuffz!"""
@@ -28,21 +23,21 @@ class useful:
         em.add_field(name=user.mention + "'s avatar", value=avatar)
         em.set_image(url=avatar, height="128", width="128")
         await self.bot.say(embed=em)
-	
+       
     @commands.command(pass_context=True, name="calc", aliases=["calculate"])
-    async def _calc(self, ctx, num, operation, num2):
-        if operation == "/":
-            await self.bot.say("{} / {} = {}".format(num, num2, int(num) / int(num2)))
-        elif operation == "+":
-            await self.bot.say("{} + {} = {}".format(num, num2, int(num) + int(num2)))
-        elif operation == "*":
-            await self.bot.say("{} * {} = {}".format(num, num2, int(num) * int(num2)))
-        elif operation == "x":
-            await self.bot.say("{} x {} = {}".format(num, num2, int(num) * int(num2)))
-        elif operation == "-":
-            await self.bot.say("{} - {} = {}".format(num, num2, int(num) - int(num2)))
-        else:
-            await self.bot.say("Correct Usage: [p]calc [number] [operation] [second number]")
+    async def _calc(self, ctx, evaluation):
+        """Solves a math problem so you don't have to!
+        + = add, - = subtract, * = multiply, and / = divide
+        
+        Example:
+        [p]calc 1+1+3*4
+        """
+        prob = re.sub("[^0-9+-/* ]", "", ctx.message.content[len(ctx.prefix + "calc "):].strip())
+        try:
+            answer = str(eval(prob))
+            await self.bot.say("`{}` = `{}`".format(prob, answer))
+        except:
+            await self.bot.say("I couldn't solve that problem, it's too hard")
 			
     @commands.command(pass_context=True)
     async def suggest(self, ctx, *, suggestion : str):
@@ -149,6 +144,7 @@ class useful:
         await self.bot.send_file(ctx.message.channel, fp="cogs/{}.py".format(cogname), filename="{}.py".format(cogname))
         
     # copied from the owner cog since the command there was owner only and here it isn't :3
+    @checks.mod_or_permissions()
     @commands.command()
     async def show_cogs(self):
         """Shows loaded/unloaded cogs"""
@@ -168,6 +164,18 @@ class useful:
                )
         for page in pagify(msg, [" "], shorten_by=16):
             await self.bot.say(box(page.lstrip(" "), lang="diff"))
+         
+    @commands.command()
+    async def discrim(self, number):
+        members = []
+        for member in list(self.bot.get_all_members()):
+            if member.discriminator == number and member.name not in members:
+                members.append(member)
+        if len(members) == 0:
+            members = "I could not find any users in any of the servers I'm in with a discriminator of `{}`".format(number)
+        else:
+            members = "```{}```".format(", ".join(members))
+        await self.bot.say("I found {}".format(members))
 
     def _list_cogs(self):
         cogs = [os.path.basename(f) for f in glob.glob("cogs/*.py")]
