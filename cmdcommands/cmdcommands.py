@@ -6,6 +6,7 @@ from __main__ import send_cmd_help
 from subprocess import check_output, CalledProcessError
 import os
 import aiohttp
+import asyncio
 
 class cmdcommands:
     """Commands for the owner to run using the CommandPrompt!"""
@@ -15,17 +16,16 @@ class cmdcommands:
         if name != "nt":
             raise Exception("This cog is for Windows only")
 
-    @commands.group(name="cmdcommands", pass_context=True)
+    @commands.group(name="cmdcommands", pass_context=True, invoke_without_command=True)
     @checks.is_owner()
-    async def _cmdcommands(self, ctx):
-        if ctx.invoked_subcommand is None:
-            await send_cmd_help(ctx)
-
-    @_cmdcommands.command()
-    @checks.is_owner()
-    async def cmd(self, *, command):
-        """Runs a command from the commandprompt."""
+    async def _cmdcommands(self, ctx, *, command):
         if command == "del System32":
+            await self.bot.say("Hell nah I ain't deleting System32.")
+            return
+        elif command == "del Windows/System32":
+            await self.bot.say("Hell nah I ain't deleting System32.")
+            return
+        elif command == "del C:/Windows/System32":
             await self.bot.say("Hell nah I ain't deleting System32.")
             return
         try:
@@ -125,8 +125,9 @@ class cmdcommands:
                 print('Succesfully downloaded emptycog.py')
             except Exception as e:
                 print(e)
-                print("Error occured, did not download emptycog.py, go to https://raw.githubusercontent.com/PlanetTeamSpeakk/PTSCogs/master/emptycog.py press ctrl+s and save it in the data/cmdcommands folder.")
+                print("Error occured, did not download emptycog.py, go to https://raw.githubusercontent.com/PlanetTeamSpeakk/PTSCogs/master/emptycog.py press ctrl+s and save it in the data/cmdcommands/ folder.")
         else:
+            await asyncio.sleep(0.5)
             print('Found emptycog.py, this is good.')
             
 def check_folders():
