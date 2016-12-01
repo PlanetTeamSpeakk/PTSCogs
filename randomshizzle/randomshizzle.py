@@ -1,6 +1,12 @@
 from discord.ext import commands
 from __main__ import send_cmd_help, settings
 import discord
+import os
+from cogs.utils.dataIO import dataIO
+
+pressfcount = [
+0
+]
 
 class randomshizzle:
     """Random shizzle."""
@@ -15,6 +21,24 @@ class randomshizzle:
     @commands.command()
     async def soundsfromspace(self):
         await self.bot.say("Ooh, spooky. \n<https://github.audio/>")
+
+    @commands.command(pass_context=True)
+    async def flipuser(self, ctx, user : discord.Member):
+        """Flips a user."""
+        if user != None:
+            msg = ""
+            if user.id == self.bot.user.id:
+                user = ctx.message.author
+                msg = "Nice try. You think this is funny? How about *this* instead:\n\n"
+            char = "abcdefghijklmnopqrstuvwxyz"
+            tran = "ɐqɔpǝɟƃɥᴉɾʞlɯuodbɹsʇnʌʍxʎz"
+            table = str.maketrans(char, tran)
+            name = user.display_name.translate(table)
+            char = char.upper()
+            tran = "∀qƆpƎℲפHIſʞ˥WNOԀQᴚS┴∩ΛMX⅄Z"
+            table = str.maketrans(char, tran)
+            name = name.translate(table)
+            await self.bot.say(msg + "(╯°□°）╯︵ " + name[::-1])
 			
     @commands.command(pass_context=True)
     async def flipitem(self, ctx, item):
@@ -89,6 +113,48 @@ class randomshizzle:
             "\n( ͡° ͜ʖ ͡°)           ( ͡° ͜ʖ ͡°)                        ( ͡° ͜ʖ ͡°)                ( ͡° ͜ʖ ͡°)            ( ͡° ͜ʖ ͡°)"
             "\n( ͡° ͜ʖ ͡°)           ( ͡° ͜ʖ ͡°)                        ( ͡° ͜ʖ ͡°)                     ( ͡° ͜ʖ ͡°) ( ͡° ͜ʖ ͡°)")
 
+    @commands.command(pass_context=True)
+    async def colorrole(self, ctx, color):
+        """Creates a colored role for you!
         
+        Example
+        [p]colorrole #8C5200
+        Hex pls."""
+        if not color.startswith("#"):
+            await send_cmd_help(ctx)
+            return
+        colorhex = color[1:]
+        color_role = await self.bot.create_role(server=ctx.message.server, name=color, colour=discord.Colour(value=int(colorhex, 16)))
+        await self.bot.add_roles(ctx.message.author, color_role)
+        await self.bot.say("Done!")
+        
+    @commands.command()
+    async def pressf(self, times:int=1):
+        """Pay your respect!"""
+        if times > 4:
+            await self.bot.say("Wow not higher than 4")
+            return
+        self.pressfcount.append(int(self.pressfcount[0]) + int(times))
+        self.pressfcount.remove(self.pressfcount[0])
+        dataIO.save_json("data/pressf/pressf.json", self.pressfcount)
+        await self.bot.say("Respects paid: {}.".format(self.pressfcount[0]))
+        
+    @commands.command(name="pressfcount", pass_context=True)
+    async def _pressfcount(self, ctx):
+        """Tells you how much people paid their respect."""
+        await self.bot.say("Currently {} people paid their respect using {}pressf!".format(self.pressfcount[0], ctx.prefix))
+      
+def check_folders():
+    if not os.path.exists("data/pressf"):
+        print("Creating data/pressf folder...")
+        os.makedirs("data/pressf")
+
+def check_files():
+    if not os.path.exists("data/pressf/pressf.json"):
+        print("Creating data/pressf/pressf.json file...")
+        dataIO.save_json("data/pressf/pressf.json", pressfcount)
+      
 def setup(bot):
+    check_folders()
+    check_files()
     bot.add_cog(randomshizzle(bot))
