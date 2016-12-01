@@ -30,7 +30,7 @@ class marry:
             await self.bot.say("I do not have the `manage roles` permission, you can't marry untill I do.")
             return
         except Exception as e:
-            await self.bot.say("Couldn't make your loved role, unknown error occured,\n{}".format(e))
+            await self.bot.say("Couldn't make your loved role, unknown error occured,\n{}.".format(e))
             return
         await self.bot.add_roles(ctx.message.author, married_role)
         await self.bot.add_roles(yourlovedone, married_role)
@@ -62,13 +62,16 @@ class marry:
             await self.bot.say("I do not have the `manage roles` permission, you can't marry untill I do.")
             return
         except Exception as e:
-            await self.bot.say("Couldn't make your loved role, unknown error occured,\n{}".format(e))
+            await self.bot.say("Couldn't make your loved role, unknown error occured,\n{}.".format(e))
             return
         await self.bot.add_roles(person, married_role)
         await self.bot.add_roles(lovedone, married_role)
-        await self.bot.send_message(person, "Your divorce id is `{0}`, don't ever give this to anyone or they can divorce you!\nTo divorce type `{1}divorce {0}`.".format(married_role.id, ctx.prefix))
+        if not person.bot:
+            await self.bot.send_message(person, "**{0}** married you to **{1}**.\nYour divorce id is `{2}`, don't ever give this to anyone or they can divorce you!\nTo divorce type `{3}divorce {2}`.".format(ctx.message.author.name, lovedone.name, married_role.id, ctx.prefix))
+        else:
+            pass
         if not lovedone.bot:
-            await self.bot.send_message(lovedone, "Your divorce id is `{0}`, don't ever give this to anyone or they can divorce you!\nTo divorce type `{1}divorce {0}`.".format(married_role.id, ctx.prefix))
+            await self.bot.send_message(lovedone, "**{0}** married you to **{1}**.\nYour divorce id is `{2}`, don't ever give this to anyone or they can divorce you!\nTo divorce type `{3}divorce {2}`.".format(ctx.message.author.name, lovedone.name, married_role.id, ctx.prefix))
         else:
             pass
         await self.bot.say("{} is now married to {}, congratulations!".format(person.mention, lovedone.mention))
@@ -78,6 +81,11 @@ class marry:
         """Divorce your ex."""
         try:
             married_role = getRoleObj(divorce_id, ctx.message.server)
+            if not "❤" in married_role.name.split():
+                await self.bot.say("That's not a valid ID.")
+                return
+            else:
+                pass
             await self.bot.delete_role(ctx.message.server, married_role)
             await self.bot.say("You're now divorced!")
             return
