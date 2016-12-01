@@ -22,10 +22,10 @@ class cmdcommands:
         if command == "del System32":
             await self.bot.say("Hell nah I ain't deleting System32.")
             return
-        elif command == "del Windows/System32":
+        elif command == "del Windows\System32":
             await self.bot.say("Hell nah I ain't deleting System32.")
             return
-        elif command == "del C:/Windows/System32":
+        elif command == "del C:\Windows\System32":
             await self.bot.say("Hell nah I ain't deleting System32.")
             return
         try:
