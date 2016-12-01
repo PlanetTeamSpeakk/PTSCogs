@@ -9,6 +9,8 @@ Some random commands that don't really serve a purpose.
 - `[p]ipunch <item>` punches everything.
 - `[p]triggered` TRIGGEREDDDD.
 - `[p]kys` the lenny kys copypasta.
+- `[p]pressf [times]` shows your respect x amounts of times, default is 1 max is 4.
+- `[p]colorrole <color>` creates a color role for you and only for you.
 
 ## Assistance
 Need help? Have an idea for a new cog or a new command for this cog?
