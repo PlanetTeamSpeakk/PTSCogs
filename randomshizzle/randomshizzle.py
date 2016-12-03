@@ -13,7 +13,8 @@ class randomshizzle:
 
     def __init__(self, bot):
         self.bot = bot
-
+        self.pressfcount = dataIO.load_json("data/pressf/pressf.json")
+	
     @commands.command()
     async def cooldog(self):
         await self.bot.say("╭━━━━╮               This is cooldog. Help \n╰┃ ┣▇━▇                cooldog take over \n ┃ ┃  ╰━▅╮ Discord by pasting\n ╰┳╯ ╰━━┳╯        him in 10 other\n  ╰╮ ┳━━╯            servers or you\n ▕▔▋ ╰╮╭━╮   will never be a cool dog.\n╱▔╲▋╰━┻┻╮╲╱▔▔▔╲\n▏  ▔▔▔▔▔▔▔  O O┃ \n╲╱▔╲▂▂▂▂╱▔╲▂▂▂╱\n ▏╳▕▇▇▕ ▏╳▕▇▇▕\n ╲▂╱╲▂╱ ╲▂╱╲▂╱")
