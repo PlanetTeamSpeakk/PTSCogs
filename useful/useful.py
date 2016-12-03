@@ -21,7 +21,7 @@ class useful:
             avatar = user.default_avatar_url
         em = discord.Embed(color=discord.Color.red())
         em.add_field(name=user.mention + "'s avatar", value=avatar)
-        em.set_image(url=avatar, height="128", width="128")
+        em.set_image(url=avatar)
         await self.bot.say(embed=em)
        
     @commands.command(pass_context=True, name="calc", aliases=["calculate"])
