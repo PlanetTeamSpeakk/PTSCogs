@@ -256,7 +256,7 @@ class serverinfo:
         em.add_field(name="Can connect to voice channels", value=perms.connect)
         em.add_field(name="Can create instant invites", value=perms.create_instant_invite)
         em.add_field(name="Can deafen members", value=perms.deafen_members)
-        em.add_field(name="Can embed links", value=perms.embed)
+        em.add_field(name="Can embed links", value=perms.embed_links)
         em.add_field(name="Can use external emojis", value=perms.external_emojis)
         em.add_field(name="Can manage channel", value=perms.manage_channels)
         em.add_field(name="Can manage emojis", value=perms.manage_emojis)
