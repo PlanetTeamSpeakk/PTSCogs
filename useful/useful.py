@@ -184,4 +184,4 @@ class Useful:
         return ["cogs." + os.path.splitext(f)[0] for f in cogs]
         
 def setup(bot):
-    bot.add_cog(useful(bot))
+    bot.add_cog(Useful(bot))
