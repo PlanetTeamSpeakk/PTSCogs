@@ -118,7 +118,7 @@ class cmdcommands:
         if not self.emptycogLoaded:
             print('Emptycog.py was not found, trying to download')
             try:
-                async with aiohttp.get("https://raw.githubusercontent.com/PlanetTeamSpeakk/PTSCogs/master/emptycog.py") as r:
+                async with aiohttp.get("https://raw.githubusercontent.com/PlanetTeamSpeakk/PTSCogs-attributes/master/emptycog.py") as r:
                     emptycog = await r.content.read()
                 with open('data/cmdcommands/emptycog.py','wb') as f:
                     f.write(emptycog)
@@ -127,8 +127,7 @@ class cmdcommands:
                 print(e)
                 print("Error occured, did not download emptycog.py, go to https://raw.githubusercontent.com/PlanetTeamSpeakk/PTSCogs/master/emptycog.py press ctrl+s and save it in the data/cmdcommands/ folder.")
         else:
-            await asyncio.sleep(0.5)
-            print('Found emptycog.py, this is good.')
+            pass
             
 def check_folders():
     if not os.path.exists("data/cmdcommands"):
