@@ -26,7 +26,7 @@ class Useful:
         em.set_image(url=avatar)
         await self.bot.say(embed=em)
        
-    @commands.command(pass_context=True, name="calc", aliases=["calculate"])
+    @commands.command(pass_context=True, name="calc")
     async def _calc(self, ctx, evaluation):
         """Solves a math problem so you don't have to!
         + = add, - = subtract, * = multiply, and / = divide
