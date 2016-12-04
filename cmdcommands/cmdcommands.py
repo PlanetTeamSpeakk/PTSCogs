@@ -13,8 +13,6 @@ class cmdcommands:
 
     def __init__(self, bot):
         self.bot = bot
-        if name != "nt":
-            raise Exception("This cog is for Windows only")
 
     @commands.group(name="cmdcommands", pass_context=True, invoke_without_command=True)
     @checks.is_owner()
@@ -87,6 +85,9 @@ class cmdcommands:
     @checks.is_owner()
     async def emptycog(self, ctx, cogname):
         """Makes an empty cog for you."""
+        if os.name is not "nt":
+            await self.bot.say("This command is for Windows only")
+            return    
         try:
             output = check_output("copy data\cmdcommands\emptycog.py cogs\{}.py".format(cogname), shell=True)
             await self.bot.say("Cog `{}.py` created, do you want to open the cog to edit it? (yes/no)".format(cogname))
@@ -106,6 +107,9 @@ class cmdcommands:
     @checks.is_owner()
     async def startcog(self, ctx, cogname):
         """Starts a cog in the cogs folder to edit it."""
+        if os.name is not "nt":
+            await self.bot.say("This command is for Windows only")
+            return 
         try:
             output = check_output("start cogs\{}.py".format(cogname), shell=True)
             await self.bot.say("Cog `{}` started.".format(cogname))
