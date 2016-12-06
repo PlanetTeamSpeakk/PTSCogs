@@ -14,6 +14,7 @@
   9. [Spam](#spam)
   10. [Useful](#useful)
   11. [Marry](#marry)
+  12. [Adkillr](#adkillr)
 4. [Annotations](#annotations)
 5. [Assistance](#assistance)
 
