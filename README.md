@@ -163,6 +163,12 @@ You can now marry your loved one!
 - `[p]divorce <divorce_id>` divorce your ex.
 - `[p]forcemarry <person> <lovedone>`¹ marry someone to his or her loved one.
 
+### Adkillr
+Deletes all the links people send.
+
+#### Adkillr Commands
+- `[p]adkillr toggle` toggle if the bot should delete your links.
+
 ## Annotations
 ¹ bot owner only.
 
