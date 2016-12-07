@@ -70,18 +70,14 @@ class marry:
             return
         await self.bot.add_roles(person, married_role)
         await self.bot.add_roles(lovedone, married_role)
-        if not person.bot:
-            try:
-                await self.bot.send_message(person, "**{0}** married you to **{1}**.\nYour divorce id is `{2}`, don't ever give this to anyone or they can divorce you!\nTo divorce type `{3}divorce {2}`.".format(ctx.message.author.name, lovedone.name, married_role.id, ctx.prefix))
-            except:
-                pass
-        else:
+        try:
+            await self.bot.send_message(person, "**{0}** married you to **{1}**.\nYour divorce id is `{2}`, don't ever give this to anyone or they can divorce you!\nTo divorce type `{3}divorce {2}`.".format(ctx.message.author.name, lovedone.name, married_role.id, ctx.prefix))
+        except:
             pass
-        if not lovedone.bot:
-            try:
-                await self.bot.send_message(person, "**{0}** married you to **{1}**.\nYour divorce id is `{2}`, don't ever give this to anyone or they can divorce you!\nTo divorce type `{3}divorce {2}`.".format(ctx.message.author.name, lovedone.name, married_role.id, ctx.prefix))
-            except:
-                pass
+        try:
+            await self.bot.send_message(person, "**{0}** married you to **{1}**.\nYour divorce id is `{2}`, don't ever give this to anyone or they can divorce you!\nTo divorce type `{3}divorce {2}`.".format(ctx.message.author.name, lovedone.name, married_role.id, ctx.prefix))
+        except:
+            pass
         else:
             pass
         marchan = discord.utils.find(lambda c: c.name == 'marriage', ctx.message.server.channels)
