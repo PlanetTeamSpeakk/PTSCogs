@@ -12,9 +12,9 @@ from __main__ import send_cmd_help
 try:
     if not discord.opus.is_loaded():
         discord.opus.load_opus('libopus-0.dll')
-except OSError:
+except OSError:  # Incorrect bitness
     opus = False
-except:
+except:  # Missing opus
     opus = None
 else:
     opus = True
@@ -59,7 +59,7 @@ memelist = [
 "http://i.imgur.com/aWsJTdC.gif"
 ]
         
-class memes:
+class Memes:
     """Dank memes."""
 
     def __init__(self, bot):
@@ -81,7 +81,7 @@ class memes:
         """Adds a meme to the global list of memes."""
         memelink = memelink_imgurpls
         if memelink.startswith("http://i.imgur.com/"):
-            self.memelist.append("{} by {}".format(memelink, ctx.message.author))
+            self.memelist.append(memelink + " by {}".format(ctx.message.author))
             dataIO.save_json("data/memes/memes.json", self.memelist)
             await self.bot.say("Meme added!")
         else:
@@ -89,11 +89,11 @@ class memes:
         
     @checks.mod_or_permissions()
     @commands.command()
-    async def delmeme(self, *, memelink_and_owner):
+    async def delmeme(self, memelink_and_owner):
         """Deletes a meme.
         
         Example:
-        [p]delmeme http://i.imgur.com/OyNz2uG.png by PlanetTeamSpeak#4157
+        [p]delmeme "http://i.imgur.com/OyNz2uG.png by PlanetTeamSpeak#4157"
         """
         memelink = memelink_and_owner
         try:
@@ -153,7 +153,7 @@ class memes:
         self.ah3Loaded = os.path.exists('data/memes/airhorns/airhorn3.mp3')
         if not self.ah1Loaded:
             try:
-                async with aiohttp.get("https://raw.githubusercontent.com/PlanetTeamSpeakk/PTSCogs-attributes/master/airhorns/airhorn1.mp3") as r:
+                async with aiohttp.get("https://raw.githubusercontent.com/PlanetTeamSpeakk/PTSCogs/master/airhorns/airhorn1.mp3") as r:
                     ah1 = await r.content.read()
                 with open('data/memes/airhorns/airhorn1.mp3', 'wb') as f:
                     f.write(ah1)
@@ -163,7 +163,7 @@ class memes:
                 return
         elif not self.ah2Loaded:
             try:
-                async with aiohttp.get("https://raw.githubusercontent.com/PlanetTeamSpeakk/PTSCogs-attributes/master/airhorns/airhorn2.mp3") as r:
+                async with aiohttp.get("https://raw.githubusercontent.com/PlanetTeamSpeakk/PTSCogs/master/airhorns/airhorn2.mp3") as r:
                     ah1 = await r.content.read()
                 with open('data/memes/airhorns/airhorn2.mp3', 'wb') as f:
                     f.write(ah1)
@@ -173,7 +173,7 @@ class memes:
                 return
         elif not self.ah3Loaded:
             try:
-                async with aiohttp.get("https://raw.githubusercontent.com/PlanetTeamSpeakk/PTSCogs-attributes/master/airhorns/airhorn3.mp3") as r:
+                async with aiohttp.get("https://raw.githubusercontent.com/PlanetTeamSpeakk/PTSCogs/master/airhorns/airhorn3.mp3") as r:
                     ah1 = await r.content.read()
                 with open('data/memes/airhorns/airhorn3.mp3', 'wb') as f:
                     f.write(ah1)
@@ -236,7 +236,7 @@ class memes:
     async def _airhornsong(self, ctx):
         """Some air horn songs."""
         if not ctx.invoked_subcommand:
-            send_cmd_help(ctx)
+            await send_cmd_help(ctx)
             
     @_airhornsong.command()
     async def credits(self):
@@ -254,7 +254,7 @@ class memes:
         self.letitgoLoaded = os.path.exists("data/memes/airhornsongs/letitgo.mp3")
         if not self.letitgoLoaded:
             try:
-                async with aiohttp.get("https://raw.githubusercontent.com/PlanetTeamSpeakk/PTSCogs-attributes/master/airhornsongs/letitgo.mp3") as r:
+                async with aiohttp.get("https://raw.githubusercontent.com/PlanetTeamSpeakk/PTSCogs/master/airhornsongs/letitgo.mp3") as r:
                     letitgo = await r.content.read()
                 with open('data/memes/airhornsongs/letitgo.mp3', 'wb') as f:
                     f.write(letitgo)
@@ -299,7 +299,7 @@ class memes:
         self.turndownforwhatLoaded = os.path.exists("data/memes/airhornsongs/turndownforwhat.mp3")
         if not self.turndownforwhatLoaded:
             try:
-                async with aiohttp.get("https://raw.githubusercontent.com/PlanetTeamSpeakk/PTSCogs-attributes/master/airhornsongs/turndownforwhat.mp3") as r:
+                async with aiohttp.get("https://raw.githubusercontent.com/PlanetTeamSpeakk/PTSCogs/master/airhornsongs/turndownforwhat.mp3") as r:
                     turndownforwhat = await r.content.read()
                 with open('data/memes/airhornsongs/turndownforwhat.mp3', 'wb') as f:
                     f.write(turndownforwhat)
@@ -344,7 +344,7 @@ class memes:
         self.darudesandstormLoaded = os.path.exists("data/memes/airhornsongs/darudesandstorm.mp3")
         if not self.darudesandstormLoaded:
             try:
-                async with aiohttp.get("https://raw.githubusercontent.com/PlanetTeamSpeakk/PTSCogs-attributes/master/airhornsongs/darudesandstorm.mp3") as r:
+                async with aiohttp.get("https://raw.githubusercontent.com/PlanetTeamSpeakk/PTSCogs/master/airhornsongs/darudesandstorm.mp3") as r:
                     darudesandstorm = await r.content.read()
                 with open('data/memes/airhornsongs/darudesandstorm.mp3', 'wb') as f:
                     f.write(darudesandstorm)
@@ -389,7 +389,7 @@ class memes:
         self.sonicLoaded = os.path.exists("data/memes/airhornsongs/sonic.mp3")
         if not self.sonicLoaded:
             try:
-                async with aiohttp.get("https://raw.githubusercontent.com/PlanetTeamSpeakk/PTSCogs-attributes/master/airhornsongs/sonic.mp3") as r:
+                async with aiohttp.get("https://raw.githubusercontent.com/PlanetTeamSpeakk/PTSCogs/master/airhornsongs/sonic.mp3") as r:
                     sonic = await r.content.read()
                 with open('data/memes/airhornsongs/sonic.mp3', 'wb') as f:
                     f.write(sonic)
@@ -434,7 +434,7 @@ class memes:
         self.sadpianoLoaded = os.path.exists("data/memes/sadpiano.mp3")
         if not self.sadpianoLoaded:
             try:
-                async with aiohttp.get("https://raw.githubusercontent.com/PlanetTeamSpeakk/PTSCogs-attributes/master/sadpiano.mp3") as r:
+                async with aiohttp.get("https://raw.githubusercontent.com/PlanetTeamSpeakk/PTSCogs/master/sadpiano.mp3") as r:
                     sadpiano = await r.content.read()
                 with open('data/memes/sadpiano.mp3', 'wb') as f:
                     f.write(sadpiano)
@@ -472,9 +472,13 @@ class memes:
         else:
             await self.bot.say("You're not in a voice channel.")
             return
+            
+    @commands.command(hidden=True)
+    async def spoopy(self):
+        await self.bot.say("This command will never show up in help, now isn't that weird?")
         
     async def memes(self, message):
-        if "ayy" in message.content.split():
+        if message.content.lower() == "ayy":
             self.lmaoLoaded = os.path.exists('data/memes/maolmao.png')
             if not self.lmaoLoaded:
                 try:
@@ -515,7 +519,7 @@ class memes:
                 await self.bot.add_reaction(message, A)
                 await self.bot.add_reaction(message, O)       
             
-        if "oh shit" in message.content.lower():
+        if message.content.lower() == "oh shit":
             W = "\U0001f1fc"
             A = "\U0001f1e6"
             D = "\U0001f1e9"
@@ -527,7 +531,7 @@ class memes:
             await self.bot.add_reaction(message, U)
             await self.bot.add_reaction(message, P)
             
-        if "o shit" in message.content.lower():
+        if message.content.lower() == "o shit":
             W = "\U0001f1fc"
             A = "\U0001f1e6"
             D = "\U0001f1e9"
@@ -539,7 +543,7 @@ class memes:
             await self.bot.add_reaction(message, U)
             await self.bot.add_reaction(message, P)
             
-        if "feels bad man" in message.content.lower():
+        if message.content.lower() == "feels bad man":
             self.fbmLoaded = os.path.exists('data/memes/feelsbadman.png')
             if not self.fbmLoaded:
                 try:
