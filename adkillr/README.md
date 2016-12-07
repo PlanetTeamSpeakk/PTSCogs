@@ -3,6 +3,7 @@ Kill them damn ads.
 
 ## Adkillr Commands
 - `[p]adkillr toggle` toggle if the bot should delete your links.
+- `[p]adkillr message <message>` sets the message that shows up when someone's link gets removed.
 
 ## Assistance
 Need help? Have an idea for a new cog or a new command for this cog?
