@@ -6,27 +6,29 @@ import discord
 import glob
 from .utils.chat_formatting import pagify, box
 import re
+try:
+    import ffmpy
+except:
+    ffmpyinstalled = False
 
-class Useful:
+class useful:
     """Useful stuffz!"""
 
     def __init__(self, bot):
         self.bot = bot
 
     @commands.command(pass_context=True, name="avatar", aliases=["av"])
-    async def avatar(self, ctx, user:discord.Member=None):
-        if not user:
-            user = ctx.message.author.mention
+    async def avatar(self, ctx, user : discord.Member):
         if user.avatar_url:
             avatar = user.avatar_url
         else:
             avatar = user.default_avatar_url
         em = discord.Embed(color=discord.Color.red())
-        em.add_field(name=user.mention + "'s avatar", value="[Avatar]({})".format(avatar))
-        em.set_image(url=avatar)
+        em.add_field(name=user.mention + "'s avatar", value=avatar)
+        em.set_image(url=avatar, height="128", width="128")
         await self.bot.say(embed=em)
        
-    @commands.command(pass_context=True, name="calc")
+    @commands.command(pass_context=True, name="calc", aliases=["calculate"])
     async def _calc(self, ctx, evaluation):
         """Solves a math problem so you don't have to!
         + = add, - = subtract, * = multiply, and / = divide
@@ -168,15 +170,14 @@ class Useful:
          
     @commands.command()
     async def discrim(self, number):
-        """Shows you how many people the bot can see that have that discrim."""
         members = []
         for member in list(self.bot.get_all_members()):
-            if member.discriminator == number and member not in members:
-                members.append(member)
+            if member.discriminator == number and str(member) not in members:
+                members.append(str(member))
         if len(members) == 0:
             members = "I could not find any users in any of the servers I'm in with a discriminator of `{}`".format(number)
         else:
-            members = "```{}.```".format(", ".join(members))
+            members = "```{}```".format(", ".join(members))
         await self.bot.say("I found {}".format(members))
 
     def _list_cogs(self):
@@ -184,4 +185,4 @@ class Useful:
         return ["cogs." + os.path.splitext(f)[0] for f in cogs]
         
 def setup(bot):
-    bot.add_cog(Useful(bot))
+    bot.add_cog(useful(bot))
