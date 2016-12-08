@@ -12,9 +12,9 @@ from __main__ import send_cmd_help
 try:
     if not discord.opus.is_loaded():
         discord.opus.load_opus('libopus-0.dll')
-except OSError:  # Incorrect bitness
+except OSError:
     opus = False
-except:  # Missing opus
+except:
     opus = None
 else:
     opus = True
@@ -578,6 +578,6 @@ def check_files():
 def setup(bot):
     check_folders()
     check_files()
-    n = memes(bot)
+    n = Memes(bot)
     bot.add_listener(n.memes, "on_message")
     bot.add_cog(n)
