@@ -2,7 +2,7 @@ from discord.ext import commands
 from __main__ import send_cmd_help, settings
 import discord
 import asyncio
-from random import randomint, choice
+from random import choice
 
 class randomshizzle:
     """Random shizzle."""
