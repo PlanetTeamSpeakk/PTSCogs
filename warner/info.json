@@ -1,0 +1,7 @@
+{
+    "AUTHOR" : "PlanetTeamSpeak",
+    "INSTALL_MSG" : "Thanks for installing my warner cog!",
+    "NAME" : "warner",
+    "SHORT" : "Adds some warning commands.",
+    "DESCRIPTION" : "Adds some warning commands, use [p]help warner to get started."
+}
