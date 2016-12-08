@@ -15,6 +15,7 @@
   10. [Useful](#useful)
   11. [Marry](#marry)
   12. [Adkillr](#adkillr)
+  13. [Warner](#warner)
 4. [Annotations](#annotations)
 5. [Assistance](#assistance)
 
@@ -170,6 +171,13 @@ Deletes all the links people send.
 #### Adkillr Commands
 - `[p]adkillr toggle` toggle if the bot should delete your links.
 - `[p]adkillr message <message>` sets the message that shows up when someone's link gets removed.
+
+### Warner
+Warn people for their actions.
+
+#### Warner Commands
+- `[p]warn <user>` warn a user for his/her actions.
+- `[p]resetwarns <user>` reset the warnings for someone.
 
 ## Annotations
 ¹ bot owner only.
