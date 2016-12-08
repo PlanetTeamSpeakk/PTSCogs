@@ -113,6 +113,7 @@ Some random commands that don't really serve a purpose.
 - `[p]kys` the lenny kys copypasta.
 - `[p]pressf [times]` shows your respect x amounts of times, default is 1 max is 4.
 - `[p]colorrole <color>` creates a color role for you and only for you.
+- `[p]rainbow <times> <interval>` creates a rainbow message for you!
 
 ### Serverinfo
 Some commands about the server.
