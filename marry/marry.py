@@ -40,13 +40,13 @@ class marry:
             await self.bot.send_message(yourlovedone, "Your divorce id is `{0}`, don't ever give this to anyone or they can divorce you!\nTo divorce type `{1}divorce {0}`.".format(married_role.id, ctx.prefix))
         else:
             pass
-        marchan = discord.utils.find(lambda c: c.name == 'marriage', ctx.message.server.channels, type=discord.ChannelType.text)
+        marchan = discord.utils.find(lambda c: c.name == 'marriage', ctx.message.server.channels)
         if marchan:
             await self.bot.say("You're now married, congratulations!")
             await self.bot.send_message(marchan, "{} married {} congratulations!".format(ctx.message.author.mention, yourlovedone.mention))
         else:
             try:
-                marchan = await self.bot.create_channel(ctx.message.server, "marriage", type=discord.ChannelType.text)
+                marchan = await self.bot.create_channel(ctx.message.server, "marriage")
                 await self.bot.say("You're now married, congratulations!")
                 await self.bot.send_message(marchan, "{} married {} congratulations!".format(ctx.message.author.mention, yourlovedone.mention))
             except:
