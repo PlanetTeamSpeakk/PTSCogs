@@ -157,6 +157,7 @@ Some useful commands.
 - `[p]genbotoauth <@bot> [perms]` generates an oauth url for the given bot, doesn't always work.
 - `[p]uploadcog <cogname>` uploads a cog the bot uses to discord.
 - `[p]show_cogs` shows all the cogs, just like `[p]cogs` but not owneronly.
+- `[p]emoteurl <emote>` gives a link for a custom emoji.
 
 ### Marry
 You can now marry your loved one!
