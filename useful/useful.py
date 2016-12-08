@@ -179,6 +179,11 @@ class useful:
         else:
             members = "```{}```".format(", ".join(members))
         await self.bot.say("I found {}".format(members))
+        
+    @commands.command()
+    async def emoteurl(self, *, emote:discord.Emoji):
+        """Gets the url for a CUSTOM emote (meaning no emotes like :eyes: and :ok_hand:)"""
+        await self.bot.say(emote.url)
 
     def _list_cogs(self):
         cogs = [os.path.basename(f) for f in glob.glob("cogs/*.py")]
