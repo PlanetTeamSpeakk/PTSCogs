@@ -194,7 +194,7 @@ class useful:
         for member in list(self.bot.get_all_members()):
             if member.name not in uniquemembers:
                 uniquemembers.append(member.name)
-        await self.bot.edit_message(stats, "I am currently in **{}** servers. With **{}** members of which **{}** unique.".format(len(self.bot.servers), len(list(self.bot.get_all_members())), len(uniquemembers)))
+        await self.bot.edit_message(stats, "I am currently in **{}** servers with **{}** members of which **{}** unique.".format(len(self.bot.servers), len(list(self.bot.get_all_members())), len(uniquemembers)))
 
     def _list_cogs(self):
         cogs = [os.path.basename(f) for f in glob.glob("cogs/*.py")]
