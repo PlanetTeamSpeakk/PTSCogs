@@ -13,6 +13,10 @@ Some useful commands.
 - `[p]show_cogs` shows all the cogs, just like `[p]cogs` but not owneronly.
 - `[p]emoteurl <emote>` gives a link for a custom emoji.
 - `[p]showservers` shows you the servers the bot is in.
+- `[p]convert <file_url> <input_format> <output_format>` convert a video or audio file to stuff like mp4 mp3 wav avi and that kind of stuff.
+
+## Needed
+This cog needs the FFMpy library, install it with `pip3 install ffmpy`.
 
 ## Assistance
 Need help? Have an idea for a new cog or a new command for this cog?
