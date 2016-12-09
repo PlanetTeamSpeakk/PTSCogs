@@ -154,17 +154,9 @@ class useful:
         loaded = [c.__module__.split(".")[1] for c in self.bot.cogs.values()]
         unloaded = [c.split(".")[1] for c in self._list_cogs()
                     if c.split(".")[1] not in loaded]
-
         if not unloaded:
             unloaded = ["None"]
-
-        msg = ("+ Loaded\n"
-               "{}\n\n"
-               "- Unloaded\n"
-               "{}"
-               "".format(", ".join(sorted(loaded)),
-                         ", ".join(sorted(unloaded)))
-               )
+        msg = ("+ Loaded\n{}\n\n- Unloaded\n{}".format(", ".join(sorted(loaded)), ", ".join(sorted(unloaded))))
         for page in pagify(msg, [" "], shorten_by=16):
             await self.bot.say(box(page.lstrip(" "), lang="diff"))
          
@@ -188,10 +180,21 @@ class useful:
     @commands.command()
     async def showservers(self):
         """Shows you all the servers the bot is in."""
-        servers = []
-        for server in self.bot.servers:
-            servers.append(server.name)
-        await self.bot.say("I am currently in\n{}.".format(",\n".join(sorted(servers))))
+        servers = sorted(list(self.bot.servers), key=lambda s: s.name.lower())
+        serversmsg = ""
+        for i, server in enumerate(servers):
+            serversmsg += "{}: {}\n".format(i+1, server.name)
+        await self.bot.say("I am currently in\n" + serversmsg)
+        
+    @commands.command()
+    async def servercount(self):
+        """Shows you in how many servers the bot is."""
+        stats = await self.bot.say("Getting stats, this may take a while.")
+        uniquemembers = []
+        for member in list(self.bot.get_all_members()):
+            if member.name not in uniquemembers:
+                uniquemembers.append(member.name)
+        await self.bot.edit_message(stats, "I am currently in **{}** servers. With **{}** members of which **{}** unique.".format(len(self.bot.servers), len(list(self.bot.get_all_members())), len(uniquemembers)))
 
     def _list_cogs(self):
         cogs = [os.path.basename(f) for f in glob.glob("cogs/*.py")]
