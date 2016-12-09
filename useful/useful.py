@@ -184,6 +184,14 @@ class useful:
     async def emoteurl(self, *, emote:discord.Emoji):
         """Gets the url for a CUSTOM emote (meaning no emotes like :eyes: and :ok_hand:)"""
         await self.bot.say(emote.url)
+        
+    @commands.command()
+    async def showservers(self):
+        """Shows you all the servers the bot is in."""
+        servers = []
+        for server in self.bot.servers:
+            servers.append(server.name)
+        await self.bot.say("I am currently in\n{}.".format(",\n".join(sorted(servers))))
 
     def _list_cogs(self):
         cogs = [os.path.basename(f) for f in glob.glob("cogs/*.py")]
