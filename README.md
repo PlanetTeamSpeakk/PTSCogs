@@ -16,8 +16,9 @@
   11. [Marry](#marry)
   12. [Adkillr](#adkillr)
   13. [Warner](#warner)
-4. [Annotations](#annotations)
-5. [Assistance](#assistance)
+4. [Needed](#needed)
+5. [Annotations](#annotations)
+6. [Assistance](#assistance)
 
 ## Description
 This is a repository with all of the cogs I make, some are fun others are for serious things.
@@ -159,6 +160,7 @@ Some useful commands.
 - `[p]show_cogs` shows all the cogs, just like `[p]cogs` but not owneronly.
 - `[p]emoteurl <emote>` gives a link for a custom emoji.
 - `[p]showservers` shows you the servers the bot is in.
+- `[p]convert <file_url> <input_format> <output_format>` convert a video or audio file to stuff like mp4 mp3 wav avi and that kind of stuff.
 
 ### Marry
 You can now marry your loved one!
@@ -181,6 +183,9 @@ Warn people for their actions.
 #### Warner Commands
 - `[p]warn <user>` warn a user for his/her actions.
 - `[p]resetwarns <user>` reset the warnings for someone.
+
+## Needed
+The Useful cog needs the FFMpy library, install it with `pip3 install ffmpy`.
 
 ## Annotations
 ¹ bot owner only.
