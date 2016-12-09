@@ -158,6 +158,7 @@ Some useful commands.
 - `[p]uploadcog <cogname>` uploads a cog the bot uses to discord.
 - `[p]show_cogs` shows all the cogs, just like `[p]cogs` but not owneronly.
 - `[p]emoteurl <emote>` gives a link for a custom emoji.
+- `[p]showservers` shows you the servers the bot is in.
 
 ### Marry
 You can now marry your loved one!
