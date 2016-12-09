@@ -6,8 +6,12 @@ import discord
 import glob
 from .utils.chat_formatting import pagify, box
 import re
+import os
+import aiohttp
+from random import choice
 try:
     import ffmpy
+    ffmpyinstalled = True
 except:
     ffmpyinstalled = False
 
@@ -196,9 +200,76 @@ class useful:
                 uniquemembers.append(member.name)
         await self.bot.edit_message(stats, "I am currently in **{}** servers with **{}** members of which **{}** unique.".format(len(self.bot.servers), len(list(self.bot.get_all_members())), len(uniquemembers)))
 
+    @commands.command(pass_context=True)
+    @commands.cooldown(5, 60)
+    async def bugreport(self, ctx, *, bug:str):
+        """Report a bug in the bot."""
+        if settings.owner == "id_here":
+            await self.bot.say("I have no owner set, cannot report the bug.")
+            return
+        owner = discord.utils.get(self.bot.get_all_members(), id=settings.owner)
+        author = ctx.message.author
+        if ctx.message.channel.is_private is False:
+            server = ctx.message.server
+            source = "server **{}** (`{}`)".format(server.name, server.id)
+        else:
+            source = "direct message"
+        sender = "**{0}** (`{0.id}`) sent you a bug report from {1}:\n\n".format(author, source)
+        message = sender + bug
+        try:
+            await self.bot.send_message(owner, message)
+        except discord.errors.InvalidArgument:
+            await self.bot.say("I cannot send your bug report, I'm unable to find my owner... *sigh*")
+        except discord.errors.HTTPException:
+            await self.bot.say("Your bug report is too long.")
+        except:
+            await self.bot.say("I'm unable to deliver your bug report. Sorry.")
+        else:
+            await self.bot.say("Your bug report has been sent.")
+    
+    @commands.command(pass_context=True)
+    @commands.cooldown(5, 60)
+    async def convert(self, ctx, file_url:str, input_format:str, output_format:str):
+        """Convert a video or audio file to anything you like
+        correct output formats would be mp4, mp3, wav, that kind of stuff.
+        
+        Input format has to be the same as the input format of the file_url."""
+        convertmsg = await self.bot.say("Setting up...")
+        number = ''.join([choice('0123456789') for x in range(6)])
+        try:
+            async with aiohttp.get(file_url) as r:
+                file = await r.content.read()
+            with open('data/useful/{}.{}'.format(number, input_format), 'wb') as f:
+                f.write(file)
+        except:
+            await self.bot.edit_message(convertmsg, "Could not download the file.")
+            return
+        try:
+            converter = ffmpy.FFmpeg(inputs={'data/useful/{}.{}'.format(number, input_format): None}, outputs={'data/useful/{}.{}'.format(number, output_format): None})
+            await self.bot.edit_message(convertmsg, "Converting...")
+            converter.run()
+        except:
+            await self.bot.edit_message(convertmsg, "Could not convert your file, an error occured.")
+            return
+        await self.bot.delete_message(convertmsg)
+        await self.bot.send_file(ctx.message.channel, content="Convertion done!", fp="data/useful/{}.{}".format(number, output_format), filename="{}.{}".format(number, output_format))
+        os.remove("data/useful/{}.{}".format(number, input_format))
+        os.remove("data/useful/{}.{}".format(number, output_format))
+    
     def _list_cogs(self):
         cogs = [os.path.basename(f) for f in glob.glob("cogs/*.py")]
         return ["cogs." + os.path.splitext(f)[0] for f in cogs]
         
+def check_folders():
+    if not os.path.exists("data/useful"):
+        print("Creating data/useful folder...")
+        os.makedirs("data/useful")
+        
+class ModuleNotFound(Exception):
+    pass
+        
 def setup(bot):
+    if not ffmpyinstalled:
+        raise ModuleNotFound("FFmpy is not installed, install it with pip3 install ffmpy")
+    check_folders()
     bot.add_cog(useful(bot))
