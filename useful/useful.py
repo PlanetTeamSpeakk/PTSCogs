@@ -165,8 +165,13 @@ class useful:
             await self.bot.say(box(page.lstrip(" "), lang="diff"))
          
     @commands.command()
-    async def discrim(self, number:int):
-        members = [str(member) for member in list(self.bot.get_all_members()) if member.discriminator == number]
+    async def discrim(self, number):
+        """Shows you all the members I can find with the discrim you gave."""
+        nmb = number.replace("#", "")
+        if not nmb.isdigit():
+            await self.bot.say("Digits please.")
+            return
+        members = [str(member) for member in list(self.bot.get_all_members()) if member.discriminator == nmb]
         members = ", ".join(list(set(members)))
         if len(members) == 0:
             await self.bot.say("I could not find any users in any of the servers I'm in with a discriminator of `{}`".format(number))
