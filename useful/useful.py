@@ -31,12 +31,12 @@ class useful:
         em.add_field(name=user.mention + "'s avatar", value=avatar)
         em.set_image(url=avatar, height="128", width="128")
         await self.bot.say(embed=em)
-       
+
     @commands.command(pass_context=True, name="calc", aliases=["calculate"])
     async def _calc(self, ctx, evaluation):
         """Solves a math problem so you don't have to!
         + = add, - = subtract, * = multiply, and / = divide
-        
+
         Example:
         [p]calc 1+1+3*4"""
         prob = re.sub("[^0-9+-/* ]", "", ctx.message.content[len(ctx.prefix + "calc "):].strip())
@@ -45,7 +45,7 @@ class useful:
             await self.bot.say("`{}` = `{}`".format(prob, answer))
         except:
             await self.bot.say("I couldn't solve that problem, it's too hard")
-			
+
     @commands.command(pass_context=True)
     async def suggest(self, ctx, *, suggestion : str):
         """Sends a suggestion to the owner."""
@@ -72,12 +72,12 @@ class useful:
             await self.bot.say("I'm unable to deliver your message. Sorry.")
         else:
             await self.bot.say("Your message has been sent.")
-            
+
     @commands.command(pass_context=True)
     async def botowner(self, ctx):
         """Shows you who's boss!"""
         await self.bot.say("My owner is <@{}>.".format(settings.owner))
-        
+
     @commands.command(pass_context=True)
     async def saytts(self, ctx, *, msg):
         """Sends a message with text to speech."""
@@ -85,7 +85,7 @@ class useful:
             await self.bot.send_message(ctx.message.channel, tts=True, content=msg)
         except discord.Forbidden:
             await self.bot.say("Can't send tts message.")
-            
+
     @commands.command(pass_context=True)
     async def invite(self, ctx):
         """Sends you a link to invite the bot to your server."""
@@ -95,7 +95,7 @@ class useful:
         "{}, to invite the bot to your server use this link:\n"
         "{}&permissions=-1"
         "\n**BEWARE** You need the 'manage server' permission to add bots.".format(ctx.message.author.mention, url))
-        
+
     @commands.command(pass_context=True)
     async def genoauth(self, ctx, client_id:int, perms=None):
         """Generates an oauth url (aka invite link) for your bot, for permissions goto https://discordapi.com/permissions.html. Or just put 'all' or 'admin'."""
@@ -116,7 +116,7 @@ class useful:
             await self.bot.say(""
             "{}, here you go:\n"
             "{}".format(ctx.message.author.mention, url))
-            
+
     @commands.command(pass_context=True)
     async def genbotoauth(self, ctx, bot:discord.Member, perms=None):
         """Generates an oauth url (aka invite link) for your bot.
@@ -142,14 +142,14 @@ class useful:
             await self.bot.say(""
             "{}, here you go:\n"
             "{}".format(ctx.message.author.mention, url))
-            
+
     @checks.mod_or_permissions()
     @commands.command(pass_context=True)
     async def uploadcog(self, ctx, cogname):
         """Uploads a cog for you to use, for a list of cogs use [p]show_cogs"""
         await self.bot.say("Here you go:")
         await self.bot.send_file(ctx.message.channel, fp="cogs/{}.py".format(cogname), filename="{}.py".format(cogname))
-        
+
     # copied from the owner cog since the command there was owner only and here it isn't :3
     @checks.mod_or_permissions()
     @commands.command()
@@ -163,22 +163,25 @@ class useful:
         msg = ("+ Loaded\n{}\n\n- Unloaded\n{}".format(", ".join(sorted(loaded)), ", ".join(sorted(unloaded))))
         for page in pagify(msg, [" "], shorten_by=16):
             await self.bot.say(box(page.lstrip(" "), lang="diff"))
-         
+
     @commands.command()
-    async def discrim(self, number):
+    async def discrim(self, discriminator: str):
         """Shows you all the members I can find with the discrim you gave."""
-        nmb = number.replace("#", "")
-        if not nmb.isdigit():
-            await self.bot.say("Digits please.")
+        discriminator = discriminator.replace("#", "")
+        if not discriminator.isdigit():
+            await self.bot.say("A Discrimnator can only have digits and a #\nExamples\n`#4157`, `4157`")
             return
-        members = [str(member) for member in list(self.bot.get_all_members()) if member.discriminator == nmb]
+
+        members = [str(s) for s in list(self.bot.get_all_members()) if s.discriminator == discriminator]
         members = ", ".join(list(set(members)))
-        if len(members) == 0:
-            await self.bot.say("I could not find any users in any of the servers I'm in with a discriminator of `{}`".format(number))
+        if not members:
+            await self.bot.say("I could not find any users in any of the servers I'm in with a discriminator of `{}`".format(discriminator))
             return
         else:
+            embed = discord.Embed(colour=0X00B6FF)
+            embed.add_field(name="Discriminator #{}".format(discriminator), value=str(members), inline=False)
             try:
-                await self.bot.say(embed=discord.Embed(description="I found \n{}.".format(members), title="Discrim {}".format(number), colour=0X008CFF))
+                await self.bot.say(embed=embed)
             except:
                 await self.bot.say("An unknown error occured while embedding.")
 
@@ -186,7 +189,7 @@ class useful:
     async def emoteurl(self, *, emote:discord.Emoji):
         """Gets the url for a CUSTOM emote (meaning no emotes like :eyes: and :ok_hand:)"""
         await self.bot.say(emote.url)
-        
+
     @commands.command()
     async def showservers(self):
         """Shows you all the servers the bot is in."""
@@ -195,7 +198,7 @@ class useful:
         for i, server in enumerate(servers):
             serversmsg += "{}: {}\n".format(i+1, server.name)
         await self.bot.say("I am currently in\n" + serversmsg)
-        
+
     @commands.command()
     async def servercount(self):
         """Shows you in how many servers the bot is."""
@@ -232,13 +235,13 @@ class useful:
             await self.bot.say("I'm unable to deliver your bug report. Sorry.")
         else:
             await self.bot.say("Your bug report has been sent.")
-    
+
     @commands.command(pass_context=True)
     @commands.cooldown(5, 60)
     async def convert(self, ctx, file_url:str, input_format:str, output_format:str):
         """Convert a video or audio file to anything you like
         correct output formats would be mp4, mp3, wav, that kind of stuff.
-        
+
         Input format has to be the same as the input format of the file_url."""
         convertmsg = await self.bot.say("Setting up...")
         number = ''.join([choice('0123456789') for x in range(6)])
@@ -267,19 +270,19 @@ class useful:
         await self.bot.delete_message(convertmsg)
         os.remove(input)
         os.remove(output)
-    
+
     def _list_cogs(self):
         cogs = [os.path.basename(f) for f in glob.glob("cogs/*.py")]
         return ["cogs." + os.path.splitext(f)[0] for f in cogs]
-        
+
 def check_folders():
     if not os.path.exists("data/useful"):
         print("Creating data/useful folder...")
         os.makedirs("data/useful")
-        
+
 class ModuleNotFound(Exception):
     pass
-        
+
 def setup(bot):
     if not ffmpyinstalled:
         raise ModuleNotFound("FFmpy is not installed, install it with pip3 install ffmpy")
