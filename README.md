@@ -16,6 +16,7 @@
   11. [Marry](#marry)
   12. [Adkillr](#adkillr)
   13. [Warner](#warner)
+  14. [Coder](#coder)
 4. [Needed](#needed)
 5. [Annotations](#annotations)
 6. [Assistance](#assistance)
@@ -183,6 +184,13 @@ Warn people for their actions.
 #### Warner Commands
 - `[p]warn <user>` warn a user for his/her actions.
 - `[p]resetwarns <user>` reset the warnings for someone.
+
+### Coder
+Some coding and decoding commands.
+
+#### Coder Commands
+- `[p]to <language> <text>` convert a text to a code language.
+- `[p]from <language> <text>`
 
 ## Needed
 The Useful cog needs the FFMpy library, install it with `pip3 install ffmpy`.
