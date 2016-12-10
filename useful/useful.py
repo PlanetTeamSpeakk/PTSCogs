@@ -257,7 +257,7 @@ class useful:
             os.remove(input)
             os.remove(output)
             return
-        await self.bot.send_file(ctx.message.channel, content="Convertion done!", fp=ouput, filename=outputname)
+        await self.bot.send_file(ctx.message.channel, content="Convertion done!", fp=output, filename=outputname)
         await self.bot.delete_message(convertmsg)
         os.remove(input)
         os.remove(output)
