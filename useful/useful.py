@@ -166,17 +166,17 @@ class useful:
          
     @commands.command()
     async def discrim(self, number):
-        members = []
-        for member in list(self.bot.get_all_members()):
-            if member.discriminator == number and str(member) not in members:
-                members.append(str(member))
+        members = [str(member) for member in list(self.bot.get_all_members()) if member.discriminator == number]
+        members = ", ".join(list(set(members)))
         if len(members) == 0:
             await self.bot.say("I could not find any users in any of the servers I'm in with a discriminator of `{}`".format(number))
             return
         else:
-            members = "```{}```".format(", ".join(members))
-            await self.bot.say("I found {}".format(members))
-        
+            try:
+                await self.bot.say(embed=discord.Embed(description="I found \n{}.".format(members), title="Discrim {}".format(number), colour=0X008CFF))
+            except:
+                await self.bot.say("An unknown error occured while embedding.")
+
     @commands.command()
     async def emoteurl(self, *, emote:discord.Emoji):
         """Gets the url for a CUSTOM emote (meaning no emotes like :eyes: and :ok_hand:)"""
