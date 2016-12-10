@@ -1,0 +1,7 @@
+{
+    "AUTHOR" : "PlanetTeamSpeak",
+    "INSTALL_MSG" : "Thanks for installing my coder cog!",
+    "NAME" : "coder",
+    "SHORT" : "Adds some coding and decoding commands.",
+    "DESCRIPTION" : "Adds some coding and decoding commands, use [p]help coder to get started."
+}
