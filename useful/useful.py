@@ -171,10 +171,11 @@ class useful:
             if member.discriminator == number and str(member) not in members:
                 members.append(str(member))
         if len(members) == 0:
-            members = "I could not find any users in any of the servers I'm in with a discriminator of `{}`".format(number)
+            await self.bot.say("I could not find any users in any of the servers I'm in with a discriminator of `{}`".format(number))
+            return
         else:
             members = "```{}```".format(", ".join(members))
-        await self.bot.say("I found {}".format(members))
+            await self.bot.say("I found {}".format(members))
         
     @commands.command()
     async def emoteurl(self, *, emote:discord.Emoji):
@@ -257,7 +258,7 @@ class useful:
             os.remove(input)
             os.remove(output)
             return
-        await self.bot.send_file(ctx.message.channel, content="Convertion done!", fp=output, filename=outputname)
+        await self.bot.send_file(ctx.message.channel, content="Convertion done!", fp=ouput, filename=outputname)
         await self.bot.delete_message(convertmsg)
         os.remove(input)
         os.remove(output)
