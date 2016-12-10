@@ -165,7 +165,7 @@ class useful:
             await self.bot.say(box(page.lstrip(" "), lang="diff"))
          
     @commands.command()
-    async def discrim(self, number):
+    async def discrim(self, number:int):
         members = [str(member) for member in list(self.bot.get_all_members()) if member.discriminator == number]
         members = ", ".join(list(set(members)))
         if len(members) == 0:
