@@ -236,25 +236,31 @@ class useful:
         Input format has to be the same as the input format of the file_url."""
         convertmsg = await self.bot.say("Setting up...")
         number = ''.join([choice('0123456789') for x in range(6)])
+        input = "data/useful/{}.{}".format(number, input_format)
+        output = "data/useful/{}.{}".format(number, output_format)
+        outputname = "{}.{}".format(number, output_format)
         try:
             async with aiohttp.get(file_url) as r:
                 file = await r.content.read()
-            with open('data/useful/{}.{}'.format(number, input_format), 'wb') as f:
+            with open(input, 'wb') as f:
                 f.write(file)
         except:
             await self.bot.edit_message(convertmsg, "Could not download the file.")
+            os.remove(input)
             return
         try:
-            converter = ffmpy.FFmpeg(inputs={'data/useful/{}.{}'.format(number, input_format): None}, outputs={'data/useful/{}.{}'.format(number, output_format): None})
+            converter = ffmpy.FFmpeg(inputs={input: None}, outputs={output: None})
             await self.bot.edit_message(convertmsg, "Converting...")
             converter.run()
         except:
             await self.bot.edit_message(convertmsg, "Could not convert your file, an error occured.")
+            os.remove(input)
+            os.remove(output)
             return
+        await self.bot.send_file(ctx.message.channel, content="Convertion done!", fp=ouput, filename=outputname)
         await self.bot.delete_message(convertmsg)
-        await self.bot.send_file(ctx.message.channel, content="Convertion done!", fp="data/useful/{}.{}".format(number, output_format), filename="{}.{}".format(number, output_format))
-        os.remove("data/useful/{}.{}".format(number, input_format))
-        os.remove("data/useful/{}.{}".format(number, output_format))
+        os.remove(input)
+        os.remove(output)
     
     def _list_cogs(self):
         cogs = [os.path.basename(f) for f in glob.glob("cogs/*.py")]
