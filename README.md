@@ -162,6 +162,7 @@ Some useful commands.
 - `[p]emoteurl <emote>` gives a link for a custom emoji.
 - `[p]showservers` shows you the servers the bot is in.
 - `[p]convert <file_url> <input_format> <output_format>` convert a video or audio file to stuff like mp4 mp3 wav avi and that kind of stuff.
+- `[p]showservermembers`² lists all the servers the bot is in and allows you to view all members of one of the servers.
 
 ### Marry
 You can now marry your loved one!
