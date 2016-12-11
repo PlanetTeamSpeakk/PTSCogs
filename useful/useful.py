@@ -255,7 +255,10 @@ class useful:
                 f.write(file)
         except:
             await self.bot.edit_message(convertmsg, "Could not download the file.")
-            os.remove(input)
+            try:
+                os.remove(input)
+            except:
+                pass
             return
         try:
             converter = ffmpy.FFmpeg(inputs={input: None}, outputs={output: None})
@@ -263,26 +266,60 @@ class useful:
             converter.run()
         except:
             await self.bot.edit_message(convertmsg, "Could not convert your file, an error occured.")
-            os.remove(input)
-            os.remove(output)
+            try:
+                os.remove(input)
+                os.remove(output)
+            except:
+                pass
             return
         await self.bot.send_file(ctx.message.channel, content="Convertion done!", fp=ouput, filename=outputname)
         await self.bot.delete_message(convertmsg)
         os.remove(input)
         os.remove(output)
+        
+    @checks.mod_or_permissions()
+    @commands.command(pass_context=True)
+    async def showservermembers(self, ctx):
+        """Lists all the members of a server."""
+        servers = sorted(list(self.bot.servers), key=lambda s: s.name.lower())
+        msg = ""
+        for i, server in enumerate(servers):
+            msg += "{}: {}\n".format(i, server.name)
+        msg += "\nTo show a servers members just type its number."
+        for page in pagify(msg, ['\n']):
+            await self.bot.say(page)
+        while msg is not None:
+            msg = await self.bot.wait_for_message(author=ctx.message.author, timeout=15)
+            try:
+                msg = int(msg.content)
+                await self.show_confirmation(servers[msg], ctx.message.author, ctx)
+                break
+            except (IndexError, ValueError, AttributeError):
+                pass
+
+    async def show_confirmation(self, server, author, ctx):
+        await self.bot.say("Are you sure you want to show {}'s members? (yes/no)".format(server.name))
+        msg = await self.bot.wait_for_message(author=author, timeout=15)
+        if msg is None:
+            await self.bot.say("I guess not.")
+        elif msg.content.lower() == "yes":
+            members = [member.name for member in server.members]
+            await self.bot.say("Here you go:\n**{}**.".format("**, **".join(sorted(members))))
+        else:
+            await self.bot.say("I guess not.")
 
     def _list_cogs(self):
         cogs = [os.path.basename(f) for f in glob.glob("cogs/*.py")]
         return ["cogs." + os.path.splitext(f)[0] for f in cogs]
-
+        
 def check_folders():
     if not os.path.exists("data/useful"):
         print("Creating data/useful folder...")
         os.makedirs("data/useful")
-
+        
 class ModuleNotFound(Exception):
     pass
-
+        
 def setup(bot):
     if not ffmpyinstalled:
         raise ModuleNotFound("FFmpy is not installed, install it with pip3 install ffmpy")
