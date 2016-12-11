@@ -15,7 +15,6 @@ class Warner:
     @commands.command(pass_context=True)
     async def warn(self, ctx, user:discord.Member):
         """Warn people for their actions."""
-        print(self.warnings)
         serverid = ctx.message.server.id
         userid = user.id
         if serverid not in self.warnings:
