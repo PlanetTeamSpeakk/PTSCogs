@@ -307,6 +307,38 @@ class useful:
             await self.bot.say("Here you go:\n**{}**.".format("**, **".join(sorted(members))))
         else:
             await self.bot.say("I guess not.")
+            
+    @checks.mod_or_permissions()
+    @commands.command(pass_context=True)
+    async def sendservermessage(self, ctx, *, message):
+        """Lists all servers the bot is in and sends a message there."""
+        servers = sorted(list(self.bot.servers), key=lambda s: s.name.lower())
+        msg = ""
+        for i, server in enumerate(servers):
+            msg += "{}: {}\n".format(i, server.name)
+        msg += "\nTo send this message to a server just type it's number."
+        for page in pagify(msg, ['\n']):
+            await self.bot.say(page)
+        while msg is not None:
+            msg = await self.bot.wait_for_message(author=ctx.message.author, timeout=15)
+            try:
+                msg = int(msg.content)
+                await self.send_confirmation(servers[msg], ctx.message.author, ctx, message)
+                break
+            except (IndexError, ValueError, AttributeError):
+                pass
+
+    async def send_confirmation(self, server, author, ctx, message):
+        await self.bot.say("Are you sure you want to send a message to {}? (yes/no)".format(server.name))
+        msg = await self.bot.wait_for_message(author=author, timeout=15)
+        if msg is None:
+            await self.bot.say("I guess not.")
+        elif msg.content.lower() == "yes":
+            members = [member.name for member in server.members]
+            await self.bot.send_message(server.default_channel, "{}, sent by {}.".format(message, str(author)))
+            await self.bot.say("Message sent.")
+        else:
+            await self.bot.say("I guess not.")
 
     def _list_cogs(self):
         cogs = [os.path.basename(f) for f in glob.glob("cogs/*.py")]
