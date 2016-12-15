@@ -301,11 +301,33 @@ class useful:
     async def show_confirmation(self, server, author, ctx):
         await self.bot.say("Are you sure you want to show {}'s members? (yes/no)".format(server.name))
         msg = await self.bot.wait_for_message(author=author, timeout=15)
+        offline = []
+        online = []
+        offline_bot = []
+        online_bot = []
+        for member in server.members:
+            if not member.bot:
+                if member.status == discord.Status.offline:
+                    offline.append(member.name)
+                else:
+                    online.append(member.name)
+            else:
+                if member.status == discord.Status.offline:
+                    offline_bot.append(member.name)
+                else:
+                    online_bot.append(member.name)
+        if not offline:
+            offline = ["None"]
+        if not online:
+            online = ["None"]
+        if not offline_bot:
+            offline_bot = ["None"]
+        if not online_bot:
+            online_bot = ["None"]
         if msg is None:
             await self.bot.say("I guess not.")
         elif msg.content.lower() == "yes":
-            members = [member.name for member in server.members]
-            await self.bot.say("Here you go:\n**{}**.".format("**, **".join(sorted(members))))
+            await self.bot.say("**Online bots**:\n**{}**.\n\n**Offline bots**:\n**{}**.\n\n**Online members**:\n**{}**.\n\n**Offline members**\n**{}**.".format("**, **".join(sorted(online_bot)), "**, **".join(sorted(offline_bot)), "**, **".join(sorted(online)), "**, **".join(sorted(offline))))
         else:
             await self.bot.say("I guess not.")
             
