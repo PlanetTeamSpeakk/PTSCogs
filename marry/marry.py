@@ -40,13 +40,13 @@ class marry:
             await self.bot.send_message(yourlovedone, "Your divorce id is `{0}`, don't ever give this to anyone or they can divorce you!\nTo divorce type `{1}divorce {0}`.".format(married_role.id, ctx.prefix))
         else:
             pass
-        marchan = discord.utils.find(lambda c: c.name == 'marriage', ctx.message.server.channels)
+        marchan = discord.utils.find(lambda c: c.name == 'marriage', ctx.message.server.channels, type=discord.ChannelType.text)
         if marchan:
             await self.bot.say("You're now married, congratulations!")
             await self.bot.send_message(marchan, "{} married {} congratulations!".format(ctx.message.author.mention, yourlovedone.mention))
         else:
             try:
-                marchan = await self.bot.create_channel(ctx.message.server, "marriage")
+                marchan = await self.bot.create_channel(ctx.message.server, "marriage", type=discord.ChannelType.text)
                 await self.bot.say("You're now married, congratulations!")
                 await self.bot.send_message(marchan, "{} married {} congratulations!".format(ctx.message.author.mention, yourlovedone.mention))
             except:
@@ -101,6 +101,8 @@ class marry:
             if not "❤" in married_role.name.split():
                 await self.bot.say("That's not a valid ID.")
                 return
+            elif not ctx.message.author.name in married_role.name.split():
+                await self.bot.say("That's not a valid ID")
             else:
                 pass
             await self.bot.delete_role(ctx.message.server, married_role)
