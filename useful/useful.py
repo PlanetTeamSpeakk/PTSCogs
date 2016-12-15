@@ -340,6 +340,88 @@ class useful:
             await self.bot.say("Message sent.")
         else:
             await self.bot.say("I guess not.")
+            
+    @checks.is_owner()
+    @commands.command(pass_context=True)
+    async def serverwidemessage(self, ctx, *, msg):
+        """Sends a message in every server."""
+        for server in self.bot.servers:
+            try:
+                await self.bot.send_message(server.default_channel, "{}, sent by {}.".format(msg, str(ctx.message.author)))
+            except:
+                pass
+        await self.bot.say("Done!")
+        
+    @checks.is_owner()
+    @commands.command(pass_context=True)
+    async def serverwideembed(self, ctx, is_announcement, color, title, description, footer):
+        """Sends an embedded message in every server."""
+        try:
+            await self.bot.delete_message(ctx.message)
+        except discord.Forbidden:
+            pass
+        if color == "blue":
+            color = 0X3498DB
+        elif color == "dark_blue":
+            color = 0X206694
+        elif color == "dark_gold":
+            color = 0XC27C0E
+        elif color == "dark_green":
+            color = 0X1F8B4C
+        elif color == "dark_grey":
+            color = 0X607D8B
+        elif color == "dark_magenta":
+            color = 0XAD1457
+        elif color == "dark_orange":
+            color = 0XA84300
+        elif color == "dark_purple":
+            color = 0X71368A
+        elif color == "dark_red":
+            color = 0X992D22
+        elif color == "dark_teal":
+            color = 0X11806A
+        elif color == "darker_grey":
+            color = 0X546E7A
+        elif color == "default":
+            color = 0X000000
+        elif color == "gold":
+            color = 0XF1C40F
+        elif color == "green":
+            color = 0X2ECC71
+        elif color == "light_grey":
+            color = 0X979C9f
+        elif color == "lighter_grey":
+            color = 0X95A5A6
+        elif color == "magenta":
+            color = 0XE91E63
+        elif color == "orange":
+            color = 0XE67E22
+        elif color == "purple":
+            color = 0X9B59B6
+        elif color == "red":
+            color = 0XE74C3C
+        elif color == "teal":
+            color = 0X1ABC9C
+        try:
+            em = discord.Embed(description=description, color=color, title=title)
+            avatar = ctx.message.author.avatar_url
+            author = ctx.message.author.name
+            em.set_author(name=author, icon_url=avatar)
+            em.set_footer(text=footer)
+            for server in self.bot.servers:
+                if is_announcement:
+                    try:
+                        await self.bot.send_message(server.default_channel, "@everyone @here, announcement!")
+                    except:
+                        pass
+                await self.bot.send_message(server.default_channel, embed=em)
+            return
+        except discord.NotFound:
+            await self.bot.say("Couldn't find the message to embed, did it get deleted?")
+            return
+        except discord.HTTPException:
+            await self.bot.say("Hmm, an unknown error occured when embedding.")
+            return
 
     def _list_cogs(self):
         cogs = [os.path.basename(f) for f in glob.glob("cogs/*.py")]
