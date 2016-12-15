@@ -156,5 +156,10 @@ class randomshizzle:
         "                    vMB :@B@ :BO7                      \n"
         "                        ,B@B                        ```\n")
         
+    @commands.command()
+    async def apologize(self):
+        """Let the bot apologize"""
+        await self.bot.say(":regional_indicator_n: :regional_indicator_o: :regional_indicator_p: :regional_indicator_e:")
+        
 def setup(bot):
     bot.add_cog(randomshizzle(bot))
