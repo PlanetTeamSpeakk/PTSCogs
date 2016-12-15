@@ -75,7 +75,7 @@ class marry:
         except:
             pass
         try:
-            await self.bot.send_message(person, "**{0}** married you to **{1}**.\nYour divorce id is `{2}`, don't ever give this to anyone or they can divorce you!\nTo divorce type `{3}divorce {2}`.".format(ctx.message.author.name, lovedone.name, married_role.id, ctx.prefix))
+            await self.bot.send_message(lovedone, "**{0}** married you to **{1}**.\nYour divorce id is `{2}`, don't ever give this to anyone or they can divorce you!\nTo divorce type `{3}divorce {2}`.".format(ctx.message.author.name, person.name, married_role.id, ctx.prefix))
         except:
             pass
         else:
@@ -86,7 +86,7 @@ class marry:
             await self.bot.send_message(marchan, "{} was forced to marry {}.".format(person.mention, lovedone.mention))
         else:
             try:
-                marchan = await self.bot.create_channel(ctx.message.server, "marriage", type=discord.ChannelType.text)
+                marchan = await self.bot.create_channel(ctx.message.server, "marriage")
                 await self.bot.say("You're now married, congratulations!")
                 await self.bot.send_message(marchan, "{} was forced to marry {}.".format(person.mention, lovedone.mention))
             except:
