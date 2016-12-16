@@ -264,16 +264,8 @@ class useful:
         await self.bot.edit_message(stats, statsmsg)
         # start of membercount milestones
         await asyncio.sleep(0.3)
-        if membercount >= 100:
-            statsmsg = statsmsg + "\n\n:white_check_mark: Reach 100 members."
-        else:
-            statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 100 members."
-        if membercount >= 500:
-            statsmsg = statsmsg + "\n:white_check_mark: Reach 500 members."
-        else:
-            statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 500 members."
         if membercount >= 1000:
-            statsmsg = statsmsg + "\n:white_check_mark: Reach 1000 members."
+            statsmsg = statsmsg + "\n\n:white_check_mark: Reach 1000 members."
         else:
             statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 1000 members."
         if membercount >= 5000:
@@ -283,27 +275,35 @@ class useful:
         if membercount >= 10000:
             statsmsg = statsmsg + "\n:white_check_mark: Reach 10000 members."
         else:
-            statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 10000 members.\n"
+            statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 10000 members."
+        if membercount >= 50000:
+            statsmsg = statsmsg + "\n:white_check_mark: Reach 50000 members."
+        else:
+            statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 50000 members."
+        if membercount >= 100000:
+            statsmsg = statsmsg + "\n:white_check_mark: Reach 100000 members."
+        else:
+            statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 100000 members.\n\n"
         await self.bot.edit_message(stats, statsmsg)
         # start of uniquemembercount milestones
         await asyncio.sleep(0.3)
-        if uniquemembercount >= 100:
+        if uniquemembercount >= 1000:
             statsmsg = statsmsg + "\n:white_check_mark: Reach 100 unique members."
         else:
             statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 100 unique members."
-        if uniquemembercount >= 500:
+        if uniquemembercount >= 5000:
             statsmsg = statsmsg + "\n:white_check_mark: Reach 500 unique members."
         else:
             statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 500 unique members."
-        if uniquemembercount >= 1000:
+        if uniquemembercount >= 10000:
             statsmsg = statsmsg + "\n:white_check_mark: Reach 1000 unique members."
         else:
             statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 1000 unique members."
-        if uniquemembercount >= 5000:
+        if uniquemembercount >= 50000:
             statsmsg = statsmsg + "\n:white_check_mark: Reach 5000 unique members."
         else:
             statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 5000 unique members."
-        if uniquemembercount >= 10000:
+        if uniquemembercount >= 100000:
             statsmsg = statsmsg + "\n:white_check_mark: Reach 10000 unique members."
         else:
             statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 10000 unique members."
