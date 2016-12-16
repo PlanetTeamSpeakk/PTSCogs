@@ -327,7 +327,9 @@ class useful:
         if msg is None:
             await self.bot.say("I guess not.")
         elif msg.content.lower() == "yes":
-            await self.bot.say("**Online bots**:\n**{}**.\n\n**Offline bots**:\n**{}**.\n\n**Online members**:\n**{}**.\n\n**Offline members**\n**{}**.".format("**, **".join(sorted(online_bot)), "**, **".join(sorted(offline_bot)), "**, **".join(sorted(online)), "**, **".join(sorted(offline))))
+            msg = "**Online bots**:\n**{}**.\n\n**Offline bots**:\n**{}**.\n\n**Online members**:\n**{}**.\n\n**Offline members**\n**{}**.".format("**, **".join(sorted(online_bot)), "**, **".join(sorted(offline_bot)), "**, **".join(sorted(online)), "**, **".join(sorted(offline)))
+            for page in pagify(msg, ['\n']):
+                await self.bot.say(page)
         else:
             await self.bot.say("I guess not.")
             
