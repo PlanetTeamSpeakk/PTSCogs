@@ -9,6 +9,7 @@ import re
 import os
 import aiohttp
 import urllib
+import asyncio
 from random import choice
 try:
     import ffmpy
@@ -201,15 +202,113 @@ class useful:
         await self.bot.say("I am currently in\n" + serversmsg)
 
     @commands.command()
-    async def servercount(self):
+    async def milestones(self):
         """Shows you in how many servers the bot is."""
         stats = await self.bot.say("Getting stats, this may take a while.")
+        edit_message = self.bot.edit_message
         uniquemembers = []
+        servercount = len(self.bot.servers)
+        channelcount = len(list(self.bot.get_all_channels()))
+        membercount = len(list(self.bot.get_all_members()))
         for member in list(self.bot.get_all_members()):
             if member.name not in uniquemembers:
                 uniquemembers.append(member.name)
-        await self.bot.edit_message(stats, "I am currently in **{}** servers with **{}** members of which **{}** unique.".format(len(self.bot.servers), len(list(self.bot.get_all_members())), len(uniquemembers)))
-
+        uniquemembercount = len(uniquemembers)
+        statsmsg = "I am currently in **{}** servers with **{}** channels, **{}** members of which **{}** unique.".format(servercount, channelcount, membercount, uniquemembercount)
+        await self.bot.edit_message(stats, statsmsg)
+        # start of servercount milestones
+        await asyncio.sleep(0.3)
+        if servercount >= 10:
+            statsmsg = statsmsg + "\n\n:white_check_mark: Reach 10 servers."
+        else:
+            statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 10 servers."
+        if servercount >= 50:
+            statsmsg = statsmsg + "\n:white_check_mark: Reach 50 servers."
+        else:
+            statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 50 servers."
+        if servercount >= 100:
+            statsmsg = statsmsg + "\n:white_check_mark: Reach 100 servers."
+        else:
+            statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 100 servers."
+        if servercount >= 500:
+            statsmsg = statsmsg + "\n:white_check_mark: Reach 500 servers."
+        else:
+            statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 500 servers."
+        if servercount >= 1000:
+            statsmsg = statsmsg + "\n:white_check_mark: Reach 1000 servers."
+        else:
+            statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 1000 servers."
+        await self.bot.edit_message(stats, statsmsg)
+        # start of channelcount milestones
+        await asyncio.sleep(0.3)
+        if channelcount >= 10:
+            statsmsg = statsmsg + "\n\n:white_check_mark: Reach 10 channels."
+        else:
+            statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 10 channels."
+        if channelcount >= 50:
+            statsmsg = statsmsg + "\n:white_check_mark: Reach 50 channels."
+        else:
+            statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 50 channels."
+        if channelcount >= 100:
+            statsmsg = statsmsg + "\n:white_check_mark: Reach 100 channels."
+        else:
+            statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 100 channels."
+        if channelcount >= 500:
+            statsmsg = statsmsg + "\n:white_check_mark: Reach 500 channels."
+        else:
+            statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 500 channels."
+        if channelcount >= 1000:
+            statsmsg = statsmsg + "\n:white_check_mark: Reach 1000 channels."
+        else:
+            statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 1000 channels."
+        await self.bot.edit_message(stats, statsmsg)
+        # start of membercount milestones
+        await asyncio.sleep(0.3)
+        if membercount >= 100:
+            statsmsg = statsmsg + "\n\n:white_check_mark: Reach 100 members."
+        else:
+            statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 100 members."
+        if membercount >= 500:
+            statsmsg = statsmsg + "\n:white_check_mark: Reach 500 members."
+        else:
+            statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 500 members."
+        if membercount >= 1000:
+            statsmsg = statsmsg + "\n:white_check_mark: Reach 1000 members."
+        else:
+            statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 1000 members."
+        if membercount >= 5000:
+            statsmsg = statsmsg + "\n:white_check_mark: Reach 5000 members."
+        else:
+            statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 5000 members."
+        if membercount >= 10000:
+            statsmsg = statsmsg + "\n:white_check_mark: Reach 10000 members."
+        else:
+            statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 10000 members.\n"
+        await self.bot.edit_message(stats, statsmsg)
+        # start of uniquemembercount milestones
+        await asyncio.sleep(0.3)
+        if uniquemembercount >= 100:
+            statsmsg = statsmsg + "\n:white_check_mark: Reach 100 unique members."
+        else:
+            statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 100 unique members."
+        if uniquemembercount >= 500:
+            statsmsg = statsmsg + "\n:white_check_mark: Reach 500 unique members."
+        else:
+            statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 500 unique members."
+        if uniquemembercount >= 1000:
+            statsmsg = statsmsg + "\n:white_check_mark: Reach 1000 unique members."
+        else:
+            statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 1000 unique members."
+        if uniquemembercount >= 5000:
+            statsmsg = statsmsg + "\n:white_check_mark: Reach 5000 unique members."
+        else:
+            statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 5000 unique members."
+        if uniquemembercount >= 10000:
+            statsmsg = statsmsg + "\n:white_check_mark: Reach 10000 unique members."
+        else:
+            statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 10000 unique members."
+        await self.bot.edit_message(stats, statsmsg)
+        
     @commands.command(pass_context=True)
     @commands.cooldown(5, 60)
     async def bugreport(self, ctx, *, bug:str):
