@@ -288,7 +288,7 @@ class useful:
         # start of uniquemembercount milestones
         await asyncio.sleep(0.3)
         if uniquemembercount >= 1000:
-            statsmsg = statsmsg + "\n:white_check_mark: Reach 100 unique members."
+            statsmsg = statsmsg + ":white_check_mark: Reach 100 unique members."
         else:
             statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 100 unique members."
         if uniquemembercount >= 5000:
