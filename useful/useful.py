@@ -17,7 +17,7 @@ try:
 except:
     ffmpyinstalled = False
 
-class useful:
+class Useful:
     """Useful stuffz!"""
 
     def __init__(self, bot):
@@ -283,30 +283,30 @@ class useful:
         if membercount >= 100000:
             statsmsg = statsmsg + "\n:white_check_mark: Reach 100000 members."
         else:
-            statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 100000 members.\n\n"
+            statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 100000 members.\n"
         await self.bot.edit_message(stats, statsmsg)
         # start of uniquemembercount milestones
         await asyncio.sleep(0.3)
         if uniquemembercount >= 1000:
-            statsmsg = statsmsg + ":white_check_mark: Reach 100 unique members."
-        else:
-            statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 100 unique members."
-        if uniquemembercount >= 5000:
-            statsmsg = statsmsg + "\n:white_check_mark: Reach 500 unique members."
-        else:
-            statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 500 unique members."
-        if uniquemembercount >= 10000:
             statsmsg = statsmsg + "\n:white_check_mark: Reach 1000 unique members."
         else:
             statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 1000 unique members."
-        if uniquemembercount >= 50000:
+        if uniquemembercount >= 5000:
             statsmsg = statsmsg + "\n:white_check_mark: Reach 5000 unique members."
         else:
             statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 5000 unique members."
-        if uniquemembercount >= 100000:
+        if uniquemembercount >= 10000:
             statsmsg = statsmsg + "\n:white_check_mark: Reach 10000 unique members."
         else:
             statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 10000 unique members."
+        if uniquemembercount >= 50000:
+            statsmsg = statsmsg + "\n:white_check_mark: Reach 50000 unique members."
+        else:
+            statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 50000 unique members."
+        if uniquemembercount >= 100000:
+            statsmsg = statsmsg + "\n:white_check_mark: Reach 100000 unique members."
+        else:
+            statsmsg = statsmsg + "\n:negative_squared_cross_mark: Reach 100000 unique members."
         await self.bot.edit_message(stats, statsmsg)
         
     @commands.command(pass_context=True)
@@ -562,4 +562,4 @@ def setup(bot):
     if not ffmpyinstalled:
         raise ModuleNotFound("FFmpy is not installed, install it with pip3 install ffmpy.")
     check_folders()
-    bot.add_cog(useful(bot))
+    bot.add_cog(Useful(bot))
