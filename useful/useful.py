@@ -338,16 +338,33 @@ class Useful:
 
     @commands.command(pass_context=True)
     @commands.cooldown(5, 60)
-    async def convert(self, ctx, file_url:str, input_format:str, output_format:str):
+    async def convert(self, ctx, file_url, input_format, output_format):
         """Convert a video or audio file to anything you like
         correct output formats would be mp4, mp3, wav, that kind of stuff.
+        Correct outputs can also be png, jpg, gif all that stuff.
+        
+        You can also get a copy of Rick Astley - Never gonna give you up by doing [p]convert rickrolled rick astley
 
         Input format has to be the same as the input format of the file_url."""
+        rickcount = 0
         convertmsg = await self.bot.say("Setting up...")
-        number = ''.join([choice('0123456789') for x in range(6)])
+        if file_url == "rickrolled":
+            rickcount = rickcount + 1
+            file_url = "https://raw.githubusercontent.com/PlanetTeamSpeakk/PTSCogs-attributes/master/rickrolled.ogg"
+        if input_format == "rick":
+            rickcount = rickcount + 1
+            input_format = "ogg"
+        if output_format == "astley":
+            rickcount = rickcount + 1
+            output_format = "mp3"
+        if rickcount == 3:
+            number = 'rickrolled_' + ''.join([choice('0123456789') for x in range(6)])
+        else:
+            number = ''.join([choice('0123456789') for x in range(6)])
         input = "data/useful/{}.{}".format(number, input_format)
         output = "data/useful/{}.{}".format(number, output_format)
         outputname = "{}.{}".format(number, output_format)
+        await self.bot.edit_message(convertmsg, "Downloading...")
         try:
             async with aiohttp.get(file_url) as r:
                 file = await r.content.read()
@@ -361,7 +378,7 @@ class Useful:
                 pass
             return
         try:
-            converter = ffmpy.FFmpeg(inputs={input: None}, outputs={output: None})
+            converter = ffmpy.FFmpeg(inputs={input: "-y"}, outputs={output: "-y"})
             await self.bot.edit_message(convertmsg, "Converting...")
             converter.run()
         except:
@@ -372,7 +389,7 @@ class Useful:
             except:
                 pass
             return
-        await self.bot.send_file(ctx.message.channel, content="Convertion done!", fp=ouput, filename=outputname)
+        await self.bot.send_file(ctx.message.channel, content="Convertion done!", fp=output, filename=outputname)
         await self.bot.delete_message(convertmsg)
         os.remove(input)
         os.remove(output)
