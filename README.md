@@ -18,6 +18,7 @@
   12. [Adkillr](#adkillr)
   13. [Warner](#warner)
   14. [Coder](#coder)
+  15. [FTPStats](#ftpstats)
 4. [Needed](#needed)
 5. [Annotations](#annotations)
 6. [Assistance](#assistance)
@@ -193,6 +194,12 @@ Some coding and decoding commands.
 #### Coder Commands
 - `[p]to <language> <text>` convert a text to a code language.
 - `[p]from <language> <text>`
+
+### FTPStats
+Allows you to upload server stats to an FTP Server.
+
+#### FTPStats Commands
+- `[p]ftpset`¹ set the settings for the ftpstats cog.
 
 ## Needed
 The Useful cog needs the FFMpy library, install it with `pip3 install ffmpy`.
