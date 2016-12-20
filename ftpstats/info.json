@@ -1,6 +1,6 @@
 {
     "AUTHOR" : "PlanetTeamSpeak",
-    "INSTALL_MSG" : "Thanks for installing my warner cog!",
+    "INSTALL_MSG" : "Thanks for installing my ftpstats cog!",
     "NAME" : "ftpstats",
     "SHORT" : "Upload server stats to an ftp server.",
     "DESCRIPTION" : "Allows you to upload server stats to an ftp server."
