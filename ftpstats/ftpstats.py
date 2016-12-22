@@ -99,6 +99,8 @@ class FTPStats:
                 return
             if self.settings['ftp_defaultdir'] is not None:
                 ftp.cwd(self.settings['ftp_defaultdir'])
+            self.settings['ftp_started'] = True
+            dataIO.save_json("data/ftpstats/settings.json", self.settings)
             await self.bot.say("Succesfully connected!")
             # Uploading stats file
             while True:
@@ -118,6 +120,7 @@ class FTPStats:
                     self.stats[serverid]['server_icon'] = server.icon_url
                     self.stats[serverid]['server_region'] = str(server.region)
                     self.stats[serverid]['server_verification'] = str(server.verification_level)
+                    self.stats[serverid]['server_id'] = server.id
                     self.stats[serverid]['server_created_at'] = server.created_at.strftime("%d %b %Y %H:%M")
                     self.stats[serverid]['owner_avatar'] = server.owner.avatar_url
                     self.stats[serverid]['owner'] = server.owner.display_name
@@ -131,6 +134,65 @@ class FTPStats:
                 ftp.storbinary("STOR " + filename, file)
                 file = None
                 asyncio.sleep(self.settings['ftp_refreshrate'])
+        
+    async def on_ready():
+        # Setting up
+        if self.settings['ftp_started']:
+            if self.settings['ftp_server'] is None:
+                print("Your ftp settings are not set yet, you can set them with [p]ftpset")
+                return
+            else:
+                if self.settings['ftp_password'] is None:
+                    self.settings['ftp_password'] = "anonymous@"
+                try:
+                    ftp = ftplib.FTP(self.settings['ftp_server'])
+                except:
+                    print("Can't connect to the FTP server, are you sure you didn't add ftp:// to the beginning?\nThis error is not because of your password or username though.")
+                    return
+                try:
+                    ftp.login(self.settings['ftp_username'], self.settings['ftp_password'])
+                except:
+                    print("Can't login to the FTP server, are you sure your login credentials are correct?\nThe ip is correct though.")
+                    return
+                if self.settings['ftp_defaultdir'] is not None:
+                    ftp.cwd(self.settings['ftp_defaultdir'])
+                print("Succesfully connected to the FTP Server!")
+                # Uploading stats file
+                while True:
+                    for server in self.bot.servers:
+                        serverid = server.id
+                        members = set(server.members)
+                        offline = filter(lambda m: m.status is discord.Status.offline, members)
+                        offline = set(offline)
+                        bots = filter(lambda m: m.bot, members)
+                        bots = set(bots)
+                        users = members - bots
+                        if serverid not in self.stats:
+                            self.stats[serverid] = {'server_name': None, 'server_icon': None, 'server_region': None, 'server_verification': None, 'server_created_at': None,
+                            'owner_avatar': None, 'owner': None, 
+                            'online_bots': None, 'offline_bots': None, 'online_users': None, 'offline_users': None}
+                        self.stats[serverid]['server_name'] = server.name
+                        self.stats[serverid]['server_icon'] = server.icon_url
+                        self.stats[serverid]['server_region'] = str(server.region)
+                        self.stats[serverid]['server_verification'] = str(server.verification_level)
+                        self.stats[serverid]['server_id'] = server.id
+                        self.stats[serverid]['server_created_at'] = server.created_at.strftime("%d %b %Y %H:%M")
+                        self.stats[serverid]['owner_avatar'] = server.owner.avatar_url
+                        self.stats[serverid]['owner'] = server.owner.display_name
+                        self.stats[serverid]['online_bots'] = len(bots - offline)
+                        self.stats[serverid]['offline_bots'] = len(bots & offline)
+                        self.stats[serverid]['online_users'] = len(users - offline)
+                        self.stats[serverid]['offline_users'] = len(users & offline)
+                    dataIO.save_json("data/ftpstats/stats.json", self.stats)
+                    try:
+                        ftp.delete("stats.json")
+                    except:
+                        pass
+                    filename = "stats.json"
+                    file = open("data/ftpstats/stats.json", "rb")
+                    ftp.storbinary("STOR " + filename, file)
+                    file = None
+                    asyncio.sleep(self.settings['ftp_refreshrate'])
         
 def check_folders():
     if not os.path.exists("data/ftpstats"):
