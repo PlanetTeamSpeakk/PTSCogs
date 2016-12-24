@@ -17,6 +17,9 @@ class marry:
         if yourlovedone.id == ctx.message.author.id:
             await self.bot.say("You can't marry yourself, that would be weird wouldn't it?")
             return
+        elif yourlovedone.id == self.bot.user.id:
+            await self.bot.say("I'd only marry my owner.")
+            return
         await self.bot.say("{} do you take {} as your husband/wife? (yes/no)".format(yourlovedone.mention, ctx.message.author.mention))
         answer = await self.bot.wait_for_message(timeout=60, author=yourlovedone)
         if answer is None:
@@ -59,6 +62,9 @@ class marry:
         """Now you can finally marry your loved one."""
         if lovedone.id == person.id:
             await self.bot.say("You can't let someone marry him/herself that would be weird wouldn't it?")
+            return
+        elif yourlovedone.id == self.bot.user.id:
+            await self.bot.say("I'd only marry my owner.")
             return
         try:
             married_role = await self.bot.create_role(server=ctx.message.server, name="{} ❤ {}".format(person.name, lovedone.name), colour=discord.Colour(value=0XFF00EE), hoist=True)
