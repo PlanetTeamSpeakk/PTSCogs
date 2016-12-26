@@ -4,6 +4,7 @@ import discord
 import asyncio
 from random import choice
 from cogs.utils.dataIO import dataIO
+import os
 
 class Randomshizzle:
     """Random shizzle."""
