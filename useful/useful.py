@@ -338,36 +338,44 @@ class Useful:
 
     @commands.command(pass_context=True)
     @commands.cooldown(5, 60)
-    async def convert(self, ctx, file_url, input_format, output_format):
+    async def convert(self, ctx, file_url, *, output_format):
         """Convert a video or audio file to anything you like
         correct output formats would be mp4, mp3, wav, that kind of stuff.
         Correct outputs can also be png, jpg, gif all that stuff.
         
         You can also get a copy of Rick Astley - Never gonna give you up by doing [p]convert rickrolled rick astley
-        You can also get a copy of LazyTown - We are number one by doing [p]convert lazytown number one
-        
-        Input format has to be the same as the input format of the file_url."""
+        You can also get a copy of LazyTown - We are number one by doing [p]convert lazytown number one"""
         convertmsg = await self.bot.say("Setting up...")
         # The copy of rickrolled part.
         if file_url == "rickrolled":
             file_url = "https://raw.githubusercontent.com/PlanetTeamSpeakk/PTSCogs-attributes/master/rickrolled.ogg"
+            meme = True
             number = 'rickrolled_' + ''.join([choice('0123456789') for x in range(6)])
-        else:
-            number = ''.join([choice('0123456789') for x in range(6)])
-        if input_format == "rick":
-            input_format = "ogg"
-        if output_format == "astley":
-            output_format = "mp3"
+            if output_format == "rick astley":
+                input_format = "ogg"
+                output_format = "mp3"
         # The copy of We are number one part.
-        if file_url == "lazytown":
+        elif file_url == "lazytown":
+            meme = True
             file_url = "https://raw.githubusercontent.com/PlanetTeamSpeakk/PTSCogs-attributes/master/numberone.ogg"
             number = 'numberone_' + ''.join([choice('0123456789') for x in range(6)])
+            if output_format == "number one":
+                input_format = "ogg"
+                output_format = "mp3"
         else:
+            meme = False
             number = ''.join([choice('0123456789') for x in range(6)])
-        if input_format == "number":
-            input_format = "ogg"
-        if output_format == "one":
-            output_format = "mp3"
+        if meme is False:
+            for i in range(6):
+                form = file_url[i:]
+                if form.startswith("."):
+                    input_format = form
+                    form_found = True
+                else:
+                    form_found = False
+            if not form_found:
+                await self.bot.edit_message(convertmsg, "Your link is corrupt, it should end with something like .mp3, .mp4, .png, etc.")
+                return
         input = "data/useful/{}.{}".format(number, input_format)
         output = "data/useful/{}.{}".format(number, output_format)
         outputname = "{}.{}".format(number, output_format)
