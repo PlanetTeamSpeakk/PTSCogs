@@ -64,8 +64,12 @@ class marry:
         if lovedone.id == person.id:
             await self.bot.say("You can't let someone marry him/herself that would be weird wouldn't it?")
             return
-        elif yourlovedone.id == self.bot.user.id:
-            if ctx.message.author is not settings.owner:
+        elif person.id == self.bot.user.id:
+            if lovedone.id is not settings.owner:
+                await self.bot.say("I'd only marry my owner.")
+                return
+        elif lovedone.id == self.bot.user.id:
+            if person.id is not settings.owner:
                 await self.bot.say("I'd only marry my owner.")
                 return
         try:
