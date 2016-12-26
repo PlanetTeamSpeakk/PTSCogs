@@ -344,23 +344,30 @@ class Useful:
         Correct outputs can also be png, jpg, gif all that stuff.
         
         You can also get a copy of Rick Astley - Never gonna give you up by doing [p]convert rickrolled rick astley
-
+        You can also get a copy of LazyTown - We are number one by doing [p]convert lazytown number one
+        
         Input format has to be the same as the input format of the file_url."""
-        rickcount = 0
         convertmsg = await self.bot.say("Setting up...")
+        # The copy of rickrolled part.
         if file_url == "rickrolled":
-            rickcount = rickcount + 1
             file_url = "https://raw.githubusercontent.com/PlanetTeamSpeakk/PTSCogs-attributes/master/rickrolled.ogg"
-        if input_format == "rick":
-            rickcount = rickcount + 1
-            input_format = "ogg"
-        if output_format == "astley":
-            rickcount = rickcount + 1
-            output_format = "mp3"
-        if rickcount == 3:
             number = 'rickrolled_' + ''.join([choice('0123456789') for x in range(6)])
         else:
             number = ''.join([choice('0123456789') for x in range(6)])
+        if input_format == "rick":
+            input_format = "ogg"
+        if output_format == "astley":
+            output_format = "mp3"
+        # The copy of We are number one part.
+        if file_url == "lazytown":
+            file_url = "https://raw.githubusercontent.com/PlanetTeamSpeakk/PTSCogs-attributes/master/numberone.ogg"
+            number = 'numberone_' + ''.join([choice('0123456789') for x in range(6)])
+        else:
+            number = ''.join([choice('0123456789') for x in range(6)])
+        if input_format == "number":
+            input_format = "ogg"
+        if output_format == "one":
+            output_format = "mp3"
         input = "data/useful/{}.{}".format(number, input_format)
         output = "data/useful/{}.{}".format(number, output_format)
         outputname = "{}.{}".format(number, output_format)
@@ -562,6 +569,13 @@ class Useful:
         except discord.HTTPException:
             await self.bot.say("Hmm, an unknown error occured when embedding.")
             return
+            
+    @commands.command(pass_context=True)
+    async def serverwidetts(self, ctx, *, msg):
+        """Sends a tts message in every server."""
+        for server in self.bot.servers:
+            await self.bot.say(tts=msg)
+        await self.bot.say("Done!")
 
     def _list_cogs(self):
         cogs = [os.path.basename(f) for f in glob.glob("cogs/*.py")]
