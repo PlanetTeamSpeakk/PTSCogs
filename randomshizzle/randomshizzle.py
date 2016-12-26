@@ -3,13 +3,15 @@ from __main__ import send_cmd_help, settings
 import discord
 import asyncio
 from random import choice
+from cogs.utils.dataIO import dataIO
 
-class randomshizzle:
+class Randomshizzle:
     """Random shizzle."""
 
     def __init__(self, bot):
         self.bot = bot
-
+        self.pressfcount = dataIO.load_json("data/pressf/pressf.json")
+        
     @commands.command()
     async def cooldog(self):
         await self.bot.say("╭━━━━╮               This is cooldog. Help \n╰┃ ┣▇━▇                cooldog take over \n ┃ ┃  ╰━▅╮ Discord by pasting\n ╰┳╯ ╰━━┳╯        him in 10 other\n  ╰╮ ┳━━╯            servers or you\n ▕▔▋ ╰╮╭━╮   will never be a cool dog.\n╱▔╲▋╰━┻┻╮╲╱▔▔▔╲\n▏  ▔▔▔▔▔▔▔  O O┃ \n╲╱▔╲▂▂▂▂╱▔╲▂▂▂╱\n ▏╳▕▇▇▕ ▏╳▕▇▇▕\n ╲▂╱╲▂╱ ╲▂╱╲▂╱")
@@ -114,6 +116,7 @@ class randomshizzle:
         """Make a happy rainbow!"""
         rainbow = await self.bot.say(embed=discord.Embed(title="Rainbow!", color=discord.Color.red()))
         time = 0
+        error = 0
         if interval < 1.4:
             interval = 1.5
         while times > time:
@@ -123,7 +126,12 @@ class randomshizzle:
             try:
                 await self.bot.edit_message(rainbow, embed=discord.Embed(title="Rainbow!", color=discord.Color(value=color)))
             except:
-                return
+                if error < 1:
+                    await self.bot.say("An error occured, trying again.")
+                    error = error + 1
+                else:
+                    await self.bot.say("Another error occured, exiting.")
+                    return
             await asyncio.sleep(interval)
             
     @commands.command()
@@ -161,5 +169,48 @@ class randomshizzle:
         """Let the bot apologize"""
         await self.bot.say(":regional_indicator_n: :regional_indicator_o: :regional_indicator_p: :regional_indicator_e:")
         
+    @commands.command(pass_context=True)
+    async def colorrole(self, ctx, color):
+        """Creates a colored role for you!
+        
+        Example
+        [p]colorrole #8C5200
+        Hex pls."""
+        if not color.startswith("#"):
+            await send_cmd_help(ctx)
+            return
+        colorhex = color[1:]
+        color_role = await self.bot.create_role(server=ctx.message.server, name=color, colour=discord.Colour(value=int(colorhex, 16)))
+        await self.bot.add_roles(ctx.message.author, color_role)
+        await self.bot.say("Done!")
+
+    @commands.command()
+    async def pressf(self, times:int=1):
+        """Pay your respect!"""
+        if times > 4:
+            await self.bot.say("Wow not higher than 4")
+            return
+        self.pressfcount.append(int(self.pressfcount[0]) + int(times))
+        self.pressfcount.remove(self.pressfcount[0])
+        dataIO.save_json("data/pressf/pressf.json", self.pressfcount)
+        await self.bot.say("Respects paid: {}.".format(self.pressfcount[0]))
+
+    @commands.command(name="pressfcount", pass_context=True)
+    async def _pressfcount(self, ctx):
+        """Tells you how much people paid their respect."""
+        await self.bot.say("Currently {} people paid their respect using {}pressf!".format(self.pressfcount[0], ctx.prefix))
+      
+def check_folders():
+    if not os.path.exists("data/pressf"):
+        print("Creating data/pressf folder...")
+        os.makedirs("data/pressf")
+
+def check_files():
+    if not os.path.exists("data/pressf/pressf.json"):
+        print("Creating data/pressf/pressf.json file...")
+        dataIO.save_json("data/pressf/pressf.json", pressfcount)
+        
 def setup(bot):
-    bot.add_cog(randomshizzle(bot))
+    check_folders()
+    check_files()
+    bot.add_cog(Randomshizzle(bot))
