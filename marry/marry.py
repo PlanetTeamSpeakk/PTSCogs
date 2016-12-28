@@ -193,6 +193,24 @@ class marry:
         dataIO.save_json("data/marry/settings.json", self.settings)
         await self.bot.say("Done!")
         
+    @checks.admin_or_permissions()
+    @commands.command(pass_context=True)
+    async def massdivorce(self, ctx):
+        """Divorces everyone on the server."""
+        await self.bot.say("Are you sure you want to divorce everyone on the server? (yes/no)")
+        answer = await self.bot.wait_for_message(timeout=15, author=ctx.message.author)
+        if answer is None:
+            await self.bot.say("K then not.")
+            return
+        elif "yes" in answer.content.lower():
+            for role in ctx.message.server.roles:
+                if " ❤ " in role.name:
+                    await self.bot.delete_role(role=role, server=ctx.message.server)
+            await self.bot.say("Done! Everyone has been divorced.")
+        else:
+            await self.bot.say("K then not.")
+            return
+    
 def getRoleObj(roleID, server):
     for role in server.roles:
         if role.id == roleID:
