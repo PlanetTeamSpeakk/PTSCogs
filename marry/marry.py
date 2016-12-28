@@ -203,10 +203,26 @@ class marry:
             await self.bot.say("K then not.")
             return
         elif "yes" in answer.content.lower():
+            divorced = 0
             for role in ctx.message.server.roles:
                 if " ❤ " in role.name:
-                    await self.bot.delete_role(role=role, server=ctx.message.server)
-            await self.bot.say("Done! Everyone has been divorced.")
+                    try:
+                        await self.bot.delete_role(role=role, server=ctx.message.server)
+                        divorced = divorced + 1
+                    except:
+                        pass
+            marchan = discord.utils.find(lambda c: c.name == 'marriage', ctx.message.server.channels)
+            if marchan:
+                await self.bot.say("Done! Divorced {} couples.".format(divorced))
+                await self.bot.send_message(marchan, "{} divorced everyone ({} couples).".format(ctx.message.author.mention, divorced))
+            else:
+                try:
+                    marchan = await self.bot.create_channel(ctx.message.server, "marriage")
+                    await self.bot.say("Done! Divorced {} couples.".format(divorced))
+                    await self.bot.send_message(marchan, "{} divorced everyone ({} couples).".format(ctx.message.author.mention, divorced))
+                except:
+                    await self.bot.say("Done! Everyone has been divorced. I suggest telling the server owner or moderators to make a #marriage channel though.")
+                    return
         else:
             await self.bot.say("K then not.")
             return
