@@ -3,7 +3,7 @@ from __main__ import send_cmd_help
 from discord.ext import commands
 import datetime
 
-class serverinfo:
+class Serverinfo:
     """Adds [p]server and all subcommands!"""
 
     def __init__(self, bot):
@@ -252,6 +252,7 @@ class serverinfo:
         em.add_field(name="Display separately", value=roleObj.hoist)
         em.add_field(name="Administrator", value=perms.administrator)
         em.add_field(name="Can ban members", value=perms.ban_members)
+        em.add_field(name="Can kick members", value=perms.kick_members)
         em.add_field(name="Can change nickname", value=perms.change_nickname)
         em.add_field(name="Can connect to voice channels", value=perms.connect)
         em.add_field(name="Can create instant invites", value=perms.create_instant_invite)
@@ -276,4 +277,4 @@ class serverinfo:
         await self.bot.say(embed=em)
         
 def setup(bot):
-    bot.add_cog(serverinfo(bot))
+    bot.add_cog(Serverinfo(bot))
