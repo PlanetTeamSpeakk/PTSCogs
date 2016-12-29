@@ -226,6 +226,16 @@ class marry:
         else:
             await self.bot.say("K then not.")
             return
+            
+    @commands.command(pass_context=True)
+    async def marrycount(self, ctx):
+        """Counts all the married couples in this server."""
+        msg = await self.bot.say("Counting married couples, hold up...")
+        count = 0
+        for role in ctx.message.server.roles:
+            if " ❤ " in role.name:
+                count = count + 1
+        await self.bot.edit_message(msg, "There are currently {} married couples in this server.".format(count))
     
 def getRoleObj(roleID, server):
     for role in server.roles:
