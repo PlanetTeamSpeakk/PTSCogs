@@ -235,8 +235,10 @@ class marry:
         for role in ctx.message.server.roles:
             if " ❤ " in role.name:
                 count = count + 1
-        await self.bot.edit_message(msg, "There are currently {} married couples in this server.".format(count))
-    
+        if count == 1:
+            await self.bot.edit_message(msg, "There are currently {} married couple in this server.".format(count))
+        else:
+            await self.bot.edit_message(msg, "There are currently {} married couples in this server.".format(count))
 def getRoleObj(roleID, server):
     for role in server.roles:
         if role.id == roleID:
