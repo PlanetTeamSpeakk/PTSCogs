@@ -366,15 +366,17 @@ class Useful:
             meme = False
             number = ''.join([choice('0123456789') for x in range(6)])
         if meme is False:
+            form_found = False
             for i in range(6):
-                form = file_url[i:]
-                if form.startswith("."):
-                    input_format = form
+                if file_url[len(file_url) - i:].startswith("."):
+                    input_format = file_url[len(file_url) - i:]
                     form_found = True
                 else:
-                    form_found = False
-            if not form_found:
-                await self.bot.edit_message(convertmsg, "Your link is corrupt, it should end with something like .mp3, .mp4, .png, etc.")
+                    if form_found is not True:
+                        form_found = False
+            if form_found is not True:
+                await bot.edit_message(convertmsg, "Your link is corrupt, it should end with something like .mp3, .mp4, .png, etc.")
+                print(form_found)
                 return
         input = "data/useful/{}.{}".format(number, input_format)
         output = "data/useful/{}.{}".format(number, output_format)
