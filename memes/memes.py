@@ -478,7 +478,7 @@ class Memes:
         await self.bot.say("This command will never show up in help, now isn't that weird?")
         
     async def memes(self, message):
-        if not "bots" in message.server.name:
+        if not "bots" in message.server.name.lower():
             if message.content.lower() == "ayy":
                 self.lmaoLoaded = os.path.exists('data/memes/maolmao.png')
                 if not self.lmaoLoaded:
