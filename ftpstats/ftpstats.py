@@ -15,15 +15,15 @@ class FTPStats:
         self.settings = dataIO.load_json("data/ftpstats/settings.json")
         self.stats = dataIO.load_json("data/ftpstats/stats.json")
         
-    @checks.is_owner()
     @commands.group(name="ftpset", pass_context=True)
+    @checks.is_owner()
     async def ftpset(self, ctx):
         """Manage all ftpstats settings"""
         if not ctx.invoked_subcommand:
             await send_cmd_help(ctx)
             
-    @checks.is_owner()
     @ftpset.command()
+    @checks.is_owner()
     async def server(self, server):
         """Set the server for the ftp stats. Has to be a link
         
@@ -34,16 +34,16 @@ class FTPStats:
         dataIO.save_json("data/ftpstats/settings.json", self.settings)
         await self.bot.say("Done!")
     
-    @checks.is_owner()
     @ftpset.command()
+    @checks.is_owner()
     async def username(self, username):
         """Sets the username to log in to the server."""
         self.settings['ftp_username'] = username
         dataIO.save_json("data/ftpstats/settings.json", self.settings)
         await self.bot.say("Done!")
        
-    @checks.is_owner()
     @ftpset.command(pass_context=True)
+    @checks.is_owner()
     async def password(self, ctx, password):
         """Sets the password to log in to the server, 
         for security it only works in Direct Messages"""
@@ -58,8 +58,8 @@ class FTPStats:
             dataIO.save_json("data/ftpstats/settings.json", self.settings)
             await self.bot.say("Done!")
         
-    @checks.is_owner()
     @ftpset.command()
+    @checks.is_owner()
     async def defaultdir(self, dir):
         """Set a directory to which the bot should upload the files 
         (stats for every server are in it's own folder.)"""
@@ -67,8 +67,8 @@ class FTPStats:
         dataIO.save_json("data/ftpstats/settings.json", self.settings)
         await self.bot.say("Done!")
         
-    @checks.is_owner()
     @ftpset.command()
+    @checks.is_owner()
     async def refreshrate(self, refresh_rate:int):
         """Sets the refresh rate at which the bot should refresh the stats in seconds
         default is 120"""
@@ -76,8 +76,8 @@ class FTPStats:
         dataIO.save_json("data/ftpstats/settings.json", self.settings)
         await self.bot.say("Done!")
         
-    @checks.is_owner()
     @ftpset.command()
+    @checks.is_owner()
     async def start(self):
         """Start uploading the stats to the ftp server."""
         # Setting up
