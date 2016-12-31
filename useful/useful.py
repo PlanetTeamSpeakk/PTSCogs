@@ -167,17 +167,17 @@ class Useful:
             await self.bot.say(""
             "{}, here you go:\n"
             "{}".format(ctx.message.author.mention, url))
-
-    @checks.mod_or_permissions()
+            
     @commands.command(pass_context=True)
+    @checks.mod_or_permissions()
     async def uploadcog(self, ctx, cogname):
         """Uploads a cog for you to use, for a list of cogs use [p]show_cogs"""
         await self.bot.say("Here you go:")
         await self.bot.send_file(ctx.message.channel, fp="cogs/{}.py".format(cogname), filename="{}.py".format(cogname))
 
     # copied from the owner cog since the command there was owner only and here it isn't :3
-    @checks.mod_or_permissions()
     @commands.command()
+    @checks.mod_or_permissions()
     async def show_cogs(self):
         """Shows loaded/unloaded cogs"""
         loaded = [c.__module__.split(".")[1] for c in self.bot.cogs.values()]
@@ -434,8 +434,8 @@ class Useful:
         os.remove(input)
         os.remove(output)
         
-    @checks.mod_or_permissions()
     @commands.command(pass_context=True)
+    @checks.mod_or_permissions()
     async def showservermembers(self, ctx):
         """Lists all the members of a server."""
         servers = sorted(list(self.bot.servers), key=lambda s: s.name.lower())
@@ -489,8 +489,8 @@ class Useful:
         else:
             await self.bot.say("I guess not.")
             
-    @checks.mod_or_permissions()
     @commands.command(pass_context=True)
+    @checks.mod_or_permissions()
     async def sendservermessage(self, ctx, *, message):
         """Lists all servers the bot is in and sends a message there."""
         servers = sorted(list(self.bot.servers), key=lambda s: s.name.lower())
@@ -521,8 +521,8 @@ class Useful:
         else:
             await self.bot.say("I guess not.")
             
-    @checks.is_owner()
     @commands.command(pass_context=True)
+    @checks.is_owner()
     async def serverwidemessage(self, ctx, *, msg):
         """Sends a message in every server."""
         for server in self.bot.servers:
@@ -532,8 +532,8 @@ class Useful:
                 pass
         await self.bot.say("Done!")
         
-    @checks.is_owner()
     @commands.command(pass_context=True)
+    @checks.is_owner()
     async def serverwideembed(self, ctx, is_announcement, color, title, description, footer):
         """Sends an embedded message in every server."""
         try:
@@ -603,8 +603,8 @@ class Useful:
             await self.bot.say("Hmm, an unknown error occured when embedding.")
             return
           
-    @checks.is_owner()
     @commands.command(pass_context=True)
+    @checks.is_owner()
     async def serverwidetts(self, ctx, *, msg):
         """Sends a tts message in every server."""
         for server in self.bot.servers:
