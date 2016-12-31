@@ -633,6 +633,17 @@ class Useful:
         await self.bot.send_file(ctx.message.channel, fp="data/useful/qrcode{}.png".format(number), filename="qrcode{}.png".format(number))
         os.remove("data/useful/qrcode{}.png".format(number))
 
+    @commands.command(name="autopost")
+    @checks.mod_or_permissions()
+    async def _autopost(self, times:int, interval:float, *, msg):
+        """Posts a message every set amount of minutes.
+        The interval is in minutes."""
+        time = 0
+        while time < times:
+            await self.bot.say(msg)
+            time = time + 1
+            await asyncio.sleep(interval * 60)
+        
     def _list_cogs(self):
         cogs = [os.path.basename(f) for f in glob.glob("cogs/*.py")]
         return ["cogs." + os.path.splitext(f)[0] for f in cogs]
