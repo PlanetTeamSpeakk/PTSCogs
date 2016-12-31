@@ -82,8 +82,8 @@ class marry:
                 await self.bot.say("{} married {}, congratulations! I suggest telling the server owner or moderators to make a #marriage channel though.".format(ctx.message.author.mention, yourlovedone.mention))
         return
         
-    @checks.is_owner()
     @commands.command(pass_context=True)
+    @checks.admin_or_permissions()
     async def forcemarry(self, ctx, person:discord.Member, lovedone:discord.Member):
         """Now you can finally marry your loved one."""
         for role in person.roles:
@@ -185,16 +185,16 @@ class marry:
             await self.bot.say("That's not a valid ID.")
             return
             
-    @checks.admin_or_permissions()
     @commands.command()
+    @checks.admin_or_permissions()
     async def marrytimes(self, times:int):
         """Sets the amount of times someone can marry someone."""
         self.settings['marry_times'] = times
         dataIO.save_json("data/marry/settings.json", self.settings)
         await self.bot.say("Done!")
         
-    @checks.admin_or_permissions()
     @commands.command(pass_context=True)
+    @checks.admin_or_permissions()
     async def massdivorce(self, ctx):
         """Divorces everyone on the server."""
         await self.bot.say("Are you sure you want to divorce everyone on the server? (yes/no)")
