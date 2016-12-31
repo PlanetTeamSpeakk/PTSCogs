@@ -10,12 +10,35 @@ import os
 import aiohttp
 import urllib
 import asyncio
+import random
 from random import choice
+from subprocess import check_output
 try:
     import ffmpy
     ffmpyinstalled = True
 except:
-    ffmpyinstalled = False
+    print("You don't have ffmpy installed, installing it now...")
+    try:
+        check_output("pip3 install ffmpy", shell=True)
+        print("FFMpy installed succesfully!")
+        import ffmpy
+        ffmpyinstalled = True
+    except:
+        print("FFMpy didn't install succesfully.")
+        ffmpyinstalled = False
+try:
+    from pyshorteners import Shortener
+    pyshortenersinstalled = True
+except:
+    print("You don't have pyshorteners installed, installing it now...")
+    try:
+        check_output("pip3 install pyshorteners", shell=True)
+        print("Pyshorteners installed succesfully!")
+        import pyshorteners
+        pyshortenersinstalled = True
+    except:
+        print("Pyshorteners didn't install succesfully.")
+        pyshortenersinstalled = False
 
 class Useful:
     """Useful stuffz!"""
@@ -579,13 +602,36 @@ class Useful:
         except discord.HTTPException:
             await self.bot.say("Hmm, an unknown error occured when embedding.")
             return
-            
+          
+    @checks.is_owner()
     @commands.command(pass_context=True)
     async def serverwidetts(self, ctx, *, msg):
         """Sends a tts message in every server."""
         for server in self.bot.servers:
             await self.bot.say(tts=msg)
         await self.bot.say("Done!")
+        
+    @commands.command(pass_context=True)
+    async def shorten(self, ctx, url):
+        """Shorten a link."""
+        shorten = Shortener('Bitly', bitly_token='dd800abec74d5b12906b754c630cdf1451aea9e0')
+        await self.bot.say("{}, here you go <{}>.".format(ctx.message.author.mention, shorten.short(url)))
+        
+    @commands.command(pass_context=True)
+    async def qrcode(self, ctx, url):
+        """Creates a qrcode from a link."""
+        shorten = Shortener('Bitly', bitly_token='dd800abec74d5b12906b754c630cdf1451aea9e0')
+        short_link = shorten.short(url)
+        async with aiohttp.get(shorten.qrcode(width=128, height=128)) as r:
+            file = await r.content.read()
+        number = random.randint(1000, 9999)
+        fileloc = "data/useful/qrcode{}.png".format(number)
+        with open(fileloc, 'wb') as f:
+            f.write(file)
+            file = None
+            f = None
+        await self.bot.send_file(ctx.message.channel, fp="data/useful/qrcode{}.png".format(number), filename="qrcode{}.png".format(number))
+        os.remove("data/useful/qrcode{}.png".format(number))
 
     def _list_cogs(self):
         cogs = [os.path.basename(f) for f in glob.glob("cogs/*.py")]
@@ -602,5 +648,7 @@ class ModuleNotFound(Exception):
 def setup(bot):
     if not ffmpyinstalled:
         raise ModuleNotFound("FFmpy is not installed, install it with pip3 install ffmpy.")
+    if not pyshortenersinstalled:
+        raise ModuleNotFound("Pyshorteners is not installed, install it with pip3 install pyshorteners.")
     check_folders()
     bot.add_cog(Useful(bot))
