@@ -11,10 +11,11 @@ class Warner:
         self.bot = bot
         self.warnings = dataIO.load_json("data/warner/warnings.json")
         
-    @checks.mod_or_permissions()
     @commands.command(pass_context=True)
+    @checks.mod_or_permissions()
     async def warn(self, ctx, user:discord.Member):
         """Warn people for their actions."""
+        print(self.warnings)
         serverid = ctx.message.server.id
         userid = user.id
         if serverid not in self.warnings:
@@ -40,8 +41,8 @@ class Warner:
                 await self.bot.say("1 warning has been added for the user.\nThat makes a total of {} warnings for this user.".format(self.warnings[serverid][userid]))
                 return
                
-    @checks.mod_or_permissions()
     @commands.command(pass_context=True)
+    @checks.mod_or_permissions()
     async def resetwarns(self, ctx, user:discord.Member):
         """Reset the self.warnings you gave to someone"""
         serverid = ctx.message.server.id
