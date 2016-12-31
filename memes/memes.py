@@ -87,8 +87,8 @@ class Memes:
         else:
             await self.bot.say("Memelink was not an imgur link, an example imgur link would be: <http://i.imgur.com/OyNz2uG.png>")
         
-    @checks.mod_or_permissions()
     @commands.command()
+    @checks.mod_or_permissions()
     async def delmeme(self, memelink_and_owner):
         """Deletes a meme.
         
