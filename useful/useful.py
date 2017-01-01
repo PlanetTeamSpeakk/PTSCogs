@@ -360,7 +360,7 @@ class Useful:
             await self.bot.say("Your bug report has been sent.")
 
     @commands.command(pass_context=True)
-    @commands.cooldown(5, 60)
+    @commands.cooldown(2, 60, commands.BucketType.user)
     async def convert(self, ctx, file_url, *, output_format):
         """Convert a video or audio file to anything you like
         correct output formats would be mp4, mp3, wav, that kind of stuff.
