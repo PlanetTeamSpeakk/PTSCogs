@@ -58,7 +58,22 @@ class Warner:
             dataIO.save_json("data/warner/warnings.json", self.warnings)
             await self.bot.say("Users warnings succesfully reset!")
             return
-               
+            
+    @commands.command(pass_context=True)
+    async def warns(self, ctx, user:discord.Member):
+        """See how  much warnings someone has."""
+        if ctx.message.server.id not in self.warnings:
+            await self.bot.say("No one in this server has got a warning yet.")
+            return
+        elif user.id not in self.warnings[ctx.message.server.id]:
+            await self.bot.say("This user doesn't have a warning yet.")
+            return
+        elif self.warnings[ctx.message.server.id][user.id] == 1:
+            await self.bot.say("This user has {} warning.".format(self.warnings[ctx.message.server.id][user.id]))
+            return
+        else:
+            await self.bot.say("This user has {} warnings.".format(self.warnings[ctx.message.server.id][user.id]))
+            
 def check_folders():
     if not os.path.exists("data/warner"):
         print("Creating data/warner folder...")
