@@ -5,8 +5,6 @@ from __main__ import send_cmd_help, settings
 from cogs.utils.dataIO import dataIO
 import os
 
-
-
 class Adkillr:
     """Adkillr"""
 
@@ -18,7 +16,7 @@ class Adkillr:
         """Kill them ads!"""
         serverid = message.server.id
         ad = message
-        self.adkillr = ""
+        self.adkillr = None
         self.adkillr = dataIO.load_json("data/adkillr/adkillr.json")
         if ad.server is None:
             pass
@@ -34,9 +32,9 @@ class Adkillr:
         if self.adkillr[serverid]['toggle'] is True:
             if "http://" in ad.content.lower() or "https://" in ad.content.lower():
                 if "." in ad.content.lower():
-                    if self.bot.user.permissions_in(ad.channel).manage_messages:
+                    if message.server.me.permissions_in(ad.channel).manage_messages:
                         await self.bot.delete_message(ad)
-                        await self.bot.send_message(message.channel, self.adkillr[ad.server.id]['message'].format(ad.author))
+                        await self.bot.send_message(ad.channel, self.adkillr[ad.server.id]['message'].format(ad.author))
                     else:
                         pass
 
