@@ -29,14 +29,15 @@ class Adkillr:
             return
         elif ad.author.permissions_in(ad.channel).manage_messages:
             return
-        if self.adkillr[serverid]['toggle'] is True:
-            if "http://" in ad.content.lower() or "https://" in ad.content.lower():
-                if "." in ad.content.lower():
-                    if message.server.me.permissions_in(ad.channel).manage_messages:
-                        await self.bot.delete_message(ad)
-                        await self.bot.send_message(ad.channel, self.adkillr[ad.server.id]['message'].format(ad.author))
-                    else:
-                        pass
+        if self.adkillr[serverid]['toggle']:
+            if not message.author.id == self.bot.user.id:
+                if "http://" in ad.content.lower() or "https://" in ad.content.lower():
+                    if "." in ad.content.lower():
+                        if message.server.me.permissions_in(ad.channel).manage_messages:
+                            await self.bot.delete_message(ad)
+                            await self.bot.send_message(ad.channel, self.adkillr[ad.server.id]['message'].format(ad.author))
+                        else:
+                            pass
 
     @commands.group(name="adkillr", pass_context=True, no_pm=True)
     async def _adkillr(self, ctx):
