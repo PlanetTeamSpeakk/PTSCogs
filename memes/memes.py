@@ -56,7 +56,20 @@ memelist = [
 "http://i.imgur.com/JqCqC96.jpg",
 "http://i.imgur.com/OrTu9dY.jpg",
 "http://i.imgur.com/bbCjewo.jpg",
-"http://i.imgur.com/aWsJTdC.gif"
+"http://i.imgur.com/aWsJTdC.gif",
+"http://i.imgur.com/QOmWLWW.jpg",
+"http://i.imgur.com/bV0FoPt.jpg",
+"http://i.imgur.com/BkuCizz.jpg",
+"http://i.imgur.com/EiYJueo.jpg",
+"http://i.imgur.com/ge3lODN.jpg",
+"http://i.imgur.com/jtOMMmu.jpg",
+"http://i.imgur.com/pG2MNpN.png",
+"http://i.imgur.com/1BP4XXS.png",
+"http://i.imgur.com/L67XuUz.jpg",
+"http://i.imgur.com/6Brq0mL.jpg",
+"http://i.imgur.com/nlJiz4F.png",
+"http://i.imgur.com/RCIZVlk.jpg",
+"http://i.imgur.com/ZR3jJtN.png"
 ]
         
 class Memes:
