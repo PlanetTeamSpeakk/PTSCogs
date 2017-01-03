@@ -16,6 +16,9 @@ class marry:
     @commands.command(pass_context=True)
     async def marry(self, ctx, yourlovedone:discord.Member):
         """Now you can finally marry your loved one."""
+        if yourlovedone.id == ctx.message.author.id:
+            await self.bot.say("You can't marry yourself, that would be weird wouldn't it?")
+            return
         for role in ctx.message.author.roles:
             if ctx.message.author.name in role.name:
                 if " ❤ " in role.name:
@@ -39,9 +42,6 @@ class marry:
             if times_married > self.settings['marry_times']:
                 await self.bot.say("Your loved one has reached the marry limit ({}).".format(self.settings['marry_times']))
                 return
-        if yourlovedone.id == ctx.message.author.id:
-            await self.bot.say("You can't marry yourself, that would be weird wouldn't it?")
-            return
         elif yourlovedone.id == self.bot.user.id:
             if ctx.message.author.id != settings.owner:
                 await self.bot.say("I'd only marry my owner.")
@@ -86,6 +86,9 @@ class marry:
     @checks.admin_or_permissions()
     async def forcemarry(self, ctx, person:discord.Member, lovedone:discord.Member):
         """Now you can finally marry your loved one."""
+        if lovedone.id == person.id:
+            await self.bot.say("You can't let someone marry him/herself that would be weird wouldn't it?")
+            return
         for role in person.roles:
             if person.name in role.name:
                 if " ❤ " in role.name:
@@ -109,9 +112,6 @@ class marry:
             if times_married > self.settings['marry_times']:
                 await self.bot.say("This person's loved one has reached the marry limit ({}).".format(self.settings['marry_times']))
                 return
-        if lovedone.id == person.id:
-            await self.bot.say("You can't let someone marry him/herself that would be weird wouldn't it?")
-            return
         elif person.id == self.bot.user.id:
             if lovedone.id is not settings.owner:
                 await self.bot.say("I'd only marry my owner.")
