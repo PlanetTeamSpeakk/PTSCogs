@@ -11,6 +11,9 @@ import aiohttp
 import urllib
 import asyncio
 import random
+from cogs.utils.dataIO import dataIO
+import requests
+import json
 from random import choice
 from subprocess import check_output
 try:
@@ -45,6 +48,7 @@ class Useful:
 
     def __init__(self, bot):
         self.bot = bot
+        self.settings = dataIO.load_json("data/useful/settings.json")
 
     @commands.command(pass_context=True, name="avatar", aliases=["av"])
     async def avatar(self, ctx, user : discord.Member):
@@ -644,14 +648,51 @@ class Useful:
             time = time + 1
             await asyncio.sleep(interval * 60)
         
+    @commands.command()
+    @checks.is_owner()
+    async def setclientid(self, id:str):
+        """Sets the client id of this bot."""
+        self.settings['client_id'] = id
+        dataIO.save_json("data/useful/settings.json", self.settings)
+        await self.bot.say("Client id set, now set the authorization header with [p]setauth.")
+        
+    @commands.command()
+    @checks.is_owner()
+    async def setauth(self, auth):
+        """Sets the authorization header key for bots.discord.pw to update the amount of servers your bot is in, yw."""
+        if self.settings['client_id'] == "client_id_here":
+            await self.bot.say("You first have to set the client id with [p]setclientid <id>.")
+        data = {'server_count': int(len(self.bot.servers))}
+        try:
+            post = requests.post("https://bots.discord.pw/api/bots/" + self.settings['client_id'] + "/stats", headers={'Authorization': auth, 'Content-Type' : 'application/json'}, data=json.dumps(data))
+            print(post.content.decode("utf-8"))
+        except Exception as e:
+            await self.bot.say("Auth key is not working or an error occured.\n")
+            await self.bot.say(e)
+            return
+        self.settings['auth_key'] = auth
+        dataIO.save_json("data/useful/settings.json", self.settings)
+        await self.bot.say("Auth key set and servercount updated.")
+        
     def _list_cogs(self):
         cogs = [os.path.basename(f) for f in glob.glob("cogs/*.py")]
         return ["cogs." + os.path.splitext(f)[0] for f in cogs]
+        
+    async def on_server_join(self, server):
+        if not self.settings['auth_key'] == "key_here":
+            data = {'server_count': int(len(self.bot.servers))}
+            post = requests.post("https://bots.discord.pw/api/bots/" + self.settings['client_id'] + "/stats", headers={'Authorization': self.settings['auth_key'], 'Content-Type' : 'application/json'}, data=json.dumps(data))
+            print("Joined a server, updated stats on bots.discord.pw. " + post.content.decode("utf-8"))
         
 def check_folders():
     if not os.path.exists("data/useful"):
         print("Creating data/useful folder...")
         os.makedirs("data/useful")
+        
+def check_files():
+    if not os.path.exists("data/useful/settings.json"):
+        print("Creating data/useful/settings.json file...")
+        dataIO.save_json("data/useful/settings.json", {'auth_key': 'key_here', 'client_id': 'client_id_here'})
         
 class ModuleNotFound(Exception):
     pass
@@ -662,4 +703,5 @@ def setup(bot):
     if not pyshortenersinstalled:
         raise ModuleNotFound("Pyshorteners is not installed, install it with pip3 install pyshorteners.")
     check_folders()
+    check_files()
     bot.add_cog(Useful(bot))
