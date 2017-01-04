@@ -173,25 +173,13 @@ class Useful:
             "{}".format(ctx.message.author.mention, url))
             
     @commands.command(pass_context=True)
-    @checks.mod_or_permissions()
+    @checks.is_owner()
     async def uploadcog(self, ctx, cogname):
-        """Uploads a cog for you to use, for a list of cogs use [p]show_cogs"""
-        await self.bot.say("Here you go:")
-        await self.bot.send_file(ctx.message.channel, fp="cogs/{}.py".format(cogname), filename="{}.py".format(cogname))
-
-    # copied from the owner cog since the command there was owner only and here it isn't :3
-    @commands.command()
-    @checks.mod_or_permissions()
-    async def show_cogs(self):
-        """Shows loaded/unloaded cogs"""
-        loaded = [c.__module__.split(".")[1] for c in self.bot.cogs.values()]
-        unloaded = [c.split(".")[1] for c in self._list_cogs()
-                    if c.split(".")[1] not in loaded]
-        if not unloaded:
-            unloaded = ["None"]
-        msg = ("+ Loaded\n{}\n\n- Unloaded\n{}".format(", ".join(sorted(loaded)), ", ".join(sorted(unloaded))))
-        for page in pagify(msg, [" "], shorten_by=16):
-            await self.bot.say(box(page.lstrip(" "), lang="diff"))
+        """If you're a lazy fuck and don't want to go to the folder where your bot is located. Smh"""
+        if os.path.exists("cogs/{}.py".format(cogname)):
+            await self.bot.send_file(ctx.message.channel, content="Here you go:", fp="cogs/{}.py".format(cogname), filename="{}.py".format(cogname))
+        else:
+            await self.bot.say("That cog does not exist.")
 
     @commands.command()
     async def discrim(self, discriminator: str):
@@ -347,10 +335,10 @@ class Useful:
         author = ctx.message.author
         if ctx.message.channel.is_private is False:
             server = ctx.message.server
-            source = "server **{}** (`{}`)".format(server.name, server.id)
+            source = "server **{}** ({})".format(server.name, server.id)
         else:
             source = "direct message"
-        sender = "**{0}** (`{0.id}`) sent you a bug report from {1}:\n\n".format(author, source)
+        sender = "**{0}** ({0.id}) sent you a bug report from {1}:\n\n".format(author, source)
         message = sender + bug
         try:
             await self.bot.send_message(owner, message)
