@@ -678,7 +678,7 @@ class Useful:
             post = requests.post("https://bots.discord.pw/api/bots/" + self.settings['client_id'] + "/stats", headers={'Authorization': self.settings['auth_key'], 'Content-Type' : 'application/json'}, data=json.dumps(data))
             print("Joined a server, updated stats on bots.discord.pw. " + post.content.decode("utf-8"))
         
-    async def on_server_join(self, server):
+    async def on_server_remove(self, server):
         if not self.settings['auth_key'] == "key_here":
             data = {'server_count': int(len(self.bot.servers))}
             post = requests.post("https://bots.discord.pw/api/bots/" + self.settings['client_id'] + "/stats", headers={'Authorization': self.settings['auth_key'], 'Content-Type' : 'application/json'}, data=json.dumps(data))
