@@ -530,10 +530,11 @@ class Useful:
     async def serverwidemessage(self, ctx, *, msg):
         """Sends a message in every server."""
         for server in self.bot.servers:
-            try:
-                await self.bot.send_message(server.default_channel, "{}, sent by {}.".format(msg, str(ctx.message.author)))
-            except:
-                pass
+            if not "bots" in server.name.lower():
+                try:
+                    await self.bot.send_message(server.default_channel, "{}, sent by {}.".format(msg, str(ctx.message.author)))
+                except:
+                    pass
         await self.bot.say("Done!")
         
     @commands.command(pass_context=True)
@@ -593,12 +594,13 @@ class Useful:
             em.set_author(name=author, icon_url=avatar)
             em.set_footer(text=footer)
             for server in self.bot.servers:
-                if is_announcement:
-                    try:
-                        await self.bot.send_message(server.default_channel, "@everyone @here, announcement!")
-                    except:
-                        pass
-                await self.bot.send_message(server.default_channel, embed=em)
+                if not "bots" in server.name.lower():
+                    if is_announcement:
+                        try:
+                            await self.bot.send_message(server.default_channel, "@everyone @here, announcement!")
+                        except:
+                            pass
+                    await self.bot.send_message(server.default_channel, embed=em)
             return
         except discord.NotFound:
             await self.bot.say("Couldn't find the message to embed, did it get deleted?")
@@ -612,7 +614,11 @@ class Useful:
     async def serverwidetts(self, ctx, *, msg):
         """Sends a tts message in every server."""
         for server in self.bot.servers:
-            await self.bot.say(tts=msg)
+            if not "bots" in server.name.lower():
+                try:
+                    await self.bot.say(tts=msg)
+                except:
+                    pass
         await self.bot.say("Done!")
         
     @commands.command(pass_context=True)
