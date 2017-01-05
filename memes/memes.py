@@ -492,7 +492,7 @@ class Memes:
         
     async def memes(self, message):
         if not "bots" in message.server.name.lower():
-            if message.content.lower() == "ayy":
+            if "ayy" in message.content.lower():
                 self.lmaoLoaded = os.path.exists('data/memes/maolmao.png')
                 if not self.lmaoLoaded:
                     try:
