@@ -201,6 +201,15 @@ class Randomshizzle:
         """Tells you how much people paid their respect."""
         await self.bot.say("Currently {} people paid their respect using {}pressf!".format(self.pressfcount[0], ctx.prefix))
       
+    @commands.command()
+    async def cancermeter(self, *, torate=None):
+        """Tells you how cancerous something is."""
+        choices = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
+        await self.bot.say("```Cancer meter:\n"
+                            "0    1    2    3    4    5    6    7    8    9   10\n"
+                            "|----|----|----|----|----|----|----|----|----|----|\n"
+                            + " " * choice(choices)+ "^```")
+      
 def check_folders():
     if not os.path.exists("data/pressf"):
         print("Creating data/pressf folder...")
@@ -209,7 +218,7 @@ def check_folders():
 def check_files():
     if not os.path.exists("data/pressf/pressf.json"):
         print("Creating data/pressf/pressf.json file...")
-        dataIO.save_json("data/pressf/pressf.json", pressfcount)
+        dataIO.save_json("data/pressf/pressf.json", [0])
         
 def setup(bot):
     check_folders()
