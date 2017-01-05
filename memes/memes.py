@@ -557,7 +557,7 @@ class Memes:
                 await self.bot.add_reaction(message, U)
                 await self.bot.add_reaction(message, P)
                 
-            if message.content.lower() == "feels bad man":
+            if (message.content.lower() == "feels bad man") or (message.content.lower() == "feelsbadman"):
                 self.fbmLoaded = os.path.exists('data/memes/feelsbadman.png')
                 if not self.fbmLoaded:
                     try:
