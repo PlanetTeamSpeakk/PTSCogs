@@ -202,6 +202,7 @@ class Randomshizzle:
         await self.bot.say("Currently {} people paid their respect using {}pressf!".format(self.pressfcount[0], ctx.prefix))
       
     @commands.command()
+    @commands.cooldown(2, 60, commands.BucketType.user)
     async def cancermeter(self, *, torate=None):
         """Tells you how cancerous something is."""
         choices = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
