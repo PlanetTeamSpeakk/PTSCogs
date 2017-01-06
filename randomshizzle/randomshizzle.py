@@ -3,6 +3,7 @@ from __main__ import send_cmd_help, settings
 import discord
 import asyncio
 from random import choice
+import random
 from cogs.utils.dataIO import dataIO
 import os
 
