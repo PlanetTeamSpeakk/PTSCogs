@@ -490,6 +490,14 @@ class Memes:
     async def spoopy(self):
         await self.bot.say("This command will never show up in help, now isn't that weird?")
         
+    @commands.command()
+    async def banned(self, user:discord.Member=None):
+        """Tells someone they're banned."""
+        if user != None:
+            await self.bot.say("{} http://i.imgur.com/HQGh7tL.gif".format(user.mention))
+        else:
+            await self.bot.say("http://i.imgur.com/HQGh7tL.gif")
+        
     async def memes(self, message):
         if not "bots" in message.server.name.lower():
             if "ayy" in message.content.lower():
