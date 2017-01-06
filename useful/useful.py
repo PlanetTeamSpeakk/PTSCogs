@@ -325,7 +325,7 @@ class Useful:
         await self.bot.edit_message(stats, statsmsg)
         
     @commands.command(pass_context=True)
-    @commands.cooldown(5, 60)
+    @commands.cooldown(2, 60, commands.BucketType.user)
     async def bugreport(self, ctx, *, bug:str):
         """Report a bug in the bot."""
         if settings.owner == "id_here":
@@ -667,6 +667,16 @@ class Useful:
         self.settings['auth_key'] = auth
         dataIO.save_json("data/useful/settings.json", self.settings)
         await self.bot.say("Auth key set and servercount updated.")
+        
+    @commands.command()
+    async def ctof(self, celsius:float):
+        """Convert celsius to fahrenheit."""
+        await self.bot.say("{}°C = {}°F ({}°K)".format(celsius, celsius * float(1.8) + 32, celsius - 273))
+        
+    @commands.command()
+    async def ftoc(self, fahrenheit:float):
+        """Convert fahrenheit to celsius."""
+        await self.bot.say("{}°F = {}°C ({}°K)".format(fahrenheit, (fahrenheit - 32) / float(1.8), ((fahrenheit - 32) / float(1.8)) - 273))
         
     def _list_cogs(self):
         cogs = [os.path.basename(f) for f in glob.glob("cogs/*.py")]
