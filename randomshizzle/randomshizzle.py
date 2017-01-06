@@ -205,11 +205,16 @@ class Randomshizzle:
     @commands.cooldown(2, 60, commands.BucketType.user)
     async def cancermeter(self, *, torate=None):
         """Tells you how cancerous something is."""
-        choices = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
-        await self.bot.say("```Cancer meter:\n"
-                            "0    1    2    3    4    5    6    7    8    9   10\n"
-                            "|----|----|----|----|----|----|----|----|----|----|\n"
-                            + " " * choice(choices)+ "^```")
+        if torate == None:
+            await self.bot.say("```Cancer meter for {}:\n"
+                                "0    1    2    3    4    5    6    7    8    9   10\n"
+                                "|----|----|----|----|----|----|----|----|----|----|\n"
+                                + "     " * random.randint(0, 5)+ "^```".format(torate))
+        else:
+            await self.bot.say("```Cancer meter:\n"
+                                "0    1    2    3    4    5    6    7    8    9   10\n"
+                                "|----|----|----|----|----|----|----|----|----|----|\n"
+                                + "     " * random.randint(0, 5)+ "^```")
       
 def check_folders():
     if not os.path.exists("data/pressf"):
