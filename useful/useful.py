@@ -427,7 +427,7 @@ class Useful:
         os.remove(output)
         
     @commands.command(pass_context=True)
-    @checks.mod_or_permissions()
+    @checks.is_owner()
     async def showservermembers(self, ctx):
         """Lists all the members of a server."""
         servers = sorted(list(self.bot.servers), key=lambda s: s.name.lower())
@@ -482,7 +482,7 @@ class Useful:
             await self.bot.say("I guess not.")
             
     @commands.command(pass_context=True)
-    @checks.mod_or_permissions()
+    @checks.is_owner()
     async def sendservermessage(self, ctx, *, message):
         """Lists all servers the bot is in and sends a message there."""
         servers = sorted(list(self.bot.servers), key=lambda s: s.name.lower())
