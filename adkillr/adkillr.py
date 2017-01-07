@@ -14,30 +14,31 @@ class Adkillr:
         
     async def adkill(self, message):
         """Kill them ads!"""
-        serverid = message.server.id
-        ad = message
-        self.adkillr = None
-        self.adkillr = dataIO.load_json("data/adkillr/adkillr.json")
-        if ad.server is None:
-            pass
-        try:
-            temp = self.adkillr[serverid]['toggle']
-        except:
-            self.adkillr[serverid] = {'toggle': True, 'message': "{0.mention} don't send links!"}
-            dataIO.save_json("data/adkillr/adkillr.json", self.adkillr)
-        if ad.author.id == settings.owner:
-            return
-        elif ad.author.permissions_in(ad.channel).manage_messages:
-            return
-        if self.adkillr[serverid]['toggle']:
-            if not message.author.id == self.bot.user.id:
-                if "http://" in ad.content.lower() or "https://" in ad.content.lower():
-                    if "." in ad.content.lower():
-                        if message.server.me.permissions_in(ad.channel).manage_messages:
-                            await self.bot.delete_message(ad)
-                            await self.bot.send_message(ad.channel, self.adkillr[ad.server.id]['message'].format(ad.author))
-                        else:
-                            pass
+        if message.server is not None:
+            serverid = message.server.id
+            ad = message
+            self.adkillr = None
+            self.adkillr = dataIO.load_json("data/adkillr/adkillr.json")
+            if ad.server is None:
+                pass
+            try:
+                temp = self.adkillr[serverid]['toggle']
+            except:
+                self.adkillr[serverid] = {'toggle': True, 'message': "{0.mention} don't send links!"}
+                dataIO.save_json("data/adkillr/adkillr.json", self.adkillr)
+            if ad.author.id == settings.owner:
+                return
+            elif ad.author.permissions_in(ad.channel).manage_messages:
+                return
+            if self.adkillr[serverid]['toggle']:
+                if not message.author.id == self.bot.user.id:
+                    if "http://" in ad.content.lower() or "https://" in ad.content.lower():
+                        if "." in ad.content.lower():
+                            if message.server.me.permissions_in(ad.channel).manage_messages:
+                                await self.bot.delete_message(ad)
+                                await self.bot.send_message(ad.channel, self.adkillr[ad.server.id]['message'].format(ad.author))
+                            else:
+                                pass
 
     @commands.group(name="adkillr", pass_context=True, no_pm=True)
     async def _adkillr(self, ctx):
