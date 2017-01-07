@@ -16,6 +16,9 @@ class marry:
     @commands.command(pass_context=True)
     async def marry(self, ctx, yourlovedone:discord.Member):
         """Now you can finally marry your loved one."""
+        if ctx.message.server.id not in self.settings:
+            self.settings[ctx.message.server.id] = {'marry_limit': 0}
+            dataIO.save_json("data/marry/settings.json", self.settings)
         if yourlovedone.id == ctx.message.author.id:
             await self.bot.say("You can't marry yourself, that would be weird wouldn't it?")
             return
@@ -26,21 +29,21 @@ class marry:
                         await self.bot.say("You're already married with this person.")
                         return
         times_married = 0
-        if self.settings['marry_times'] is not 0:
+        if self.settings[ctx.message.server.id]['marry_limit'] is not 0:
             for role in ctx.message.server.roles:
                 if ctx.message.author.name in role.name:
                     if " ❤ " in role.name:
                         times_married = times_married + 1
-            if times_married > self.settings['marry_times']:
-                await self.bot.say("You have reached the marry limit ({}).".format(self.settings['marry_times']))
+            if times_married > self.settings[ctx.message.server.id]['marry_limit']:
+                await self.bot.say("You have reached the marry limit ({}).".format(self.settings[ctx.message.server.id]['marry_limit']))
                 return
             times_married = 0
             for role in ctx.message.server.roles:
                 if yourlovedone.name in role.name:
                     if " ❤ " in role.name:
                         times_married = times_married + 1
-            if times_married > self.settings['marry_times']:
-                await self.bot.say("Your loved one has reached the marry limit ({}).".format(self.settings['marry_times']))
+            if times_married > self.settings[ctx.message.server.id]['marry_limit']:
+                await self.bot.say("Your loved one has reached the marry limit ({}).".format(self.settings[ctx.message.server.id]['marry_limit']))
                 return
         elif yourlovedone.id == self.bot.user.id:
             if ctx.message.author.id != settings.owner:
@@ -64,9 +67,9 @@ class marry:
             return
         await self.bot.add_roles(ctx.message.author, married_role)
         await self.bot.add_roles(yourlovedone, married_role)
-        await self.bot.send_message(ctx.message.author, "Your divorce id is `{0}`, don't ever give this to anyone or they can divorce you!\nTo divorce type `{1}divorce {0}`.".format(married_role.id, ctx.prefix))
+        await self.bot.send_message(ctx.message.author, "You married **{0}** in **{1}**\nYour divorce id is `{2}`, don't ever give this to anyone or they can divorce you!\nTo divorce type `{3}divorce {2}`.".format(str(yourlovedone), ctx.message.server.name, married_role.id, ctx.prefix))
         if not yourlovedone.bot:
-            await self.bot.send_message(yourlovedone, "Your divorce id is `{0}`, don't ever give this to anyone or they can divorce you!\nTo divorce type `{1}divorce {0}`.".format(married_role.id, ctx.prefix))
+            await self.bot.send_message(yourlovedone, "You married **{0}** in **{1}**\nYour divorce id is `{2}`, don't ever give this to anyone or they can divorce you!\nTo divorce type `{3}divorce {2}`.".format(str(ctx.message.author), ctx.message.server.name, married_role.id, ctx.prefix))
         else:
             pass
         marchan = discord.utils.find(lambda c: c.name == 'marriage', ctx.message.server.channels)
@@ -86,6 +89,9 @@ class marry:
     @checks.admin_or_permissions()
     async def forcemarry(self, ctx, person:discord.Member, lovedone:discord.Member):
         """Now you can finally marry your loved one."""
+        if ctx.message.server.id not in self.settings:
+            self.settings[ctx.message.server.id] = {'marry_limit': 0}
+            dataIO.save_json("data/marry/settings.json", self.settings)
         if lovedone.id == person.id:
             await self.bot.say("You can't let someone marry him/herself that would be weird wouldn't it?")
             return
@@ -96,21 +102,21 @@ class marry:
                         await self.bot.say("This person is already married with his/her loved one.")
                         return
         times_married = 0
-        if self.settings['marry_times'] is not 0:
+        if self.settings[ctx.message.server.id]['marry_limit'] is not 0:
             for role in ctx.message.server.roles:
                 if person.name in role.name:
                     if " ❤ " in role.name:
                         times_married = times_married + 1
-            if times_married > self.settings['marry_times']:
-                await self.bot.say("This person has reached the marry limit ({}).".format(self.settings['marry_times']))
+            if times_married > self.settings[ctx.message.server.id]['marry_limit']:
+                await self.bot.say("This person has reached the marry limit ({}).".format(self.settings[ctx.message.server.id]['marry_limit']))
                 return
             times_married = 0
             for role in ctx.message.server.roles:
                 if lovedone.name in role.name:
                     if " ❤ " in role.name:
                         times_married = times_married + 1
-            if times_married > self.settings['marry_times']:
-                await self.bot.say("This person's loved one has reached the marry limit ({}).".format(self.settings['marry_times']))
+            if times_married > self.settings[ctx.message.server.id]['marry_limit']:
+                await self.bot.say("This person's loved one has reached the marry limit ({}).".format(self.settings[ctx.message.server.id]['marry_limit']))
                 return
         elif person.id == self.bot.user.id:
             if lovedone.id is not settings.owner:
@@ -131,11 +137,11 @@ class marry:
         await self.bot.add_roles(person, married_role)
         await self.bot.add_roles(lovedone, married_role)
         try:
-            await self.bot.send_message(person, "**{0}** married you to **{1}**.\nYour divorce id is `{2}`, don't ever give this to anyone or they can divorce you!\nTo divorce type `{3}divorce {2}`.".format(ctx.message.author.name, lovedone.name, married_role.id, ctx.prefix))
+            await self.bot.send_message(person, "**{0}** married you to **{1}** in **{2}**.\nYour divorce id is `{3}`, don't ever give this to anyone or they can divorce you!\nTo divorce type `{4}divorce {3}`.".format(ctx.message.author.name, str(lovedone), ctx.message.server.name, married_role.id, ctx.prefix))
         except:
             pass
         try:
-            await self.bot.send_message(lovedone, "**{0}** married you to **{1}**.\nYour divorce id is `{2}`, don't ever give this to anyone or they can divorce you!\nTo divorce type `{3}divorce {2}`.".format(ctx.message.author.name, person.name, married_role.id, ctx.prefix))
+            await self.bot.send_message(lovedone, "**{0}** married you to **{1}** in **{2}**.\nYour divorce id is `{3}`, don't ever give this to anyone or they can divorce you!\nTo divorce type `{4}divorce {3}`.".format(ctx.message.author.name, str(person), ctx.message.server.name, married_role.id, ctx.prefix))
         except:
             pass
         else:
@@ -185,13 +191,21 @@ class marry:
             await self.bot.say("That's not a valid ID.")
             return
             
-    @commands.command()
+    @commands.command(pass_context=True)
     @checks.admin_or_permissions()
-    async def marrytimes(self, times:int):
-        """Sets the amount of times someone can marry someone."""
-        self.settings['marry_times'] = times
+    async def setmarrylimit(self, ctx, times:int):
+        """Sets the limit someone can marry someone. 0 is unlimited."""
+        self.settings[ctx.message.server.id] = {'marry_limit': times}
         dataIO.save_json("data/marry/settings.json", self.settings)
         await self.bot.say("Done!")
+       
+    @commands.command(pass_context=True)
+    async def marrylimit(self, ctx):
+        """Shows you the current marrylimit."""
+        try:
+            await self.bot.say("The marrylimit is {}.".format(self.settings[ctx.message.server.id]['marry_limit']))
+        except KeyError:
+            await self.bot.say("The marrylimit is unlimited.")
         
     @commands.command(pass_context=True)
     @checks.admin_or_permissions()
@@ -239,6 +253,7 @@ class marry:
             await self.bot.edit_message(msg, "There is currently {} married couple in this server.".format(count))
         else:
             await self.bot.edit_message(msg, "There are currently {} married couples in this server.".format(count))
+            
 def getRoleObj(roleID, server):
     for role in server.roles:
         if role.id == roleID:
@@ -252,7 +267,7 @@ def check_folders():
 def check_files():
     if not os.path.exists("data/marry/settings.json"):
         print("Creating data/marry/settings.json file...")
-        dataIO.save_json("data/marry/settings.json", {'marry_times': 0})
+        dataIO.save_json("data/marry/settings.json", {'marry_limit': 0})
         
 def setup(bot):
     check_folders()
