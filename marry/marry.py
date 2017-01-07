@@ -254,6 +254,30 @@ class marry:
         else:
             await self.bot.edit_message(msg, "There are currently {} married couples in this server.".format(count))
             
+    @commands.command(pass_context=True)
+    @checks.admin_or_permissions()
+    async def admindivorce(self, ctx, person, person2):
+        """Divorces someone by NAME. If the name is bigger than one word put quotes around it
+        Example: "much name, such words"."""
+        for role in ctx.message.server.roles:
+            if person in role.name:
+                if " ❤ " in role.name:
+                    if person2 in role.name:
+                        try:
+                            await self.bot.delete_role(ctx.message.server, role)
+                            marchan = discord.utils.find(lambda c: c.name == 'marriage', ctx.message.server.channels)
+                            if marchan:
+                                await self.bot.send_message(marchan, "{} admindivorced {} and {}.".format(ctx.message.author.name, person, person2))
+                            else:
+                                marchan = self.bot.create_channel(ctx.message.server, "marriage")
+                                await self.bot.send_message(marchan, "{} admindivorced {} and {}.".format(ctx.message.author.name, person, person2))
+                            await self.bot.say("Succesfully divorced {} and {}.".format(person, person2))
+                            return
+                        except:
+                            await self.bot.say("The role for the marriage was found but could not be deleted.")
+                            return
+        await self.bot.say("The role of that marriage could not be found.")
+            
 def getRoleObj(roleID, server):
     for role in server.roles:
         if role.id == roleID:
