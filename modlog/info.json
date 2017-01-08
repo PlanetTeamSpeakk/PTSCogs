@@ -1,0 +1,7 @@
+{
+    "AUTHOR" : "PlanetTeamSpeak",
+    "INSTALL_MSG" : "Thanks for installing my modlog cog!",
+    "NAME" : "modlog",
+    "SHORT" : "Logs moderation sutff.",
+    "DESCRIPTION" : "Logs moderation stuff, use [p]modlogset to get started."
+}
