@@ -168,18 +168,18 @@ class Modlog:
                                             "\nAfter: {}```".format(str(after.voice_channel)))
                                                 
     async def on_message_edit(self, before, after):
-        if before.author == self.bot.user:
+        if before.author == message.server.me:
             return
         if self.is_module(before.server, 'msgedit'):
             if before.content != after.content:
                 await self.log(before.server, "`[{}]` :pencil2: **Message Edit Log**\n"
-                                            "```User:{}"
+                                            "```User: {}"
                                             "\nChannel: {}"
                                             "\nBefore: {}".format(datetime.datetime.now().strftime("%X"), before.author.name, before.channel.name, before.content) +
                                             "\nAfter: {}```".format(after.content))
                                             
     async def on_message_delete(self, message):
-        if message.author == self.bot.user:
+        if message.author == message.server.me:
             return
         if self.is_module(message.server, 'msgdelete'):
             await self.log(message.server, "`[{}]` :wastebasket: **Message Delete Log**\n"
