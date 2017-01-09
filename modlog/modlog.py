@@ -160,19 +160,24 @@ class Modlog:
                                         "```Member Banned: {}```".format(datetime.datetime.now().strftime("%X"), str(member)))
                                         
     async def on_voice_state_update(self, before, after):
-        if self.is_module(before.server, 'voicechannels'):
+        print("Voice chat thingy found.")
+        if self.is_module(before.server, 'voicechat'):
             if before.voice_channel != after.voice_channel:
+                print("Worked.")
                 await self.log(before.server, "`[{}]` :bangbang: **Voicechat Log**\n"
-                                            "```Before: {}".format(datetime.datetime.now().strftime("%X"), str(before.voice_channel)) +
+                                            "```User: {}"
+                                            "\nBefore: {}".format(datetime.datetime.now().strftime("%X"), str(before), str(before.voice_channel)) +
                                             "\nAfter: {}```".format(str(after.voice_channel)))
-                                            
+                                                
     async def on_message_edit(self, before, after):
         if before.author == self.bot.user:
             return
         if self.is_module(before.server, 'msgedit'):
             if before.content != after.content:
                 await self.log(before.server, "`[{}]` :pencil2: **Message Edit Log**\n"
-                                            "```Before: {}".format(datetime.datetime.now().strftime("%X"), before.content) +
+                                            "```User:{}"
+                                            "\nChannel: {}"
+                                            "\nBefore: {}".format(datetime.datetime.now().strftime("%X"), str(before), before.channel.name, before.content) +
                                             "\nAfter: {}```".format(after.content))
                                             
     async def on_message_delete(self, message):
