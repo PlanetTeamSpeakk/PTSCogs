@@ -173,9 +173,9 @@ class Modlog:
         if self.is_module(before.server, 'msgedit'):
             if before.content != after.content:
                 await self.log(before.server, "`[{}]` :pencil2: **Message Edit Log**\n"
-                                            "```User:{}#{}"
+                                            "```User:{}"
                                             "\nChannel: {}"
-                                            "\nBefore: {}".format(datetime.datetime.now().strftime("%X"), str(before.author), before.channel.name, before.content) +
+                                            "\nBefore: {}".format(datetime.datetime.now().strftime("%X"), before.author.name, before.channel.name, before.content) +
                                             "\nAfter: {}```".format(after.content))
                                             
     async def on_message_delete(self, message):
