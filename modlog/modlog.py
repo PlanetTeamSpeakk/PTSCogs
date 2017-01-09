@@ -160,10 +160,8 @@ class Modlog:
                                         "```Member Banned: {}```".format(datetime.datetime.now().strftime("%X"), str(member)))
                                         
     async def on_voice_state_update(self, before, after):
-        print("Voice chat thingy found.")
         if self.is_module(before.server, 'voicechat'):
             if before.voice_channel != after.voice_channel:
-                print("Worked.")
                 await self.log(before.server, "`[{}]` :bangbang: **Voicechat Log**\n"
                                             "```User: {}"
                                             "\nBefore: {}".format(datetime.datetime.now().strftime("%X"), str(before), str(before.voice_channel)) +
