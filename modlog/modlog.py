@@ -132,6 +132,10 @@ class Modlog:
                 await self.bot.say("Role edit has been enabled.")
                 
         elif module.lower() == 'channels':
+            if 'channels' not in self.settings[server.id]:
+                self.settings[server.id]['channels'] = True
+                self.save_settings()
+                return
             if self.settings[server.id]['channels']:
                 self.settings[server.id]['channels'] = False
                 self.save_settings()
