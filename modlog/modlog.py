@@ -168,7 +168,7 @@ class Modlog:
                                             "\nAfter: {}```".format(str(after.voice_channel)))
                                                 
     async def on_message_edit(self, before, after):
-        if before.author == message.server.me:
+        if before.author == before.server.me:
             return
         if self.is_module(before.server, 'msgedit'):
             if before.content != after.content:
