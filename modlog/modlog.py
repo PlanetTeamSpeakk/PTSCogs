@@ -295,8 +295,11 @@ class Modlog:
         
     def is_module(self, server, module):
         try:
-            if (self.settings[server.id]['channel'] is not None) and (self.settings[server.id][module]):
-                return True
+            if not self.settings[server.id]['disabled']:
+                if (self.settings[server.id]['channel'] is not None) and (self.settings[server.id][module]):
+                    return True
+                else:
+                    return False
             else:
                 return False
         except KeyError:
