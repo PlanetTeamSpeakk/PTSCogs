@@ -32,13 +32,23 @@ class Adkillr:
                 return
             if self.adkillr[serverid]['toggle']:
                 if not message.author.id == self.bot.user.id:
-                    if "http://" in ad.content.lower() or "https://" in ad.content.lower():
-                        if "." in ad.content.lower():
-                            if message.server.me.permissions_in(ad.channel).manage_messages:
-                                await self.bot.delete_message(ad)
-                                await self.bot.send_message(ad.channel, self.adkillr[ad.server.id]['message'].format(ad.author))
-                            else:
-                                pass
+                    try:
+                        if ("http://" in ad.content.lower()) or ("https://" in ad.content.lower()) and ("." in ad.content.lower()):
+                            for filter in self.adkillr[ad.server.id]['filters']:
+                                if filter in ad.content:
+                                    pass
+                                else:
+                                    if message.server.me.permissions_in(ad.channel).manage_messages:
+                                        await self.bot.delete_message(ad)
+                                        await self.bot.send_message(ad.channel, self.adkillr[ad.server.id]['message'].format(ad.author))
+                                    else:
+                                        pass
+                    except KeyError:
+                        if message.server.me.permissions_in(ad.channel).manage_messages:
+                            await self.bot.delete_message(ad)
+                            await self.bot.send_message(ad.channel, self.adkillr[ad.server.id]['message'].format(ad.author))
+                        else:
+                            pass
 
     @commands.group(name="adkillr", pass_context=True, no_pm=True)
     async def _adkillr(self, ctx):
@@ -47,7 +57,7 @@ class Adkillr:
         if ctx.invoked_subcommand is None:
             await send_cmd_help(ctx)
         if serverid not in self.adkillr:
-            self.adkillr[serverid] = {'toggle': True, 'message': "{0.mention} don't send links!"}
+            self.adkillr[serverid] = {'toggle': True, 'message': '{0.mention} don\'t send links!', 'filters': []}
             dataIO.save_json("data/adkillr/adkillr.json", self.adkillr)
 
     @_adkillr.command(pass_context=True, no_pm=True)
@@ -73,6 +83,44 @@ class Adkillr:
         self.adkillr[serverid]['message'] = message
         dataIO.save_json("data/adkillr/adkillr.json", self.adkillr)
         await self.bot.say("Message set!")
+    
+    @_adkillr.command(pass_context=True, no_pm=True)
+    @checks.mod_or_permissions()
+    async def addfilter(self, ctx, *, link):
+        """Add a link or word that shouldn't get deleted, 
+        example: https://www.youtube.com, youtube.com, youtube.
+        
+        If you put 'discord' anything with the word discord in it won't be deleted."""
+        try: # compatability with older versions
+            self.adkillr[ctx.message.server.id]['filters'].append(link)
+        except KeyError:
+            self.adkillr[ctx.message.server.id]['filters'] = [link]
+        dataIO.save_json("data/adkillr/adkillr.json", self.adkillr)
+        await self.bot.say("Filter added.")
+        
+    @_adkillr.command(pass_context=True, no_pm=True)
+    @checks.mod_or_permissions()
+    async def removefilter(self, ctx, *, link):
+        """Remove a word or link that shouldn't get deleted."""
+        try:
+            if link not in self.adkillr[ctx.message.server.id]['filters']:
+                await self.bot.say("That link is not in the current filters.")
+            else:
+                self.adkillr[ctx.message.server.id]['filters'].remove(link)
+                await self.bot.say("Filter removed.")
+        except KeyError:
+            await self.bot.say("There are no filters set.")
+            
+    @_adkillr.command(pass_context=True, no_pm=True)
+    async def listfilters(self, ctx):
+        """Lists the filters that the bot doesn't delete."""
+        try:
+            if ctx.message.server.id not in self.adkillr:
+                await self.bot.say("There are no filters set for this server.")
+            else:
+                await self.bot.say("The current filters are\n{}.".format(", ".join(self.adkillr[ctx.message.server.id]['filters'])))
+        except KeyError:
+            await self.bot.say("There are no filters set for this server.")
         
 def check_folders():
     if not os.path.exists("data/adkillr"):
