@@ -122,7 +122,7 @@ class Useful:
         self.bot.oauth_url = url
         await self.bot.say(""
         "{}, to invite the bot to your server use this link:\n"
-        "{}&permissions=-1"
+        "{}&permissions=8"
         "\n**BEWARE** You need the 'manage server' permission to add bots.".format(ctx.message.author.mention, url))
 
     @commands.command(pass_context=True)
