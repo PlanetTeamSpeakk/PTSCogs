@@ -48,33 +48,34 @@ class RaidProtect:
         dataIO.save_json("data/raidprotect/settings.json", self.settings)
         
     async def on_member_join(self, member):
-        try:
-            temp = self.settings[member.server.id]['joined']
-        except KeyError:
-            self.settings[member.server.id]['joined'] = 0
-        self.settings[member.server.id]['joined'] += 1
-        self.save_settings()
-        if (self.settings[member.server.id]['joined'] == 4) and not (self.settings[member.server.id]['protected']):
-            self.settings[member.server.id]['protected'] = True
+        if not "bots" in member.server.name.lower():
+            try:
+                temp = self.settings[member.server.id]['joined']
+            except KeyError:
+                self.settings[member.server.id]['joined'] = 0
+            self.settings[member.server.id]['joined'] += 1
             self.save_settings()
-            for channel in member.server.channels:
-                if channel.id == self.settings[member.server.id]['channel']:
-                    await self.bot.send_message(channel, "Raid protect has been turned on, more than 4 people joined within 8 seconds.")
-        await asyncio.sleep(8)
-        self.settings[member.server.id]['joined'] = 0
-        self.save_settings()
-        try:
-            if self.settings[member.server.id]['protected']:
+            if (self.settings[member.server.id]['joined'] == 4) and not (self.settings[member.server.id]['protected']):
+                self.settings[member.server.id]['protected'] = True
+                self.save_settings()
                 for channel in member.server.channels:
-                    if channel.id != self.settings[member.server.id]['channel']:
-                        perms = discord.PermissionOverwrite()
-                        perms.read_messages = False
-                        perms.send_messages = False
-                        await self.bot.edit_channel_permissions(channel, member, perms)
-                    else:
-                        await self.bot.send_message(channel, "{}, you have been muted in every channel because raidprotect is on, if you are not here to raid just wait patiently and your permissions will be restored.".format(member.mention))
-        except KeyError:
-            return
+                    if channel.id == self.settings[member.server.id]['channel']:
+                        await self.bot.send_message(channel, "Raid protect has been turned on, more than 4 people joined within 8 seconds.")
+            await asyncio.sleep(8)
+            self.settings[member.server.id]['joined'] = 0
+            self.save_settings()
+            try:
+                if self.settings[member.server.id]['protected']:
+                    for channel in member.server.channels:
+                        if channel.id != self.settings[member.server.id]['channel']:
+                            perms = discord.PermissionOverwrite()
+                            perms.read_messages = False
+                            perms.send_messages = False
+                            await self.bot.edit_channel_permissions(channel, member, perms)
+                        else:
+                            await self.bot.send_message(channel, "{}, you have been muted in every channel because raidprotect is on, if you are not here to raid just wait patiently and your permissions will be restored.".format(member.mention))
+            except KeyError:
+                return
         
 def check_folders():
     if not os.path.exists("data/raidprotect"):
