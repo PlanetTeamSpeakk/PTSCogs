@@ -43,7 +43,7 @@ class RaidProtect:
             self.settings[ctx.message.server.id] = {'protected': True}
             await self.bot.say("Your server is now protected, anyone that joins will only be able to see the set channel.")
         self.save_settings()
-        
+      
     def save_settings(self):
         dataIO.save_json("data/raidprotect/settings.json", self.settings)
         
@@ -53,17 +53,20 @@ class RaidProtect:
                 temp = self.settings[member.server.id]['joined']
             except KeyError:
                 self.settings[member.server.id]['joined'] = 0
-            self.settings[member.server.id]['joined'] += 1
-            self.save_settings()
-            if (self.settings[member.server.id]['joined'] == 4) and not (self.settings[member.server.id]['protected']):
-                self.settings[member.server.id]['protected'] = True
+            try:
+                self.settings[member.server.id]['joined'] += 1
                 self.save_settings()
-                for channel in member.server.channels:
-                    if channel.id == self.settings[member.server.id]['channel']:
-                        await self.bot.send_message(channel, "Raid protect has been turned on, more than 4 people joined within 8 seconds.")
-            await asyncio.sleep(8)
-            self.settings[member.server.id]['joined'] = 0
-            self.save_settings()
+                if (self.settings[member.server.id]['joined'] == 4) and not (self.settings[member.server.id]['protected']):
+                    self.settings[member.server.id]['protected'] = True
+                    self.save_settings()
+                    for channel in member.server.channels:
+                        if channel.id == self.settings[member.server.id]['channel']:
+                            await self.bot.send_message(channel, "Raid protect has been turned on, more than 4 people joined within 8 seconds.")
+                await asyncio.sleep(8)
+                self.settings[member.server.id]['joined'] = 0
+                self.save_settings()
+            except KeyError:
+                pass
             try:
                 if self.settings[member.server.id]['protected']:
                     for channel in member.server.channels:
