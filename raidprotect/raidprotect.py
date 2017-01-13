@@ -44,16 +44,6 @@ class RaidProtect:
             await self.bot.say("Your server is now protected, anyone that joins will only be able to see the set channel.")
         self.save_settings()
         
-    @raidprotect.command(pass_context=True)
-    async def reset(self, ctx):
-        """Resets all perms for the people that are in the raid list so they can send messages again."""
-        try:
-            del self.settings[ctx.message.server.id]['raid_list']
-            self.save_settings()
-            await self.bot.say("Raid list cleared and perms reset.")
-        except KeyError:
-            await self.bot.say("There is no one on the raid list yet.")
-        
     def save_settings(self):
         dataIO.save_json("data/raidprotect/settings.json", self.settings)
         
