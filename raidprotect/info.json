@@ -1,0 +1,8 @@
+
+{
+    "AUTHOR" : "PlanetTeamSpeak",
+    "INSTALL_MSG" : "Thanks for installing my RaidProtect cog!",
+    "NAME" : "RaidProtect",
+    "SHORT" : "Protects your server from raids.",
+    "DESCRIPTION" : "Protects your server if a lot of users join at the same moment."
+}
