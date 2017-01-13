@@ -12,9 +12,9 @@ from __main__ import send_cmd_help
 try:
     if not discord.opus.is_loaded():
         discord.opus.load_opus('libopus-0.dll')
-except OSError:  # Incorrect bitness
+except OSError:
     opus = False
-except:  # Missing opus
+except:
     opus = None
 else:
     opus = True
@@ -94,7 +94,7 @@ class Memes:
         """Adds a meme to the global list of memes."""
         memelink = memelink_imgurpls
         if memelink.startswith("http://i.imgur.com/"):
-            self.memelist[ctx.message.server.id](memelink + " by {}.".format(str(ctx.message.author)))
+            self.memelist.append(memelink + " by {}.".format(str(ctx.message.author)))
             dataIO.save_json("data/memes/memes.json", self.memelist)
             await self.bot.say("Meme added!")
         else:
