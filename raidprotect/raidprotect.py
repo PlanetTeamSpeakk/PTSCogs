@@ -13,37 +13,49 @@ class RaidProtect:
         self.settings = dataIO.load_json("data/raidprotect/settings.json")
 
     @commands.group(pass_context=True)
-    @checks.admin_or_permissions()
     async def raidprotect(self, ctx):
         """Manage raidprotect."""
         if not ctx.invoked_subcommand:
             await self.bot.send_cmd_help(ctx)
+        if not ctx.message.server.id in self.settings:
+            self.settings[ctx.message.server.id] = {'joined': 0, 'channel': None, 'members': 4, 'protected': False}
+            self.save_settings()
             
     @raidprotect.command(pass_context=True)
+    @checks.admin_or_permissions()
     async def setchannel(self, ctx, channel:discord.Channel):
         """Sets the channel new members should see when protected."""
-        try:
-            self.settings[ctx.message.server.id]['channel'] = channel.id
-        except KeyError:
-            self.settings[ctx.message.server.id] = {'channel': channel.id}
+        self.settings[ctx.message.server.id]['channel'] = channel.id
         self.save_settings()
         await self.bot.say("Channel set.")
             
     @raidprotect.command(pass_context=True)
+    @checks.admin_or_permissions()
     async def toggle(self, ctx):
         """Toggle raidprotect."""
-        try:
-            if self.settings[ctx.message.server.id]['protected']:
-                self.settings[ctx.message.server.id]['protected'] = False
-                await self.bot.say("Your server is no longer protected, anyone that joins will be able to see all channels.")
-            else:
-                self.settings[ctx.message.server.id]['protected'] = True
-                await self.bot.say("Your server is now protected, anyone that joins will only be able to see the set channel.")
-        except KeyError:
-            self.settings[ctx.message.server.id] = {'protected': True}
+        if self.settings[ctx.message.server.id]['protected']:
+            self.settings[ctx.message.server.id]['protected'] = False
+            await self.bot.say("Your server is no longer protected, anyone that joins will be able to see all channels.")
+        else:
+            self.settings[ctx.message.server.id]['protected'] = True
             await self.bot.say("Your server is now protected, anyone that joins will only be able to see the set channel.")
         self.save_settings()
-      
+        
+    @raidprotect.command(pass_context=True)
+    @checks.admin_or_permissions()
+    async def setmembers(self, ctx, members:int):
+        """Sets after how many members join in 8 seconds the bot will protect the server.
+        0 is unlimited, so that will turn it off. Default is 4."""
+        self.settings[ctx.message.server.id]['members'] = members
+        self.save_settings()
+        await self.bot.say("Members set")
+    
+    @raidprotect.command(pass_context=True)
+    async def members(self, ctx):
+        """Shows you how much people should join within 8 seconds before the bot should turn on raid protect.
+        0 is unlimited."""
+        await self.bot.say("The bot will turn on raidprotect when {} people join in 8 seconds.".format(self.settings[ctx.message.server.id]['members']))
+    
     def save_settings(self):
         dataIO.save_json("data/raidprotect/settings.json", self.settings)
         
@@ -56,12 +68,13 @@ class RaidProtect:
             try:
                 self.settings[member.server.id]['joined'] += 1
                 self.save_settings()
-                if (self.settings[member.server.id]['joined'] == 4) and not (self.settings[member.server.id]['protected']):
-                    self.settings[member.server.id]['protected'] = True
-                    self.save_settings()
-                    for channel in member.server.channels:
-                        if channel.id == self.settings[member.server.id]['channel']:
-                            await self.bot.send_message(channel, "Raid protect has been turned on, more than 4 people joined within 8 seconds.")
+                if self.settings[member.server.id]['members'] != 0:
+                    if (self.settings[member.server.id]['joined'] >= self.settings[member.server.id]['members']) and not (self.settings[member.server.id]['protected']):
+                        self.settings[member.server.id]['protected'] = True
+                        self.save_settings()
+                        for channel in member.server.channels:
+                            if (channel.id == self.settings[member.server.id]['channel']) and (self.settings[member.server.id]['channel'] != None):
+                                await self.bot.send_message(channel, "Raid protect has been turned on, more than 4 people joined within 8 seconds.")
                 await asyncio.sleep(8)
                 self.settings[member.server.id]['joined'] = 0
                 self.save_settings()
