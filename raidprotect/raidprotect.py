@@ -74,7 +74,7 @@ class RaidProtect:
                         self.save_settings()
                         for channel in member.server.channels:
                             if (channel.id == self.settings[member.server.id]['channel']) and (self.settings[member.server.id]['channel'] != None):
-                                await self.bot.send_message(channel, "Raid protect has been turned on, more than 4 people joined within 8 seconds.")
+                                await self.bot.send_message(channel, "Raid protect has been turned on, more than {} people joined within 8 seconds.".format(self.settings[member.server.id]['members']))
                 await asyncio.sleep(8)
                 self.settings[member.server.id]['joined'] = 0
                 self.save_settings()
