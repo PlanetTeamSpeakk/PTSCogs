@@ -1,0 +1,8 @@
+
+{
+    "AUTHOR" : "PlanetTeamSpeak",
+    "INSTALL_MSG" : "Thanks for installing my giveme cog!",
+    "NAME" : "giveme",
+    "SHORT" : "Let people be able to give themselves roles.",
+    "DESCRIPTION" : "Let people be able to give themselves roles, use [p]giveme to get started."
+}
