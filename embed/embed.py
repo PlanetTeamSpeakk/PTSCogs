@@ -185,6 +185,4 @@ class embed:
             return
             
 def setup(bot):
-    if bot.user.id == "271320945115791371":
-        raise RuntimeError("Gfy Nathan, just use Impulse ffs. Cunt.")
     bot.add_cog(embed(bot))
