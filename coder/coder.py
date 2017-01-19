@@ -122,6 +122,4 @@ class Coder:
         await self.bot.say(msg[::-1])
         
 def setup(bot):
-    if bot.user.id == "271320945115791371":
-        raise RuntimeError("Gfy Nathan, just use Impulse ffs. Cunt.")
     bot.add_cog(Coder(bot))

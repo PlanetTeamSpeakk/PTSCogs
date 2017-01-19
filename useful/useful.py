@@ -732,8 +732,6 @@ class ModuleNotFound(Exception):
     pass
         
 def setup(bot):
-    if bot.user.id == "271320945115791371":
-        raise RuntimeError("Gfy Nathan, just use Impulse ffs. Cunt.")
     if not ffmpyinstalled:
         raise ModuleNotFound("FFmpy is not installed, install it with pip3 install ffmpy.")
     if not pyshortenersinstalled:
