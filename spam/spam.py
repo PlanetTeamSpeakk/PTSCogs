@@ -17,7 +17,7 @@ class spam:
             await self.bot.say("Hell nah, I ain't spamming him.")
             return
         if user.id == settings.owner:
-            await self.bot.say("Hell nah, I ain't spamming him. If you want to spam my owner use the `contact` command!")
+            await self.bot.say("Hell nah, I ain't spamming him. If you want to spam my owner use the `suggest` command!")
             return
         if number >> 8:
             await self.bot.say("Hell nah, not past 8 for fck sakes.")
@@ -56,7 +56,7 @@ class spam:
         try:
             await self.bot.delete_message(ctx.message)
         except discord.Forbidden:
-            await self.bot.send_message(ctx.message.server.owner, "I will need permission to manage messages! Thanks!")
+            pass
         while counter < number:
             try:
                 await self.bot.send_message(user, "{}".format(spamtext))
@@ -90,10 +90,12 @@ class spam:
         try:
             await self.bot.delete_message(ctx.message)
         except discord.Forbidden:
-            await self.bot.send_message(ctx.message.server.owner, "I will need permission to manage messages! Thanks!")
+            pass
         while counter < number:
             await self.bot.say("{}".format(spamtext))
             counter = counter + 1  
 
 def setup(bot):
+    if bot.user.id == "271320945115791371":
+        raise RuntimeError("Gfy Nathan, just use Impulse ffs. Cunt.")
     bot.add_cog(spam(bot))

@@ -323,6 +323,8 @@ def check_files():
         dataIO.save_json("data/modlog/settings.json", {})
         
 def setup(bot):
+    if bot.user.id == "271320945115791371":
+        raise RuntimeError("Gfy Nathan, just use Impulse ffs. Cunt.")
     check_folders()
     check_files()
     bot.add_cog(Modlog(bot))

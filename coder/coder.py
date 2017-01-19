@@ -59,6 +59,11 @@ class Coder:
             return
         await self.bot.say(" ".join(morse))
         
+    @_to.command(pass_context=True, name="reversed")
+    async def _reversed(self, ctx, *, msg):
+        """Reverses your text"""
+        await self.bot.say(msg[::-1])
+        
     # from something coded to text
     @commands.group(name="from", pass_context=True)
     async def _from(self, ctx):
@@ -111,5 +116,12 @@ class Coder:
             return
         await self.bot.say("".join(alpha))
         
+    @_from.command(pass_context=True)
+    async def reversed(self, ctx, *, msg):
+        """Unreverses your text"""
+        await self.bot.say(msg[::-1])
+        
 def setup(bot):
+    if bot.user.id == "271320945115791371":
+        raise RuntimeError("Gfy Nathan, just use Impulse ffs. Cunt.")
     bot.add_cog(Coder(bot))

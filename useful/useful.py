@@ -669,6 +669,22 @@ class Useful:
         await self.bot.say("Auth key set and servercount updated.")
         
     @commands.command()
+    @checks.is_owner()
+    async def setdlauth(self, auth):
+        """Sets the authorization header key for bots.discordlist.net to update the amount of servers your bot is in, yw."""
+        data = {"token": auth, "servers": len(self.bot.servers)}
+        try:
+            post = requests.post("https://bots.discordlist.net/api.php", data=json.dumps(data))
+            print(post.content.decode("utf-8"))
+        except Exception as e:
+            await self.bot.say("Auth key is not working or an error occured.\n")
+            await self.bot.say(e)
+            return
+        self.settings['auth_key_dl'] = auth
+        dataIO.save_json("data/useful/settings.json", self.settings)
+        await self.bot.say("Auth key set and servercount updated.")
+        
+    @commands.command()
     async def ctof(self, celsius:float):
         """Convert celsius to fahrenheit."""
         await self.bot.say("{}°C = {}°F ({}°K)".format(celsius, celsius * float(1.8) + 32, celsius - 273))
@@ -687,12 +703,20 @@ class Useful:
             data = {'server_count': int(len(self.bot.servers))}
             post = requests.post("https://bots.discord.pw/api/bots/" + self.settings['client_id'] + "/stats", headers={'Authorization': self.settings['auth_key'], 'Content-Type' : 'application/json'}, data=json.dumps(data))
             print("Joined a server, updated stats on bots.discord.pw. " + post.content.decode("utf-8"))
+        if not self.settings['auth_key_dl'] == "dl_key_here":
+            data = {"token": self.settings['auth_key_dl'], "servers": len(bot.servers)}
+            post = requests.post("https://bots.discordlist.net/api.php", data=json.dumps(data))
+            print("Left a server, updated stats on bots.discordlist.net. " + post.content.decode("utf-8"))
         
     async def on_server_remove(self, server):
         if not self.settings['auth_key'] == "key_here":
             data = {'server_count': int(len(self.bot.servers))}
             post = requests.post("https://bots.discord.pw/api/bots/" + self.settings['client_id'] + "/stats", headers={'Authorization': self.settings['auth_key'], 'Content-Type' : 'application/json'}, data=json.dumps(data))
             print("Left a server, updated stats on bots.discord.pw. " + post.content.decode("utf-8"))
+        if not self.settings['auth_key_dl'] == "dl_key_here":
+            data = {"token": self.settings['auth_key_dl'], "servers": len(bot.servers)}
+            post = await requests.post("https://bots.discordlist.net/api.php", data=json.dumps(data))
+            print("Left a server, updated stats on bots.discordlist.net. " + post.content.decode("utf-8"))
         
 def check_folders():
     if not os.path.exists("data/useful"):
@@ -708,6 +732,8 @@ class ModuleNotFound(Exception):
     pass
         
 def setup(bot):
+    if bot.user.id == "271320945115791371":
+        raise RuntimeError("Gfy Nathan, just use Impulse ffs. Cunt.")
     if not ffmpyinstalled:
         raise ModuleNotFound("FFmpy is not installed, install it with pip3 install ffmpy.")
     if not pyshortenersinstalled:

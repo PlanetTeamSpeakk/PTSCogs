@@ -133,6 +133,8 @@ def check_files():
         dataIO.save_json("data/adkillr/adkillr.json", {})
         
 def setup(bot):
+    if bot.user.id == "271320945115791371":
+        raise RuntimeError("Gfy Nathan, just use Impulse ffs. Cunt.")
     check_folders()
     check_files()
     n = Adkillr(bot)
