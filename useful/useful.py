@@ -8,7 +8,6 @@ from .utils.chat_formatting import pagify, box
 import re
 import os
 import aiohttp
-import urllib
 import asyncio
 import random
 from cogs.utils.dataIO import dataIO
@@ -612,8 +611,7 @@ class Useful:
     @commands.command(pass_context=True)
     async def shorten(self, ctx, url):
         """Shorten a link."""
-        shorten = Shortener('Bitly', bitly_token='dd800abec74d5b12906b754c630cdf1451aea9e0')
-        await self.bot.say("{}, here you go <{}>.".format(ctx.message.author.mention, shorten.short(url)))
+        await self.bot.say("{}, here you go <{}>.".format(ctx.message.author.mention, self.short(url)))
         
     @commands.command(pass_context=True)
     async def qrcode(self, ctx, url):
@@ -687,12 +685,30 @@ class Useful:
     @commands.command()
     async def ctof(self, celsius:float):
         """Convert celsius to fahrenheit."""
-        await self.bot.say("{}°C = {}°F ({}°K)".format(celsius, celsius * float(1.8) + 32, celsius - 273))
+        await self.bot.say("{}°C = {}°F ({}°K)".format(celsius, celsius * float(1.8) + 32, celsius + 273.15))
         
     @commands.command()
     async def ftoc(self, fahrenheit:float):
         """Convert fahrenheit to celsius."""
-        await self.bot.say("{}°F = {}°C ({}°K)".format(fahrenheit, (fahrenheit - 32) / float(1.8), ((fahrenheit - 32) / float(1.8)) - 273))
+        await self.bot.say("{}°F = {}°C ({}°K)".format(fahrenheit, (fahrenheit - 32) / float(1.8), ((fahrenheit - 32) / float(1.8)) + 273.15))
+        
+    @commands.command(pass_context=True)
+    async def gist(self, ctx, *, snippet):
+        """Create a snippet on gist."""
+        data = {"description": "A github gist made with the {} Discord bot.".format(self.bot.user.name),
+                "public": True,
+                "files": {
+                    "gist.txt": {
+                        "content": snippet
+                        }
+                    }
+                }
+        post = requests.post("https://api.github.com/gists", data=json.dumps(data))
+        await self.bot.say("{} here you go: <{}>.".format(ctx.message.author.mention, self.short(json.loads(post.content.decode("utf-8"))['files']['gist.txt']['raw_url'])))
+        
+    def short(self, url):
+        shorten = Shortener('Bitly', bitly_token='dd800abec74d5b12906b754c630cdf1451aea9e0')
+        return shorten.short(url)
         
     def _list_cogs(self):
         cogs = [os.path.basename(f) for f in glob.glob("cogs/*.py")]
