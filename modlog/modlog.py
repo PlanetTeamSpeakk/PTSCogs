@@ -19,7 +19,7 @@ class Modlog:
         if not ctx.invoked_subcommand:
             await self.bot.send_cmd_help(ctx)
         if ctx.message.server.id not in self.settings:
-            self.settings[ctx.message.server.id] = {'channel': None, 'disabled': False, 'join': True, 'leave': True, 'voicechat': True, 'msgedit': True, 'msgdelete': True, 'roleedit': True, 'ban': True, 'reactions': True}
+            self.settings[ctx.message.server.id] = {'channel': None, 'disabled': False, 'join': True, 'leave': True, 'voicechat': True, 'msgedit': True, 'msgdelete': True, 'roleedit': True, 'ban': True, 'reactions': True, 'channels': True, 'nicknames': True}
             self.save_settings()
             
     @modlogset.command(pass_context=True)
@@ -47,20 +47,24 @@ class Modlog:
         server = ctx.message.server
         modules = ['join', 'leave', 'ban', 'voicechat', 'msgedit', 'msgdelete', 'roleedit', 'channels', 'nicknames']
         if module == None:
-            await self.bot.say("```py"
-                            "\nChannel: " + str(self.settings[server.id]['channel']) + 
-                            "\nDisabled: " + str(self.settings[server.id]['disabled']) +
-                            "\nJoin: " + str(self.settings[server.id]['join']) + 
-                            "\nLeave: " + str(self.settings[server.id]['leave']) +
-                            "\nBan: " + str(self.settings[server.id]['ban']) + 
-                            "\nVoicechat: " + str(self.settings[server.id]['voicechat']) +
-                            "\nMessage edit: " + str(self.settings[server.id]['msgedit']) +
-                            "\nMessage delete: " + str(self.settings[server.id]['msgdelete']) +
-                            "\nRole edit: " + str(self.settings[server.id]['roleedit']) +
-                            "\nChannels: " + str(self.settings[server.id]['channels']) +
-                            "\nNicknames: " + str(self.settings[server.id]['nicknames']) +
-                            "\n\nFalse = not being logged.\nTrue = being logged." + "```" + 
-                            "You can toggle\n{}.".format(", ".join(modules)))
+            msg = "```py"
+            try:
+                msg += "\nChannel: " + str(self.settings[server.id]['channel'])
+                msg += "\nDisabled: " + str(self.settings[server.id]['disabled'])
+                msg += "\nJoin: " + str(self.settings[server.id]['join'])
+                msg += "\nLeave: " + str(self.settings[server.id]['leave'])
+                msg += "\nBan: " + str(self.settings[server.id]['ban'])
+                msg += "\nVoicechat: " + str(self.settings[server.id]['voicechat'])
+                msg += "\nMessage edit: " + str(self.settings[server.id]['msgedit'])
+                msg += "\nMessage delete: " + str(self.settings[server.id]['msgdelete'])
+                msg += "\nRole edit: " + str(self.settings[server.id]['roleedit'])
+                msg += "\nChannels: " + str(self.settings[server.id]['channels'])
+                msg += "\nNicknames: " + str(self.settings[server.id]['nicknames'])
+                msg += "\n\nFalse = not being logged.\nTrue = being logged."
+                msg += "```"
+            except KeyError:
+                pass
+            await self.bot.say(msg + "You can toggle\n{}.".format(", ".join(modules)))
                             
         elif module.lower() == 'join':
             if self.settings[server.id]['join']:
