@@ -60,10 +60,10 @@ class Modlog:
                 msg += "\nRole edit: " + str(self.settings[server.id]['roleedit'])
                 msg += "\nChannels: " + str(self.settings[server.id]['channels'])
                 msg += "\nNicknames: " + str(self.settings[server.id]['nicknames'])
-                msg += "\n\nFalse = not being logged.\nTrue = being logged."
-                msg += "```"
             except KeyError:
                 pass
+            msg += "\n\nFalse = not being logged.\nTrue = being logged."
+            msg += "```"
             await self.bot.say(msg + "You can toggle\n{}.".format(", ".join(modules)))
                             
         elif module.lower() == 'join':
