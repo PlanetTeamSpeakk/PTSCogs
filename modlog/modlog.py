@@ -45,7 +45,7 @@ class Modlog:
     async def toggle(self, ctx, module=None):
         """Toggle what the bot should and what the bot shouldn't log."""
         server = ctx.message.server
-        modules = ['join', 'leave', 'ban', 'voicechat', 'msgedit', 'msgdelete', 'roleedit', 'channels']
+        modules = ['join', 'leave', 'ban', 'voicechat', 'msgedit', 'msgdelete', 'roleedit', 'channels', 'nicknames']
         if module == None:
             await self.bot.say("```py"
                             "\nChannel: " + str(self.settings[server.id]['channel']) + 
@@ -58,6 +58,7 @@ class Modlog:
                             "\nMessage delete: " + str(self.settings[server.id]['msgdelete']) +
                             "\nRole edit: " + str(self.settings[server.id]['roleedit']) +
                             "\nChannels: " + str(self.settings[server.id]['channels']) +
+                            "\nNicknames: " + str(self.settings[server.id]['nicknames']) +
                             "\n\nFalse = not being logged.\nTrue = being logged." + "```" + 
                             "You can toggle\n{}.".format(", ".join(modules)))
                             
@@ -136,7 +137,7 @@ class Modlog:
                 self.settings[server.id]['channels'] = True
                 self.save_settings()
                 return
-            if self.settings[server.id]['channels']:
+            elif self.settings[server.id]['channels']:
                 self.settings[server.id]['channels'] = False
                 self.save_settings()
                 await self.bot.say("Channels have been disabled.")
@@ -145,30 +146,44 @@ class Modlog:
                 self.save_settings()
                 await self.bot.say("Channels have been enabled.")
                 
+        elif module.lower() == 'nicknames':
+            if 'nicknames' not in self.settings[server.id]:
+                self.settings[server.id]['nicknames'] = True
+                self.save_settings()
+                await self.bot.say("Nicknames have been enabled.")
+            elif self.settings[server.id]['nicknames']:
+                self.settings[server.id]['nicknames'] = False
+                self.save_settings()
+                await self.bot.say("Nicknames have been disabled.")
+            else:
+                self.settings[server.id]['nicknames'] = True
+                self.save_settings()
+                await self.bot.say("Nicknames have been enabled.")
+                
         else:
             await self.bot.say("That module cannot be toggled, you can toggle\n{}.".format(", ".join(modules)))
         
     async def on_member_join(self, member):
         if self.is_module(member.server, 'join'):
             await self.log(member.server, "`[{}]` :inbox_tray: **Member Join Log**\n"
-                                        "```Member Joined: {}```".format(datetime.datetime.now().strftime("%X"), str(member)))
+                                        "```Member Joined: {}```".format(self.get_time(), str(member)))
                                         
     async def on_member_remove(self, member):
         if self.is_module(member.server, 'leave'):
             await self.log(member.server, "`[{}]` :outbox_tray: **Member Leave/Kick Log**\n"
-                                        "```Member Left/Kicked: {}```".format(datetime.datetime.now().strftime("%X"), str(member)))
+                                        "```Member Left/Kicked: {}```".format(self.get_time(), str(member)))
         
     async def on_member_ban(self, member):
         if self.is_module(member.server, 'ban'):
             await self.log(member.server, "`[{}]` :hammer: **Member Ban Log**\n"
-                                        "```Member Banned: {}```".format(datetime.datetime.now().strftime("%X"), str(member)))
+                                        "```Member Banned: {}```".format(self.get_time(), str(member)))
                                         
     async def on_voice_state_update(self, before, after):
         if self.is_module(before.server, 'voicechat'):
             if before.voice_channel != after.voice_channel:
                 await self.log(before.server, "`[{}]` :bangbang: **Voicechat Log**\n"
                                             "```User: {}"
-                                            "\nBefore: {}".format(datetime.datetime.now().strftime("%X"), str(before), str(before.voice_channel)) +
+                                            "\nBefore: {}".format(self.get_time(), str(before), str(before.voice_channel)) +
                                             "\nAfter: {}```".format(str(after.voice_channel)))
                                                 
     async def on_message_edit(self, before, after):
@@ -179,7 +194,7 @@ class Modlog:
                 await self.log(before.server, "`[{}]` :pencil2: **Message Edit Log**\n"
                                             "```User: {}"
                                             "\nChannel: {}"
-                                            "\nBefore: {}".format(datetime.datetime.now().strftime("%X"), before.author.name, before.channel.name, before.content) +
+                                            "\nBefore: {}".format(self.get_time(), before.author.name, before.channel.name, before.content) +
                                             "\nAfter: {}```".format(after.content))
                                             
     async def on_message_delete(self, message):
@@ -189,7 +204,7 @@ class Modlog:
             await self.log(message.server, "`[{}]` :wastebasket: **Message Delete Log**\n"
                                             "```User: {}\n"
                                             "Channel: {}\n"
-                                            "Message: {}\n```".format(datetime.datetime.now().strftime("%X"), str(message.author), str(message.channel), message.content))
+                                            "Message: {}\n```".format(self.get_time(), str(message.author), str(message.channel), message.content))
                                             
     async def on_server_role_create(self, role):
         if self.is_module(role.server, 'roleedit'):
@@ -217,12 +232,12 @@ class Modlog:
                                         "\n\tCan mention everyone: {}"
                                         "\n\tCan move members: {}"
                                         "\n\tCan mute members: {}"
-                                        "\n\tCan read message history: {}```".format(datetime.datetime.now().strftime("%X"), str(role.name), str(role.colour), str(role.mentionable), str(role.hoist), str(perms.administrator), str(perms.ban_members), str(perms.kick_members), str(perms.change_nickname), str(perms.connect), str(perms.create_instant_invite), str(perms.deafen_members), str(perms.embed_links), str(perms.manage_channels), str(perms.manage_emojis), str(perms.manage_messages), str(perms.manage_nicknames), str(perms.manage_roles), str(perms.manage_server), str(perms.mention_everyone), str(perms.move_members), str(perms.mute_members), str(perms.read_message_history), str(perms.send_messages), str(perms.speak), str(perms.use_voice_activation), str(perms.manage_webhooks), str(perms.add_reactions)))
+                                        "\n\tCan read message history: {}```".format(self.get_time(), str(role.name), str(role.colour), str(role.mentionable), str(role.hoist), str(perms.administrator), str(perms.ban_members), str(perms.kick_members), str(perms.change_nickname), str(perms.connect), str(perms.create_instant_invite), str(perms.deafen_members), str(perms.embed_links), str(perms.manage_channels), str(perms.manage_emojis), str(perms.manage_messages), str(perms.manage_nicknames), str(perms.manage_roles), str(perms.manage_server), str(perms.mention_everyone), str(perms.move_members), str(perms.mute_members), str(perms.read_message_history), str(perms.send_messages), str(perms.speak), str(perms.use_voice_activation), str(perms.manage_webhooks), str(perms.add_reactions)))
                                         
     async def on_server_role_delete(self, role):
         if self.is_module(role.server, 'roleedit'):
             await self.log(role.server, "`[{}]` :game_die: **Role Delete Log**\n"
-                                        "```Role: {}```".format(datetime.datetime.now().strftime("%X"), role.name))
+                                        "```Role: {}```".format(self.get_time(), role.name))
         
     async def on_server_role_update(self, before, after):
         if self.is_module(before.server, 'roleedit'):
@@ -252,7 +267,7 @@ class Modlog:
                                             "\n\tCan mention everyone: {}"
                                             "\n\tCan move members: {}"
                                             "\n\tCan mute members: {}"
-                                            "\n\tCan read message history: {}".format(datetime.datetime.now().strftime("%X"), str(before.name), str(before.colour), str(before.mentionable), str(before.hoist), str(perms.administrator), str(perms.ban_members), str(perms.kick_members), str(perms.change_nickname), str(perms.connect), str(perms.create_instant_invite), str(perms.deafen_members), str(perms.embed_links), str(perms.manage_channels), str(perms.manage_emojis), str(perms.manage_messages), str(perms.manage_nicknames), str(perms.manage_roles), str(perms.manage_server), str(perms.mention_everyone), str(perms.move_members), str(perms.mute_members), str(perms.read_message_history), str(perms.send_messages), str(perms.speak), str(perms.use_voice_activation), str(perms.manage_webhooks), str(perms.add_reactions)) +
+                                            "\n\tCan read message history: {}".format(self.get_time(), str(before.name), str(before.colour), str(before.mentionable), str(before.hoist), str(perms.administrator), str(perms.ban_members), str(perms.kick_members), str(perms.change_nickname), str(perms.connect), str(perms.create_instant_invite), str(perms.deafen_members), str(perms.embed_links), str(perms.manage_channels), str(perms.manage_emojis), str(perms.manage_messages), str(perms.manage_nicknames), str(perms.manage_roles), str(perms.manage_server), str(perms.mention_everyone), str(perms.move_members), str(perms.mute_members), str(perms.read_message_history), str(perms.send_messages), str(perms.speak), str(perms.use_voice_activation), str(perms.manage_webhooks), str(perms.add_reactions)) +
                                             "\n\nAfter:\nRole: {}"
                                             "\nColour: {}"
                                             "\nPermissions:"
@@ -280,27 +295,36 @@ class Modlog:
     async def on_channel_create(self, channel):
         if self.is_module(channel.server, 'channels'):
             await self.log(channel.server, "`[{}]` :pick: **Channel Create Log**\n"
-                                        "```Channel: {}```".format(datetime.datetime.now().strftime("%X"), channel.name))
+                                        "```Channel: {}```".format(self.get_time(), channel.name))
                                         
     async def on_channel_delete(self, channel):
         if self.is_module(channel.server, 'channels'):
             await self.log(channel.server, "`[{}]` :pick: **Channel Delete Log**\n"
-                                            "```Channel: {}```".format(datetime.datetime.now().strftime("%X"), channel.name))
+                                            "```Channel: {}```".format(self.get_time(), channel.name))
                                             
     async def on_channel_update(self, before, after):
         if self.is_module(before.server, 'channels'):
             if not before.name == after.name:
                 await self.log(before.server, "`[{}]` :pick: **Channel Edit Log**\n"
-                                        "```Before: {}\nAfter: {}```".format(datetime.datetime.now().strftime("%X"), before.name, after.name))
+                                            "```Before: {}\nAfter: {}```".format(self.get_time(), before.name, after.name))
+        
+    async def on_member_update(self, before, after):
+        if self.is_module(before.server, 'nicknames'):
+            if not before.nick == after.nick:
+                await self.log(before.server, "`[{}]` :warning: **Nickname Change Log**\n"
+                                            "```User: {}\nBefore: {}\nAfter: {}```".format(self.get_time(), str(before), before.nick, after.nick))
         
     async def log(self, server, message):
         channel = discord.utils.get(server.channels, id=self.settings[server.id]['channel'])
         await self.bot.send_message(channel, message)
         
+    def get_time(self):
+        return datetime.datetime.now().strftime("%X")
+        
     def is_module(self, server, module):
         try:
             if not self.settings[server.id]['disabled']:
-                if (self.settings[server.id]['channel'] is not None) and (self.settings[server.id][module]):
+                if (self.settings[server.id]['channel'] != None) and (self.settings[server.id][module]):
                     return True
                 else:
                     return False
