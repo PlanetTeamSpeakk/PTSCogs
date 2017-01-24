@@ -60,7 +60,7 @@ class RaidProtect:
         dataIO.save_json("data/raidprotect/settings.json", self.settings)
         
     async def on_member_join(self, member):
-        if not "bots" in member.server.name.lower():
+        if (member.server.id in self.settings) and not ("bots" in member.server.name.lower()):
             try:
                 temp = self.settings[member.server.id]['joined']
             except KeyError:
