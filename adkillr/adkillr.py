@@ -15,6 +15,10 @@ class Adkillr:
     async def adkill(self, message):
         """Kill them ads!"""
         if message.server is not None:
+            try:
+                temp = message.author.roles
+            except AttributeError:
+                return
             serverid = message.server.id
             ad = message
             self.adkillr = None
