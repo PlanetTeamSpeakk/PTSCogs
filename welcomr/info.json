@@ -1,0 +1,8 @@
+
+{
+    "AUTHOR" : "PlanetTeamSpeak",
+    "INSTALL_MSG" : "Thanks for installing my welcomr cog!",
+    "NAME" : "Welcomr",
+    "SHORT" : "Welcome new members, say goodbye to old members.",
+    "DESCRIPTION" : "Welcome new members, say goodbye to old members. Do [p]welcomeset to get started."
+}
