@@ -26,7 +26,7 @@ class GiveMe:
             await self.bot.say("The role has been added, you're welcome.")
 
             
-    @giveme.command(pass_context=True)
+    @giveme.command(pass_context=True, no_pm=True)
     async def list(self, ctx):
         """Lists the giveme's this server has."""
         if ctx.message.server.id not in self.settings:
@@ -107,8 +107,8 @@ class GiveMe:
                     return
                 else:
                     self.settings[ctx.message.server.id]['givemes'][role] = roleObj.id
-                self.save_settings() 
-                await self.bot.say("Giveme's added.")
+        self.save_settings() 
+        await self.bot.say("Giveme's added.")
                 
     def save_settings(self):
         dataIO.save_json("data/giveme/settings.json", self.settings)
