@@ -12,7 +12,7 @@ class Modlog:
         self.bot = bot
         self.settings = dataIO.load_json("data/modlog/settings.json")
         
-    @commands.group(pass_context=True)
+    @commands.group(pass_context=True, no_pm=True)
     @checks.mod_or_permissions()
     async def modlogset(self, ctx):
         """Set the settings for the moderation logs."""
@@ -22,14 +22,14 @@ class Modlog:
             self.settings[ctx.message.server.id] = {'channel': None, 'disabled': False, 'join': True, 'leave': True, 'voicechat': True, 'msgedit': True, 'msgdelete': True, 'roleedit': True, 'ban': True, 'reactions': True, 'channels': True, 'nicknames': True}
             self.save_settings()
             
-    @modlogset.command(pass_context=True)
+    @modlogset.command(pass_context=True, no_pm=True)
     async def channel(self, ctx, channel:discord.Channel):
         """Sets the channel the bot should log to."""
         self.settings[ctx.message.server.id]['channel'] = channel.id
         self.save_settings()
         await self.bot.say("Channel set, I will now log to {}.".format(channel.mention))
             
-    @modlogset.command(pass_context=True)
+    @modlogset.command(pass_context=True, no_pm=True)
     async def disable(self, ctx):
         """Disable the logging system completely."""
         if not self.settings[ctx.message.server.id]['disabled']:
@@ -41,7 +41,7 @@ class Modlog:
             self.save_settings()
             await self.bot.say("Logging system has been enabled.")
             
-    @modlogset.command(pass_context=True)
+    @modlogset.command(pass_context=True, no_pm=True)
     async def toggle(self, ctx, module=None):
         """Toggle what the bot should and what the bot shouldn't log."""
         server = ctx.message.server
@@ -326,15 +326,16 @@ class Modlog:
         return datetime.datetime.now().strftime("%X")
         
     def is_module(self, server, module):
-        try:
-            if not self.settings[server.id]['disabled']:
-                if (self.settings[server.id]['channel'] != None) and (self.settings[server.id][module]):
-                    return True
-                else:
-                    return False
+        if server == None:
+            return False
+        elif server.id not in self.settings:
+            return False
+        elif not self.settings[server.id]['disabled']:
+            if (self.settings[server.id]['channel'] != None) and (self.settings[server.id][module]):
+                return True
             else:
                 return False
-        except KeyError:
+        else:
             return False
         
     def save_settings(self):
