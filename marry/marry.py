@@ -45,7 +45,7 @@ class marry:
             if times_married > self.settings[ctx.message.server.id]['marry_limit']:
                 await self.bot.say("Your loved one has reached the marry limit ({}).".format(self.settings[ctx.message.server.id]['marry_limit']))
                 return
-        elif yourlovedone.id == self.bot.user.id:
+        elif yourlovedone.id == ctx.message.server.me.id:
             if ctx.message.author.id != settings.owner:
                 await self.bot.say("I'd only marry my owner.")
                 return
