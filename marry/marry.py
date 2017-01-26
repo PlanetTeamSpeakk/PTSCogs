@@ -13,7 +13,7 @@ class marry:
         self.bot = bot
         self.settings = dataIO.load_json("data/marry/settings.json")
 
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, no_pm=True)
     async def marry(self, ctx, yourlovedone:discord.Member):
         """Now you can finally marry your loved one."""
         if ctx.message.server.id not in self.settings:
@@ -85,7 +85,7 @@ class marry:
                 await self.bot.say("{} married {}, congratulations! I suggest telling the server owner or moderators to make a #marriage channel though.".format(ctx.message.author.mention, yourlovedone.mention))
         return
         
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, no_pm=True)
     @checks.admin_or_permissions()
     async def forcemarry(self, ctx, person:discord.Member, lovedone:discord.Member):
         """Now you can finally marry your loved one."""
@@ -159,7 +159,7 @@ class marry:
                 await self.bot.say("{} married {}, congratulations! I suggest telling the server owner or moderators to make a #marriage channel though.".format(person.mention, lovedone.mention))
         return
         
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, no_pm=True)
     async def divorce(self, ctx, divorce_id):
         """Divorce your ex."""
         try:
@@ -191,7 +191,7 @@ class marry:
             await self.bot.say("That's not a valid ID.")
             return
             
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, no_pm=True)
     @checks.admin_or_permissions()
     async def setmarrylimit(self, ctx, times:int):
         """Sets the limit someone can marry someone. 0 is unlimited."""
@@ -199,7 +199,7 @@ class marry:
         dataIO.save_json("data/marry/settings.json", self.settings)
         await self.bot.say("Done!")
        
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, no_pm=True)
     async def marrylimit(self, ctx):
         """Shows you the current marrylimit."""
         if ctx.message.server.id not in self.settings:
@@ -209,7 +209,7 @@ class marry:
         else:
             await self.bot.say("The marry limit is {}.".format(self.settings[ctx.message.server.id]['marrylimit']))
         
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, no_pm=True)
     @checks.admin_or_permissions()
     async def massdivorce(self, ctx):
         """Divorces everyone on the server."""
@@ -243,7 +243,7 @@ class marry:
             await self.bot.say("K then not.")
             return
             
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, no_pm=True)
     async def marrycount(self, ctx):
         """Counts all the married couples in this server."""
         count = 0
@@ -255,7 +255,7 @@ class marry:
         else:
             await self.bot.say("There are currently {} married couples in this server.".format(count))
             
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, no_pm=True)
     @checks.admin_or_permissions()
     async def admindivorce(self, ctx, person, person2):
         """Divorces someone by NAME. If the name is bigger than one word put quotes around it
