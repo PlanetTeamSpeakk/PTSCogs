@@ -118,11 +118,11 @@ class marry:
             if times_married > self.settings[ctx.message.server.id]['marry_limit']:
                 await self.bot.say("This person's loved one has reached the marry limit ({}).".format(self.settings[ctx.message.server.id]['marry_limit']))
                 return
-        elif person.id == self.bot.user.id:
+        elif person.id == ctx.message.server.me.id:
             if lovedone.id is not settings.owner:
                 await self.bot.say("I'd only marry my owner.")
                 return
-        elif lovedone.id == self.bot.user.id:
+        elif lovedone.id == ctx.message.server.me.id:
             if person.id is not settings.owner:
                 await self.bot.say("I'd only marry my owner.")
                 return
@@ -148,12 +148,12 @@ class marry:
             pass
         marchan = discord.utils.find(lambda c: c.name == 'marriage', ctx.message.server.channels)
         if marchan:
-            await self.bot.say("You're now married, congratulations!")
+            await self.bot.say("They're now married, congratulations!")
             await self.bot.send_message(marchan, "{} was forced to marry {}.".format(person.mention, lovedone.mention))
         else:
             try:
                 marchan = await self.bot.create_channel(ctx.message.server, "marriage")
-                await self.bot.say("You're now married, congratulations!")
+                await self.bot.say("They're now married, congratulations!")
                 await self.bot.send_message(marchan, "{} was forced to marry {}.".format(person.mention, lovedone.mention))
             except:
                 await self.bot.say("{} married {}, congratulations! I suggest telling the server owner or moderators to make a #marriage channel though.".format(person.mention, lovedone.mention))
@@ -202,10 +202,12 @@ class marry:
     @commands.command(pass_context=True)
     async def marrylimit(self, ctx):
         """Shows you the current marrylimit."""
-        try:
-            await self.bot.say("The marrylimit is {}.".format(self.settings[ctx.message.server.id]['marry_limit']))
-        except KeyError:
-            await self.bot.say("The marrylimit is unlimited.")
+        if ctx.message.server.id not in self.settings:
+            await self.bot.say("There is no marry limit.")
+        elif self.settings[ctx.message.server.id]['marrylimit'] == 0:
+            await self.bot.say("There is no marry limit.")
+        else:
+            await self.bot.say("The marry limit is {}.".format(self.settings[ctx.message.server.id]['marrylimit']))
         
     @commands.command(pass_context=True)
     @checks.admin_or_permissions()
@@ -244,15 +246,14 @@ class marry:
     @commands.command(pass_context=True)
     async def marrycount(self, ctx):
         """Counts all the married couples in this server."""
-        msg = await self.bot.say("Counting married couples, hold up...")
         count = 0
         for role in ctx.message.server.roles:
             if " ❤ " in role.name:
-                count = count + 1
+                count += 1
         if count == 1:
-            await self.bot.edit_message(msg, "There is currently {} married couple in this server.".format(count))
+            await self.bot.say("There is currently {} married couple in this server.".format(count))
         else:
-            await self.bot.edit_message(msg, "There are currently {} married couples in this server.".format(count))
+            await self.bot.say("There are currently {} married couples in this server.".format(count))
             
     @commands.command(pass_context=True)
     @checks.admin_or_permissions()
