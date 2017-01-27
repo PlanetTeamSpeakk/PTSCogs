@@ -706,6 +706,12 @@ class Useful:
         post = requests.post("https://api.github.com/gists", data=json.dumps(data))
         await self.bot.say("{} here you go: <{}>.".format(ctx.message.author.mention, self.short(json.loads(post.content.decode("utf-8"))['files']['gist.txt']['raw_url'])))
         
+    @commands.command()
+    async def curconvert(self, from_cur, to_cur, amount:float):
+        """Convert currency using currency codes."""
+        request = requests.get("http://free.currencyconverterapi.com/api/v3/convert?q={}_{}&compact=y".format(from_cur.upper(), to_cur.upper()))
+        await self.bot.say("{} {} = {} {}".format(amount, from_cur.upper(), float(json.loads(request.content.decode("utf-8"))['{}_{}'.format(from_cur.upper(), to_cur.upper())]['val']) * amount, to_cur.upper()))
+        
     def short(self, url):
         shorten = Shortener('Bitly', bitly_token='dd800abec74d5b12906b754c630cdf1451aea9e0')
         return shorten.short(url)
