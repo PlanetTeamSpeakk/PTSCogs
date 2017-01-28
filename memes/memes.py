@@ -524,11 +524,11 @@ class Memes:
         if ctx.message.server.id not in self.settings:
             self.settings[ctx.message.server.id] = {'memes': memelist, 'disabled': False}
         if not self.settings[ctx.message.server.id]['disabled']:
-            self.settings[ctx.message.server.id]['disabled'] = True
             await self.bot.say("Bot will no longer respond to \"ayy\", \"oh shit\" and \"feelsbadman\".")
+            self.settings[ctx.message.server.id]['disabled'] = True
         else:
-            self.settings[ctx.message.server.id]['disabled'] = False
             await self.bot.say("Bot will once again respond to \"ayy\", \"oh shit\" and \"feelsbadman\".")
+            self.settings[ctx.message.server.id]['disabled'] = False
         self.save_settings()
         
     async def memes(self, message):
