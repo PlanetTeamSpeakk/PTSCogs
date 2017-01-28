@@ -67,7 +67,10 @@ class Useful:
 
         Example:
         [p]calc 1+1+3*4"""
-        prob = re.sub("[^0-9+-/* ]", "", ctx.message.content[len(ctx.prefix + "calc "):].strip())
+        prob = re.sub("[^0-9+-/* ]", "", ctx.message.content[len(ctx.prefix + ctx.command.name) + 1:].strip())
+        if len(evaluation) > 64:
+            await self.bot.say("That evalution is too big, I can allow a maximum of 64 characters, I suggest you divide it in smaller portions.")
+            return
         try:
             answer = str(eval(prob))
             await self.bot.say("`{}` = `{}`".format(prob, answer))
