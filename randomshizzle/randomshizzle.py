@@ -216,6 +216,15 @@ class Randomshizzle:
                                 "0    1    2    3    4    5    6    7    8    9   10\n"
                                 "|----|----|----|----|----|----|----|----|----|----|\n"
                                 + "     " * random.randint(0, 5)+ "^```")
+                                
+    @commands.command(pass_context=True)
+    async def rate(self, ctx, object):
+        """Rate something."""
+        for mention in ctx.message.mentions:
+            if mention.id == ctx.message.server.me.id:
+                await self.bot.say("I would rate myself a 10/10.")
+                return
+        await self.bot.say("I would rate {} a {}/10.".format(object, random.randint(0, 10)))
       
 def check_folders():
     if not os.path.exists("data/pressf"):
