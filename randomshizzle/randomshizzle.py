@@ -224,6 +224,9 @@ class Randomshizzle:
             if mention.id == ctx.message.server.me.id:
                 await self.bot.say("I would rate myself a 10/10.")
                 return
+            elif mention.id == self.bot.settings.owner:
+                await self.bot.say("I would rate my owner a 10/10.")
+                return
         await self.bot.say("I would rate {} a {}/10.".format(something, random.randint(0, 10)))
       
 def check_folders():
