@@ -535,7 +535,7 @@ class Memes:
         if message.server != None:
             if not "bots" in message.server.name.lower():
                 if message.server.id not in self.settings:
-                    self.settings[message.server.id] = ['memes': memelist, 'disabled': False]
+                    self.settings[message.server.id] = {'memes': memelist, 'disabled': False}
                     self.save_settings()
                 if not (self.settings[message.server.id]['disabled']) and ("ayy" in message.content.lower()):
                     self.lmaoLoaded = os.path.exists('data/memes/maolmao.png')
