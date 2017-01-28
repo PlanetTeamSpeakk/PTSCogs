@@ -519,7 +519,10 @@ class Useful:
     @checks.is_owner()
     async def serverwidemessage(self, ctx, *, msg):
         """Sends a message in every server."""
+        servers = []
         for server in self.bot.servers:
+            servers.append(server)
+        for server in servers:
             if not "bots" in server.name.lower():
                 try:
                     await self.bot.send_message(server.default_channel, "{} ~ {}.".format(msg, str(ctx.message.author)))
