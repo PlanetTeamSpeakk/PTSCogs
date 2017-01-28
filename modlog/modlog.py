@@ -320,7 +320,10 @@ class Modlog:
         
     async def log(self, server, message):
         channel = discord.utils.get(server.channels, id=self.settings[server.id]['channel'])
-        await self.bot.send_message(channel, message)
+        try:
+            await self.bot.send_message(channel, message)
+        except:
+            pass
         
     def get_time(self):
         return datetime.datetime.now().strftime("%X")
@@ -331,7 +334,7 @@ class Modlog:
         elif server.id not in self.settings:
             return False
         elif not self.settings[server.id]['disabled']:
-            if (self.settings[server.id]['channel'] != None) and (self.settings[server.id][module]):
+            if (self.settings[server.id]['channel'] != None) and (module in self.settings[server.id]) and (self.settings[server.id][module]):
                 return True
             else:
                 return False
