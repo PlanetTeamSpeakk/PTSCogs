@@ -710,11 +710,32 @@ class Useful:
         post = requests.post("https://api.github.com/gists", data=json.dumps(data))
         await self.bot.edit_message(msg, "{} here you go: <{}> (full) or <{}> (raw).".format(ctx.message.author.mention, self.short(json.loads(post.content.decode("utf-8"))['html_url']), self.short(json.loads(post.content.decode("utf-8"))['files']['gist.txt']['raw_url'])))
         
-    @commands.command()
+    @commands.group(invoke_without_command=True)
     async def curconvert(self, from_cur, to_cur, amount:float):
-        """Convert currency using currency codes."""
+        """Convert currency using currency codes.
+        For a list of available currency codes you can do [p]curconvert list"""
         request = requests.get("http://free.currencyconverterapi.com/api/v3/convert?q={}_{}&compact=y".format(from_cur.upper(), to_cur.upper()))
         await self.bot.say("{} {} = {} {}".format(amount, from_cur.upper(), float(json.loads(request.content.decode("utf-8"))['{}_{}'.format(from_cur.upper(), to_cur.upper())]['val']) * amount, to_cur.upper()))
+        
+    @curconvert.command()
+    async def list(self):
+        """List all available currency codes."""
+        request = requests.get("http://free.currencyconverterapi.com/api/v3/currencies")
+        msg = "```Name\t\t\t\t\t\t\tCode\tSymbol\n\n"
+        request = json.loads(request.content.decode("utf-8"))
+        for currencycode in request['results']:
+            if 'currencySymbol' in request['results'][currencycode]:
+                if len(request['results'][currencycode]['currencyName']) > 26:
+                    request['results'][currencycode]['currencyName'] = request['results'][currencycode]['currencyName'][:26] + "..."
+                msg += "{}{}".format(request['results'][currencycode]['currencyName'], " " * (32 - len(request['results'][currencycode]['currencyName'])))
+                msg += "{}{}".format(request['results'][currencycode]['id'], " " * 5)
+                msg += "{}\n".format(request['results'][currencycode]['currencySymbol'])
+            else:
+                msg += "{}{}".format(request['results'][currencycode]['currencyName'], " " * (32 - len(request['results'][currencycode]['currencyName'])))
+                msg += "{}\n".format(request['results'][currencycode]['id'])
+            if len(msg) > 1750:
+                await self.bot.say(msg + "```")
+                msg = "```"
         
     def short(self, url):
         shorten = Shortener('Bitly', bitly_token='dd800abec74d5b12906b754c630cdf1451aea9e0')
