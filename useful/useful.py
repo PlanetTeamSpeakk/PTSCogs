@@ -75,7 +75,7 @@ class Useful:
             answer = str(eval(prob))
             await self.bot.say("`{}` = `{}`".format(prob, answer))
         except:
-            await self.bot.say("I couldn't solve that problem, it's too hard")
+            await self.bot.say("I couldn't solve that problem, it's too hard.")
 
     @commands.command(pass_context=True)
     async def suggest(self, ctx, *, suggestion : str):
@@ -698,6 +698,7 @@ class Useful:
     @commands.command(pass_context=True)
     async def gist(self, ctx, *, snippet):
         """Create a snippet on gist."""
+        msg = await self.bot.say("Creating gist, hold tight...")
         data = {"description": "A github gist made with the {} Discord bot.".format(self.bot.user.name),
                 "public": True,
                 "files": {
@@ -707,7 +708,7 @@ class Useful:
                     }
                 }
         post = requests.post("https://api.github.com/gists", data=json.dumps(data))
-        await self.bot.say("{} here you go: <{}>.".format(ctx.message.author.mention, self.short(json.loads(post.content.decode("utf-8"))['files']['gist.txt']['raw_url'])))
+        await self.bot.edit_message(msg, "{} here you go: <{}> (full) or <{}> (raw).".format(ctx.message.author.mention, self.short(json.loads(post.content.decode("utf-8"))['html_url']), self.short(json.loads(post.content.decode("utf-8"))['files']['gist.txt']['raw_url'])))
         
     @commands.command()
     async def curconvert(self, from_cur, to_cur, amount:float):
