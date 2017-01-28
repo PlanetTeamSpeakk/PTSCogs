@@ -1,0 +1,7 @@
+{
+    "AUTHOR" : "PlanetTeamSpeak",
+    "INSTALL_MSG" : "Thanks for installing my autorole cog!",
+    "NAME" : "Autorole",
+    "SHORT" : "Automatically assign roles to new members on join.",
+    "DESCRIPTION" : "Automatically assign roles to new members on join."
+}
