@@ -15,12 +15,12 @@ class Autorole:
     @checks.admin_or_permissions()
     async def autorole(self, ctx):
         """Manage autorole settings."""
-        if not ctx.invoked_subcommand:
-            await self.bot.send_cmd_help(ctx)
-            await self.bot.say("```Role: {}\nDisabled: {}```".format(self.settings[ctx.message.server.id]['role'], self.settings[ctx.message.server.id]['toggled']))
         if ctx.message.server.id not in self.settings:
             self.settings[ctx.message.server.id] = {'role': None, 'toggled': False}
             self.save_settings()
+        if not ctx.invoked_subcommand:
+            await self.bot.send_cmd_help(ctx)
+            await self.bot.say("```Role: {}\nDisabled: {}```".format(self.settings[ctx.message.server.id]['role'], self.settings[ctx.message.server.id]['toggled']))
 
     @autorole.command(pass_context=True)
     async def setrole(self, ctx, role:discord.Role):
