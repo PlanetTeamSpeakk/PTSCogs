@@ -519,6 +519,7 @@ class Useful:
     @checks.is_owner()
     async def serverwidemessage(self, ctx, *, msg):
         """Sends a message in every server."""
+        await self.bot.say("Sending message...")
         servers = []
         for server in self.bot.servers:
             servers.append(server)
@@ -528,7 +529,7 @@ class Useful:
                     await self.bot.send_message(server.default_channel, "{} ~ {}.".format(msg, str(ctx.message.author)))
                 except:
                     pass
-        await self.bot.say("Done!")
+        await self.bot.edit_message(msg, "Done!")
         
     @commands.command(pass_context=True)
     @checks.is_owner()
