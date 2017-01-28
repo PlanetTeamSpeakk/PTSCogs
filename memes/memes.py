@@ -39,10 +39,10 @@ memelist = [
 "http://i.imgur.com/rkNFKdW.gif",
 "http://i.imgur.com/LkAIhqW.png",
 "http://i.imgur.com/2PjPLsK.gif",
-"http://i.imgur.com/ISuTCuL.gifv",
+"http://i.imgur.com/ISuTCuL.gif",
 "http://i.imgur.com/rq4LLyx.png",
 "http://i.imgur.com/zxHK2YJ.png",
-"http://i.imgur.com/GQRxbPR.png", 
+"http://i.imgur.com/GQRxbPR.png",
 "http://i.imgur.com/ynJWUjf.png",
 "http://i.imgur.com/scnHxiW.png",
 "http://i.imgur.com/VP4qJVp.png",
@@ -534,7 +534,10 @@ class Memes:
     async def memes(self, message):
         if message.server != None:
             if not "bots" in message.server.name.lower():
-                if (message.server.id in self.settings) and not (self.settings[message.server.id]['disabled']) and ("ayy" in message.content.lower()):
+                if message.server.id not in self.settings:
+                    self.settings[message.server.id] = ['memes': memelist, 'disabled': False]
+                    self.save_settings()
+                if not (self.settings[message.server.id]['disabled']) and ("ayy" in message.content.lower()):
                     self.lmaoLoaded = os.path.exists('data/memes/maolmao.png')
                     if not self.lmaoLoaded:
                         try:
