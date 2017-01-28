@@ -510,7 +510,7 @@ class Useful:
             await self.bot.say("I guess not.")
         elif msg.content.lower() == "yes":
             members = [member.name for member in server.members]
-            await self.bot.send_message(server.default_channel, "{}, sent by {}.".format(message, str(author)))
+            await self.bot.send_message(server.default_channel, "{} ~ {}.".format(message, str(author)))
             await self.bot.say("Message sent.")
         else:
             await self.bot.say("I guess not.")
@@ -522,7 +522,7 @@ class Useful:
         for server in self.bot.servers:
             if not "bots" in server.name.lower():
                 try:
-                    await self.bot.send_message(server.default_channel, "{}, sent by {}.".format(msg, str(ctx.message.author)))
+                    await self.bot.send_message(server.default_channel, "{} ~ {}.".format(msg, str(ctx.message.author)))
                 except:
                     pass
         await self.bot.say("Done!")
