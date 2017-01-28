@@ -107,7 +107,11 @@ class Useful:
     @commands.command(pass_context=True)
     async def botowner(self, ctx):
         """Shows you who's boss!"""
-        await self.bot.say("My owner is <@{}>.".format(settings.owner))
+        owner = discord.utils.get(self.bot.get_all_members(), id=self.bot.settings.owner)
+        if owner != None:
+            await self.bot.say("My owner is {}.".format(owner.mention))
+        else:
+            await self.bot.say("I don't know who my owner is ¯\_(ツ)_/¯.")
 
     @commands.command(pass_context=True)
     async def saytts(self, ctx, *, msg):
