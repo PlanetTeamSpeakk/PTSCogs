@@ -1,0 +1,7 @@
+{
+    "AUTHOR" : "PlanetTeamSpeak",
+    "INSTALL_MSG" : "Thanks for installing my AntiFilter cog!",
+    "NAME" : "AntiFilter",
+    "SHORT" : "Only let messages through that you allow.",
+    "DESCRIPTION" : "Only let messages through that you allow."
+}
