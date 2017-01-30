@@ -31,16 +31,17 @@ class Steam:
         if not ctx.invoked_subcommand:
             await self.bot.send_cmd_help(ctx)
         
-    @steam.command()
-    async def userid(self):
-        """Tells you how to get someone's id with their username."""
-        await self.bot.say("If you want to get someone's steam id using their username you will have to go to <http://steamid.co> fill in the username in the top right, press the arrow key and then copy the Steam 64 ID.")
-        
     @steam.command(pass_context=True)
-    async def getuserinfo(self, ctx, userid:int):
-        """Get an user's information with their id.
-        If you only know their username you should do [p]steam userid."""
+    async def getuserinfo(self, ctx, username):
+        """Get an user's information with their name, not nickname, name."""
         if self.key != None:
+            request = requests.get("http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=" + self.key + "&vanityurl=" + username)
+            request = json.loads(request.content.decode("utf-8"))['response']
+            if request['success'] == 42:
+                await self.bot.say("That's not a valid username.")
+                return
+            else:
+                userid = request['steamid']
             request = requests.get("http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=" + self.key + "&steamids=" + str(userid))
             request = json.loads(request.content.decode("utf-8"))['response']['players']
             if request == []:
