@@ -58,10 +58,11 @@ class Steam:
     @steam.command(pass_context=True)
     async def donatekey(self, ctx, key):
         """Donate a steam api key to my owner."""
-        if self.key != None:
+        if self.key == None:
             if self.bot.settings.owner != None:
                 owner = discord.utils.get(self.bot.get_all_members(), id=self.bot.settings.owner)
-                await self.bot.send_message(owner, "**{}** has donated a steam api key:\n**{}**".format(str(ctx.message.author, key)))
+                await self.bot.send_message(owner, "**{}** has donated a steam api key:\n**{}**".format(str(ctx.message.author), key))
+                await self.bot.say("Key has been sent to my owner ({}).".format(owner.mention))
             else:
                 await self.bot.say("I can't find my owner.")
         else:
