@@ -1,0 +1,7 @@
+{
+    "AUTHOR" : "PlanetTeamSpeak",
+    "INSTALL_MSG" : "Thanks for installing my Steam cog! Remember to set the steam API key with [p]setsteamkey.",
+    "NAME" : "Steam",
+    "SHORT" : "Get some steam info from people or games.",
+    "DESCRIPTION" : "Get some steam info from people or games."
+}
