@@ -32,16 +32,22 @@ class Steam:
             await self.bot.send_cmd_help(ctx)
         
     @steam.command(pass_context=True)
-    async def getuserinfo(self, ctx, username):
-        """Get an user's information with their name, not nickname, name."""
+    async def getuserinfo(self, ctx, *, username):
+        """Get an user's information with their name, not nickname, name. Or Steam 64 ID, whichever you prefer."""
         if self.key != None:
-            request = requests.get("http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=" + self.key + "&vanityurl=" + username)
-            request = json.loads(request.content.decode("utf-8"))['response']
-            if request['success'] == 42:
-                await self.bot.say("That's not a valid username.")
+            if " " in username:
+                await self.bot.say("Unfortunately, Steam API has this little bug that doesn't allow spaces in usernames, nothing I or my owner can do about it.")
                 return
+            if username.isdigit():
+                userid = username
             else:
-                userid = request['steamid']
+                request = requests.get("http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=" + self.key + "&vanityurl=" + username)
+                request = json.loads(request.content.decode("utf-8"))['response']
+                if request['success'] == 42:
+                    await self.bot.say("That's not a valid username.")
+                    return
+                else:
+                    userid = request['steamid']
             request = requests.get("http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=" + self.key + "&steamids=" + str(userid))
             request = json.loads(request.content.decode("utf-8"))['response']['players']
             if request == []:
