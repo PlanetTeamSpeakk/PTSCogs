@@ -93,6 +93,9 @@ class Steam:
                     request = requests.get("https://steamspy.com/api.php?request=appdetails&appid=" + str(request[game]['appid']))
                     request = json.loads(request.content.decode("utf-8"))
                     found = True
+                    if request['name'] == None:
+                        await self.bot.say("This game or app is too new, could not find any data.")
+                        return
                     break
             if not found:
                 await self.bot.say("Could not find that game.")
