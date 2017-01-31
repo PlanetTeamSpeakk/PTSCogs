@@ -106,7 +106,8 @@ class Steam:
         request = json.loads(request.content.decode("utf-8"))
         msg = "```fix\n"
         counter = 1
-        for game in request:
+        for game in range(len(list(request.keys()))):
+            game = list(request.keys())[game]
             msg += "{}. {}\n".format(str(counter), request[game]['name'])
             counter += 1
             if len(msg) > 1750:
@@ -121,13 +122,14 @@ class Steam:
         request = json.loads(request.content.decode("utf-8"))
         msg = "```fix\n"
         counter = 1
-        for game in request:
+        for game in range(len(list(request.keys()))):
+            game = list(request.keys())[game]
             msg += "{}. {}\n".format(str(counter), request[game]['name'])
             counter += 1
             if len(msg) > 1750:
                 await self.bot.say(msg + "```")
                 msg = "```fix\n"
-        await self.bot.say(msg + "```")        
+        await self.bot.say(msg + "```")     
     
 def check_folders():
     if not os.path.exists("data/steam"):
