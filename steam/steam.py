@@ -56,9 +56,22 @@ class Steam:
                 request = request[0]
                 request['games'] = json.loads(requests.get("http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=" + self.key + "&steamid=" + str(userid)).content.decode("utf-8"))['response']
                 games = []
+                gamelist = []
                 for game in range(len(request['games']['games'])):
                     games.append(str(request['games']['games'][game]['appid']))
-                await self.bot.say("```fix\nUsername: {}\nSteam ID: {}\nProfile URL: {}\nAvatar: {}\nGame count: {}\nGames owned: {} (you can do a lookup for every id with {}steam applookup <id>)```".format(request['personaname'], str(request['steamid']), request['profileurl'], request['avatarfull'], str(request['games']['game_count']), ", ".join(games), ctx.prefix))
+                gamerequest = requests.get("http://api.steampowered.com/ISteamApps/GetAppList/v0002/")
+                gamerequest = json.loads(gamerequest.content.decode("utf-8"))['applist']['apps']
+                for game in games:
+                    for i in range(len(gamerequest)):
+                        if int(gamerequest[i]['appid']) == int(game):
+                            gamelist.append("{} ({}) ".format(gamerequest[i]['name'], game))
+                msg = "```fix\nUsername: {}\nSteam ID: {}\nProfile URL: {}\nAvatar: {}\nGame count: {}\nGames owned: ".format(request['personaname'], str(request['steamid']), request['profileurl'], request['avatarfull'], str(request['games']['game_count']))
+                for game in gamelist:
+                    msg += game
+                    if len(msg) > 1750:
+                        await self.bot.say(msg + "```")
+                        msg = "```fix\n"
+                await self.bot.say(msg + "```")
         else:
             await self.bot.say("My owner has not set a steam api key yet, if you would like to donate one (you can only do this if you've bought a game on steam), go to <https://steampowered.com/dev/apikey>, and do {}steam donatekey <key>.".format(ctx.prefix))
             
