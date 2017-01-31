@@ -76,11 +76,28 @@ class Steam:
             await self.bot.say("My owner has already set a steam api key, so this is not needed anymore.")
             
     @steam.command()
-    async def applookup(self, appid:int):
-        """See what game or app is attached to this mysterious id :O"""
-        request = requests.get("https://steamspy.com/api.php?request=appdetails&appid=" + str(appid))
-        request = json.loads(request.content.decode("utf-8"))
-        await self.bot.say("```fix\nID: {}\nName: {}\nDeveloper: {}\nPublisher: {}\nRank: {}\nOwners: {}\nPrice: ${}.{}```".format(request['appid'], request['name'], request['developer'], request['publisher'], request['score_rank'], request['owners'], int(request['price']) // 100, int(request['price']) % 100))
+    async def applookup(self, *, app):
+        """See what game or app is attached to this mysterious id :O, or just use a name, whatever you like."""
+        if app.isdigit():
+            request = requests.get("https://steamspy.com/api.php?request=appdetails&appid=" + str(app))
+            request = json.loads(request.content.decode("utf-8"))
+            if request['name'] == None:
+                await self.bot.say("Could not find a game with that ID.")
+                return
+        else:
+            request = requests.get("http://api.steampowered.com/ISteamApps/GetAppList/v0002/")
+            request = json.loads(request.content.decode("utf-8"))['applist']['apps']
+            found = False
+            for game in range(len(request)):
+                if request[game]['name'].lower() == app.lower():
+                    request = requests.get("https://steamspy.com/api.php?request=appdetails&appid=" + str(request[game]['appid']))
+                    request = json.loads(request.content.decode("utf-8"))
+                    found = True
+                    break
+            if not found:
+                await self.bot.say("Could not find that game.")
+                return
+        await self.bot.say("```fix\nID: {}\nName: {}\nDeveloper: {}\nPublisher: {}\nOwners: {}\nPrice: ${}.{}```".format(request['appid'], request['name'], request['developer'], request['publisher'], request['owners'], int(request['price']) // 100, int(request['price']) % 100))
     
     @steam.command()
     async def top100forever(self):
