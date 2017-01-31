@@ -133,10 +133,10 @@ class Steam:
         
     @steam.command()
     async def appcount(self):
-        """Counts the amount of apps and games."""
+        """Counts the amount of apps and games on Steam."""
         request = requests.get("http://api.steampowered.com/ISteamApps/GetAppList/v0002/")
         request = json.loads(request.content.decode("utf-8"))['applist']['apps']
-        await self.bot.say("```fix\nThere are currently {} apps and games on Steam.```".format(len(request)))
+        await self.bot.say("```fix\nThere are currently {} apps and games on Steam (latest game: {}).```".format(len(request), request[len(request) - 1]['name']))
     
 def check_folders():
     if not os.path.exists("data/steam"):
