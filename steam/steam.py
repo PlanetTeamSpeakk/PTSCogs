@@ -38,20 +38,21 @@ class Steam:
             if " " in username:
                 await self.bot.say("Unfortunately, Steam API has this little bug that doesn't allow spaces in usernames, nothing I or my owner can do about it.")
                 return
+            status = await self.bot.say("Gathering data, please stand by...")
             if username.isdigit():
                 userid = username
             else:
                 request = requests.get("http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=" + self.key + "&vanityurl=" + username)
                 request = json.loads(request.content.decode("utf-8"))['response']
                 if request['success'] == 42:
-                    await self.bot.say("That's not a valid username.")
+                    await self.bot.edit_message(status, "That's not a valid username.")
                     return
                 else:
                     userid = request['steamid']
             request = requests.get("http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=" + self.key + "&steamids=" + str(userid))
             request = json.loads(request.content.decode("utf-8"))['response']['players']
             if request == []:
-                await self.bot.say("That's not a valid id.")
+                await self.bot.edit_message(status, "That's not a valid id.")
             else:
                 request = request[0]
                 request['games'] = json.loads(requests.get("http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=" + self.key + "&steamid=" + str(userid)).content.decode("utf-8"))['response']
@@ -64,13 +65,14 @@ class Steam:
                 for game in games:
                     for i in range(len(gamerequest)):
                         if int(gamerequest[i]['appid']) == int(game):
-                            gamelist.append("{} ({}) ".format(gamerequest[i]['name'], game))
-                msg = "```fix\nUsername: {}\nSteam ID: {}\nProfile URL: {}\nAvatar: {}\nGame count: {}\nGames owned: ".format(request['personaname'], str(request['steamid']), request['profileurl'], request['avatarfull'], str(request['games']['game_count']))
+                            gamelist.append("\t{} ({})\n".format(gamerequest[i]['name'], game))
+                msg = "```fix\nUsername: {}\nSteam ID: {}\nProfile URL: {}\nAvatar: {}\nGame count: {}\nGames owned:\n".format(request['personaname'], str(request['steamid']), request['profileurl'], request['avatarfull'], str(request['games']['game_count']))
                 for game in gamelist:
                     msg += game
                     if len(msg) > 1750:
                         await self.bot.say(msg + "```")
                         msg = "```fix\n"
+                await self.bot.delete_message(status)
                 await self.bot.say(msg + "```")
         else:
             await self.bot.say("My owner has not set a steam api key yet, if you would like to donate one (you can only do this if you've bought a game on steam), go to <https://steampowered.com/dev/apikey>, and do {}steam donatekey <key>.".format(ctx.prefix))
