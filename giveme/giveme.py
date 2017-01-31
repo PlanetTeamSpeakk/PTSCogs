@@ -50,11 +50,14 @@ class GiveMe:
         Example:
         [p]giveme add "role name" role_mention OR
         [p]giveme add "role name" name of the role"""
-        if ctx.message.server.id not in self.settings:
-            self.settings[ctx.message.server.id] = {'givemes': {}}
-        self.settings[ctx.message.server.id]['givemes'][name] = role.id
-        self.save_settings()
-        await self.bot.say("Giveme has been added.")
+        if not ctx.message.server.me.permissions_in(ctx.message.channel).manage_roles:
+            await self.bot.say("I do not have the manage roles permission here, I cannot assign roles to people untill I do.")
+        else:
+            if ctx.message.server.id not in self.settings:
+                self.settings[ctx.message.server.id] = {'givemes': {}}
+            self.settings[ctx.message.server.id]['givemes'][name] = role.id
+            self.save_settings()
+            await self.bot.say("Giveme has been added.")
         
     @giveme.command(pass_context=True, no_pm=True)
     @checks.admin_or_permissions()
@@ -63,7 +66,7 @@ class GiveMe:
         if ctx.message.server.id not in self.settings:
             await self.bot.say("This server has no giveme's.")
             return
-        elif role not in self.settings[ctx.message.server.id]['givemes'].keys():
+        elif role not in list(self.settings[ctx.message.server.id]['givemes'].keys()):
             await self.bot.say("That is not a valid giveme.")
             return
         else:
@@ -76,15 +79,18 @@ class GiveMe:
         """Removes a giveme from you, by name which should be defined in [p]giveme list."""
         if ctx.message.server.id not in self.settings:
             await self.bot.say("This server has no giveme's I can remove.")
-        elif role not in self.settings[ctx.message.server.id]['givemes']:
+        elif role not in list(self.settings[ctx.message.server.id]['givemes'].keys()):
             await self.bot.say("That's not a valid giveme.")
         else:
             try:
-                role = discord.utils.get(ctx.message.server.roles, id=self.settings[ctx.message.server.id]['givemes'][role])
-                await self.bot.remove_roles(ctx.message.author, role)
-                await self.bot.say("Giveme removed.")
+                if not ctx.message.server.me.permissions_in(ctx.message.channel).manage_roles:
+                    await self.bot.say("I do not have the manage roles permission here, I cannot remove roles from you untill I do.")
+                else:
+                    role = discord.utils.get(ctx.message.server.roles, id=self.settings[ctx.message.server.id]['givemes'][role])
+                    await self.bot.remove_roles(ctx.message.author, role)
+                    await self.bot.say("Role removed.")
             except Exception as e:
-                await self.bot.say("An error occured while remove the giveme ({}).".format(e))
+                await self.bot.say("An error occured while remove the role from you ({}).".format(e))
                 
     @giveme.command(pass_context=True, no_pm=True)
     @checks.admin_or_permissions()
