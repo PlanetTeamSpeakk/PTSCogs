@@ -97,7 +97,7 @@ class Steam:
             if not found:
                 await self.bot.say("Could not find that game.")
                 return
-        await self.bot.say("```fix\nID: {}\nName: {}\nDeveloper: {}\nPublisher: {}\nOwners: {}\nPrice: ${}.{}```".format(request['appid'], request['name'], request['developer'], request['publisher'], request['owners'], int(request['price']) // 100, int(request['price']) % 100))
+        await self.bot.say("```fix\nID: {}\nName: {}\nDeveloper: {}\nPublisher: {}\nOwners: {}\nUrl: https://store.steampowered.com/app/{}\nPrice: ${}.{}```".format(request['appid'], request['name'], request['developer'], request['publisher'], request['owners'], request['appid'], int(request['price']) // 100, int(request['price']) % 100))
     
     @steam.command()
     async def top100forever(self):
@@ -129,7 +129,14 @@ class Steam:
             if len(msg) > 1750:
                 await self.bot.say(msg + "```")
                 msg = "```fix\n"
-        await self.bot.say(msg + "```")     
+        await self.bot.say(msg + "```")
+        
+    @steam.command()
+    async def appcount(self):
+        """Counts the amount of apps and games."""
+        request = requests.get("http://api.steampowered.com/ISteamApps/GetAppList/v0002/")
+        request = json.loads(request.content.decode("utf-8"))['applist']['apps']
+        await self.bot.say("```fix\nThere are currently {} apps and games on Steam.```".format(len(request)))
     
 def check_folders():
     if not os.path.exists("data/steam"):
