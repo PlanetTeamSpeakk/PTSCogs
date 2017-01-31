@@ -36,16 +36,20 @@ class GiveMe:
             await self.bot.say("This server has no givemes.")
             return
         else:
-            await self.bot.say("This server has the following giveme's:\n{}.".format(", ".join(self.settings[ctx.message.server.id]['givemes'].keys())))
+            givemes = []
+            for giveme in range(len(self.settings[ctx.message.server.id]['givemes'].keys())):
+                if giveme != (len(self.settings[ctx.message.server.id]['givemes'].keys()) - 1):
+                    givemes.append(list(self.settings[ctx.message.server.id]['givemes'].keys())[giveme])
+            await self.bot.say("This server has the following giveme's:\n{} and {}.".format(", ".join(givemes), list(self.settings[ctx.message.server.id]['givemes'].keys())[len(self.settings[ctx.message.server.id]['givemes'].keys()) - 1]))
             return
             
     @giveme.command(pass_context=True, no_pm=True)
     @checks.admin_or_permissions()
-    async def add(self, ctx, name, role:discord.Role):
-        """Adds a role to the list of giveme's, if the role contains spaces put it in quotes (").
+    async def add(self, ctx, name, *, role:discord.Role):
+        """Adds a role to the list of giveme's, if the name contains spaces put it in quotes (").
         Example:
         [p]giveme add "role name" role_mention OR
-        [p]giveme add "role name" "name of the new role\""""
+        [p]giveme add "role name" name of the role"""
         if ctx.message.server.id not in self.settings:
             self.settings[ctx.message.server.id] = {'givemes': {}}
         self.settings[ctx.message.server.id]['givemes'][name] = role.id
@@ -85,15 +89,18 @@ class GiveMe:
     @giveme.command(pass_context=True, no_pm=True)
     @checks.admin_or_permissions()
     async def massadd(self, ctx, *, roles):
-        """Massadd roles,
+        """Massadd roles.
         
         example:
-        [p]giveme massadd "dank role", "another dank role", "another one", "another one"
+        [p]giveme massadd dank role, another dank role, another one, another one
         These have to be the names of valid roles, they will be checked *insert eyes emoji here*."""
         try:
-            roles = json.loads("[" + ctx.message.content[len(ctx.prefix + "giveme massadd "):] + "]")
-        except json.decoder.JSONDecodeError:
-            await self.bot.say("Surround all giveme's with quotes please (\")")
+            if ", " in roles:
+                roles = roles.split(", ")
+            elif "," in roles:
+                roles = role.split(",")
+        except:
+            await self.bot.say("An error occured while splitting your roles.")
             return
         for role in roles:
             roleObj = discord.utils.get(ctx.message.server.roles, name=role)
