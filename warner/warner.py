@@ -97,7 +97,7 @@ class Warner:
             perms = discord.PermissionOverwrite()
             perms.send_messages = False
             await self.bot.edit_channel_permissions(channel, member, perms)
-        await asyncio.sleep(minutes)
+        await asyncio.sleep(minutes * 60)
         for channel in member.server.channels:
             perms = discord.PermissionOverwrite()
             perms.send_messages = None
