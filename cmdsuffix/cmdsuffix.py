@@ -11,7 +11,7 @@ class CMDSuffix:
         self.bot = bot
         self.settings = dataIO.load_json("data/cmdsuffix/settings.json")
 
-    @commands.command(name="setsuffix", pass_context=True)
+    @commands.command(name="setsuffix", pass_context=True, no_pm=True)
     @checks.admin_or_permissions()
     async def _setsuffix(self, ctx, *, suffix):
         """Sets the command suffix."""
@@ -21,7 +21,7 @@ class CMDSuffix:
         self.save_settings()
         await self.bot.say("Suffix set, if you want to disable this do {}togglesuffix.".format(ctx.prefix))
         
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, no_pm=True)
     @checks.admin_or_permissions()
     async def togglesuffix(self, ctx):
         """Toggles if users can use command suffixes."""
