@@ -1,0 +1,7 @@
+{
+    "AUTHOR" : "PlanetTeamSpeak",
+    "INSTALL_MSG" : "Thanks for installing my CMDSuffix cog!",
+    "NAME" : "CMDSuffix",
+    "SHORT" : "Process commands when the message ends with something and doesn't begin with it.",
+    "DESCRIPTION" : "Process commands when the message ends with something and doesn't begin with it."
+}
