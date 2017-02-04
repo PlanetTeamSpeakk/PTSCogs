@@ -6,12 +6,16 @@ try:
     goslateInstalled = True
 except:
     try:
-        print("Goslate is not installed, installing it now...")
-        check_output("pip3 install goslate", shell=True)
-        import goslate
+        from lib import goslate # for my own bot (which is Impulse)
         goslateInstalled = True
     except:
-        goslateInstalled = False
+        try:
+            print("Goslate is not installed, installing it now...")
+            check_output("pip3 install goslate", shell=True)
+            import goslate
+            goslateInstalled = True
+        except:
+            goslateInstalled = False
 
 class Translator:
     """Translate text using google translate."""
@@ -31,7 +35,7 @@ class Translator:
             except Exception as e:
                 await self.bot.say("An error occured while translating. ({})".format(e))
         else:
-            await self.bot.say("That language could not be found in the list, for a list of supported languages do {}langlist".format(ctx.prefix))
+            await self.bot.say("That language could not be found in the list, for a list of supported languages do {}translate langlist".format(ctx.prefix))
 
     @translate.command()
     async def langlist(self):
