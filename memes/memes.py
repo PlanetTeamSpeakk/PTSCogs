@@ -91,12 +91,16 @@ class Memes:
         "no. https://media.giphy.com/media/KaXENSCPjqnK0/giphy.gif", 
         "no. https://media.giphy.com/media/T5QOxf0IRjzYQ/giphy.gif"
         ]
+        if 'default_memes' not in self.settings:
+            self.settings['default_memes'] = memelist
+            self.save_settings()
+        self.memelist = self.settings['default_memes']
         
     @commands.command(pass_context=True, no_pm=True)
     async def meme(self, ctx):
         """Shows a random meme."""
         if ctx.message.server.id not in self.settings:
-            self.settings[ctx.message.server.id] = {'memes': memelist, 'disabled': False}
+            self.settings[ctx.message.server.id] = {'memes': self.memelist, 'disabled': False}
             self.save_settings()
         await self.bot.say(choice(self.settings[ctx.message.server.id]['memes']))
         
@@ -106,7 +110,7 @@ class Memes:
         memelink = memelink_imgurpls
         if memelink.startswith("http://i.imgur.com/"):
             if ctx.message.server.id not in self.settings:
-                self.settings[ctx.message.server.id] = {'memes': memelist, 'disabled': False}
+                self.settings[ctx.message.server.id] = {'memes': self.memelist, 'disabled': False}
             self.settings[ctx.message.server.id]['memes'].append(memelink + " by {}.".format(str(ctx.message.author)))
             self.save_settings()
             await self.bot.say("Meme added!")
@@ -136,6 +140,22 @@ class Memes:
             self.save_settings()
             await self.bot.say("Meme removed!")
 		
+    @commands.command()
+    @checks.is_owner()
+    async def massadd(self, memelink_imgur_pls):
+        """Add a meme to every list of memes for every server, also adds it to the default list."""
+        meme = memelink_imgur_pls
+        if not meme.startswith("http://i.imgur.com/"):
+            await self.bot.say("Memelink was not an imgur link, an example imgur link would be: <http://i.imgur.com/OyNz2uG.png>")
+        else:
+            for server in self.settings:
+                if server != "default_memes":
+                    self.settings[server]['memes'].append(meme)
+                else:
+                    self.settings[server].append(meme)
+            self.save_settings()
+            await self.bot.say("Meme was added to the list of all servers, including the default list.")
+        
     @commands.command()
     async def goodshit(self):
         """Good shit"""
@@ -520,9 +540,9 @@ class Memes:
     @commands.command(pass_context=True, no_pm=True)
     @checks.mod_or_permissions()
     async def togglereactions(self, ctx):
-        """Disables reactions like "ayy" and "oh shit\""""
+        """Disables reactions like "ayy", "oh shit" and "feelsbadman\""""
         if ctx.message.server.id not in self.settings:
-            self.settings[ctx.message.server.id] = {'memes': memelist, 'disabled': False}
+            self.settings[ctx.message.server.id] = {'memes': self.memelist, 'disabled': False}
         if not self.settings[ctx.message.server.id]['disabled']:
             await self.bot.say("Bot will no longer respond to \"ayy\", \"oh shit\" and \"feelsbadman\".")
             self.settings[ctx.message.server.id]['disabled'] = True
@@ -535,7 +555,7 @@ class Memes:
         if message.server != None:
             if not "bots" in message.server.name.lower():
                 if message.server.id not in self.settings:
-                    self.settings[message.server.id] = {'memes': memelist, 'disabled': False}
+                    self.settings[message.server.id] = {'memes': self.memelist, 'disabled': False}
                     self.save_settings()
                 if not self.settings[message.server.id]['disabled']:
                     if "ayy" in message.content.lower():
@@ -636,7 +656,7 @@ def check_folders():
 def check_files():
     if not os.path.exists("data/memes/settings.json"):
         print("Creating data/memes/settings.json file...")
-        dataIO.save_json("data/memes/settings.json", {})
+        dataIO.save_json("data/memes/settings.json", {'default_memes': memelist})
         
 def setup(bot):
     check_folders()
