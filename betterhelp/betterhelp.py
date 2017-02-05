@@ -12,7 +12,7 @@ class BetterHelp:
     async def help(self, ctx, *, command=None):
         """How does this work?"""
         if command == None:
-            if ctx.message.channel != None:
+            if not ctx.message.channel.is_private:
                 msg = await self.bot.say("I am sending you help in dms!")
             help_msg = ""
             counter = 0
@@ -41,7 +41,8 @@ class BetterHelp:
                 await self.bot.send_message(ctx.message.author, help_msg)
             except:
                 pass
-            await self.bot.edit_message(msg, "I've sent you help in dms!")
+            if not ctx.message.channel.is_private:
+                await self.bot.edit_message(msg, "I've sent you help in dms!")
         else:
             for cmd in self.bot.commands.keys():
                 if cmd == command.split()[0]:
@@ -70,22 +71,22 @@ class BetterHelp:
                         try:
                             subcommands = self.bot.commands[command].commands
                         except:
-                            subcommands = None
+                            subcommands = []
                         command = str(command) # just making sure it's still a string.
                         params = list(self.bot.commands[command].params)
-                        paramsCopy = params[::]
+                        paramsCopy = params[::] 
                         params = []
                         for param in paramsCopy:
-                            if (str(param) != "self") and (str(param) != "ctx"):
+                            if (str(param) != "self") and (str(param) != "ctx"): # the list will turn into a NoneType if you remove the 'self' param with params.remove("self")
                                 params.append(param)
                         help = self.bot.commands[command].help
                         if params != []:
-                            if subcommands != None:
+                            if subcommands != []:
                                 await self.bot.say("**{}{} <{}>**:\n\n{}\n\n**Commands**:\n\t{}".format(ctx.prefix, command, "> <".join(list(params)), help, "\n\t".join(subcommands)))
                             else:
                                 await self.bot.say("**{}{} <{}>**:\n\n{}".format(ctx.prefix, command, "> <".join(list(params)), help))
                         else:
-                            if subcommands != None:
+                            if subcommands != []:
                                 await self.bot.say("**{}{}**:\n\n{}\n\n**Commands**:\n\t{}".format(ctx.prefix, command, help, "\n\t".join(subcommands)))
                             else:
                                 await self.bot.say("**{}{}**:\n\n{}".format(ctx.prefix, command, help))
