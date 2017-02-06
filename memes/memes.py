@@ -164,7 +164,7 @@ class Memes:
     @commands.command()
     async def sale(self):
         """Steam sales :D"""
-        await self.bot.say("")
+        await self.bot.say("https://www.youtube.com/watch?v=tRxcSNaVCPA")
         
     @commands.command(name="yesno")
     async def _yesno(self):
