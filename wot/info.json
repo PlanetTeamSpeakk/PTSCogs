@@ -1,0 +1,7 @@
+{
+    "AUTHOR" : "PlanetTeamSpeak",
+    "INSTALL_MSG" : "Thanks for installing my World of Tanks cog, don't forget to set the api key with [p]wot setapikey.",
+    "NAME" : "WorldofTanks",
+    "SHORT" : "Adds some WoT info commands.",
+    "DESCRIPTION" : "Adds some WoT info commands to get user or tank info."
+}
