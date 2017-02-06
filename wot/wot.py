@@ -99,14 +99,14 @@ class WorldofTanks:
         
     @wot.command()
     async def gettankinfo(self, *, tank):
-        """Do a tank lookup, full name of the tanks, not short names."""
+        """Do a tank lookup, short name of the tanks."""
         if self.key != None:
             msg = await self.bot.say("Getting data for **{}**.".format(tank))
             request = requests.get("https://api.worldoftanks.com/wot/encyclopedia/tanks/?application_id=" + self.key)
             request = json.loads(request.content.decode("utf-8"))['data']
             found = False
             for tankID in request:
-                if request[tankID]['name_i18n'].lower() == tank.lower():
+                if request[tankID]['short_name_i18n'].lower() == tank.lower():
                     tank = tankID
                     found = True
                     break
@@ -119,8 +119,8 @@ class WorldofTanks:
                 await self.bot.say("No data found for that tank.")
             else:
                 request = request[tank]
-                await self.bot.edit_message(msg, "**```fix\nTank ID: {}\nTank name: {}\nEngine power: {}\nVision radius: {} (metres)\nMax gun penetration: {} (mm)\nMax health: {}\nWeight (tonnes): {}\nRadio distance: {}\nTank type: {}\nChassis rotation speed (degrees per second): {}\nGun name: {}\nMax ammo: {}\nNation: {}\nTurret rotation speed: {}\nGold price: {}\nCredit price: {}\nXp price: {}\nSpeed limit: {}\nMax damage: {}\n```**"
-                "".format(str(tank), request['name_i18n'], str(request['engine_power']), str(request['circular_vision_radius']), str(request['gun_piercing_power_max']), str(request['max_health']), str(request['weight']), str(request['radio_distance']), request['type_i18n'], str(request['chassis_rotation_speed']), request['gun_name'], str(request['gun_max_ammo']), request['nation_i18n'], str(request['turret_rotation_speed']), request['price_gold'], request['price_credit'], str(request['price_xp']), str(request['speed_limit']), str(request['gun_damage_max'])))
+                await self.bot.edit_message(msg, "**```fix\nTank ID: {}\nTank name: {}\nTier: {}\nEngine power: {}\nVision radius: {} (metres)\nMax gun penetration: {} (mm)\nMax health: {}\nWeight (tonnes): {}\nRadio distance: {}\nTank type: {}\nChassis rotation speed (degrees per second): {}\nGun name: {}\nMax ammo: {}\nNation: {}\nTurret rotation speed: {}\nGold price: {}\nCredit price: {}\nXp price: {}\nSpeed limit: {}\nMax damage: {}\n```**"
+                "".format(str(tank), request['name_i18n'], str(request['level']), str(request['engine_power']), str(request['circular_vision_radius']), str(request['gun_piercing_power_max']), str(request['max_health']), str(request['weight']), str(request['radio_distance']), request['type_i18n'], str(request['chassis_rotation_speed']), request['gun_name'], str(request['gun_max_ammo']), request['nation_i18n'], str(request['turret_rotation_speed']), request['price_gold'], request['price_credit'], str(request['price_xp']), str(request['speed_limit']), str(request['gun_damage_max'])))
         
 def check_folders():
     if not os.path.exists("data/wot"):
