@@ -46,10 +46,10 @@ class BetterHelp:
         else:
             for cmd in self.bot.commands.keys():
                 if cmd == command.split()[0]:
-                    if len(command.split()) > 1:
-                        try:
+                    if len(command.split()) == 2:
+                        if hasattr(self.bot.commands[command.split()[0]], "commands"):
                             subcommands = self.bot.commands[command.split()[0]].commands
-                        except:
+                        else:
                             await self.bot.say("That command has no subcommands.")
                             return
                         if command.split()[1] not in subcommands:
@@ -63,14 +63,50 @@ class BetterHelp:
                             if (str(param) != "self") and (str(param) != "ctx"):
                                 params.append(param)
                         help = self.bot.commands[command.split()[0]].commands[command.split()[1]].help
-                        if params != []:
-                            await self.bot.say("**{}{} {} <{}>**:\n\n{}".format(ctx.prefix, command.split()[0], command.split()[1], "> <".join(list(params)), help))
+                        if hasattr(self.bot.commands[command.split()[0]], "commands"):
+                            if hasattr(self.bot.commands[command.split()[0]].commands[command.split()[1]], "commands"):
+                                subcommands = self.bot.commands[command.split()[0]].commands[command.split()[1]].commands
+                            else:
+                                subcommands = []
+                        if subcommands != []:
+                            if params != []:
+                                await self.bot.say("**{}{} {} <{}>**:\n\n{}\n\n**Commands**:\n\t{}".format(ctx.prefix, command.split()[0], command.split()[1], "> <".join(list(params)), help, "\n\t".join(subcommands)))
+                            else:
+                                await self.bot.say("**{}{} {}**:\n\n{}\n\n**Commands**:\n\t{}".format(ctx.prefix, command.split()[0], command.split()[1], help, "\n\t".join(subcommands)))
                         else:
-                            await self.bot.say("**{}{} {}**:\n\n{}".format(ctx.prefix, command.split()[0], command.split()[1], help))
+                            if params != []:
+                                await self.bot.say("**{}{} {} <{}>**:\n\n{}".format(ctx.prefix, command.split()[0], command.split()[1], "> <".join(list(params)), help))
+                            else:
+                                await self.bot.say("**{}{} {}**:\n\n{}".format(ctx.prefix, command.split()[0], command.split()[1], help))
+                    elif len(command.split()) == 3:
+                        command = str(command)
+                        if hasattr(self.bot.commands[command.split()[0]], "commands"):
+                            subcommands = self.bot.commands[command.split()[0]].commands
+                            if command.split()[1] in subcommands:
+                                if hasattr(self.bot.commands[command.split()[0]].commands[command.split()[1]], "commands"):
+                                    subcommands = self.bot.commands[command.split()[0]].commands[command.split()[1]].commands
+                                    if command.split()[2] in subcommands:
+                                        help = self.bot.commands[command.split()[0]].commands[command.split()[1]].commands[command.split()[2]].help
+                                        params = list(self.bot.commands[command.split()[0]].commands[command.split()[1]].commands[command.split()[2]].params)
+                                        paramsCopy = params[::]
+                                        params = []
+                                        for param in paramsCopy:
+                                            if (param != "self") and (param != "ctx"):
+                                                params.append(param)
+                                        if params != []:
+                                            await self.bot.say("**{}{} <{}>**:\n\n{}".format(ctx.prefix, command, "> <".join(params), help))
+                                        else:
+                                            await self.bot.say("**{}{}**:\n\n{}".format(ctx.prefix, command, help))
+                                    else:
+                                        await self.bot.say("That's not a valid subcommand.")
+                                else:
+                                    await self.bot.say("That subcommand has no other subcommands.")
+                            else:
+                                await self.bot.say("That command has no subcommands.")
                     else:
-                        try:
+                        if hasattr(self.bot.commands[command], "command"):
                             subcommands = self.bot.commands[command].commands
-                        except:
+                        else:
                             subcommands = []
                         command = str(command) # just making sure it's still a string.
                         params = list(self.bot.commands[command].params)
