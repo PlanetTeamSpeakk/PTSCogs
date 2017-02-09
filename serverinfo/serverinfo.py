@@ -48,34 +48,34 @@ class Serverinfo:
     @_server.command(pass_context=True, no_pm=True)
     async def roles(self, ctx):
         """Lists all Roles"""
-        comma = ", "
+        
         roles = [r.name for r in ctx.message.server.role_hierarchy]
-        await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Roles", description="{}, the current roles are \n{}.".format(ctx.message.author.mention, comma.join(roles)), colour=0X008CFF))
+        await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Roles", description="{}, the current roles are \n{}.".format(ctx.message.author.mention, ", ".join(roles)), colour=0X008CFF))
 
     @_server.command(pass_context=True, no_pm=True)
     async def emojis(self, ctx):
         """Lists all emojis"""
-        comma = ", "
+        
         emojis = [e.name for e in ctx.message.server.emojis]
-        await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Emojis", description="{}, the current emojis are \n{}.".format(ctx.message.author.mention, comma.join(emojis)), colour=0X008CFF))
+        await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Emojis", description="{}, the current emojis are \n{}.".format(ctx.message.author.mention, ", ".join(emojis)), colour=0X008CFF))
             
     @_server.command(pass_context=True, no_pm=True)
     async def users(self, ctx):
         """Lists all users"""
-        comma = "**, **"
+        
         members = [m.name for m in ctx.message.server.members]
         if len(ctx.message.server.members) < 32:
-            await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Users", description="{}, the current users are \n**{}**.".format(ctx.message.author.mention, comma.join(members)), colour=0X008CFF))
+            await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Users", description="{}, the current users are \n**{}**.".format(ctx.message.author.mention, ", ".join(members)), colour=0X008CFF))
         else:
-            await self.bot.send_message(ctx.message.author, embed=discord.Embed(title="Users", description="The current users in **{}** are \n**{}**.".format(ctx.message.server.name, comma.join(members)), colour=0X008CFF))
+            await self.bot.send_message(ctx.message.author, embed=discord.Embed(title="Users", description="The current users in **{}** are \n**{}**.".format(ctx.message.server.name, ", ".join(members)), colour=0X008CFF))
             
     @_server.command(pass_context=True, no_pm=True)
     async def channels(self, ctx):
         """Lists all channels"""
-        comma = "**, **"
+        
         voicechans = [x.name for x in ctx.message.server.channels if x.type == discord.ChannelType.voice]
         textchans = [x.name for x in ctx.message.server.channels if x.type == discord.ChannelType.text]
-        await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Channels", description="{}, the current voice channels are \n**{}**.\nThe current text channels are\n**{}**.".format(ctx.message.author.mention, comma.join(voicechans), comma.join(textchans)), colour=0X008CFF))
+        await self.bot.send_message(ctx.message.channel, embed=discord.Embed(title="Channels", description="{}, the current voice channels are \n**{}**.\nThe current text channels are\n**{}**.".format(ctx.message.author.mention, ", ".join(voicechans), ", ".join(textchans)), colour=0X008CFF))
 			
     @_server.command(pass_context=True, no_pm=True)
     async def compareids(self, ctx):
@@ -113,33 +113,46 @@ class Serverinfo:
             em.add_field(name="Server ID", value=str(ctx.message.server.id))
             em.add_field(name="Server Region", value=str(ctx.message.server.region))
             em.add_field(name="Server Verification", value=str(ctx.message.server.verification_level))
-            em.add_field(name="Server Roles", value=str(len(ctx.message.server.roles) -1))
-            em.add_field(name="Server Owner", value=str(ctx.message.server.owner.name))
             em.add_field(name="Server Created At", value=str(server_created_at))
+            em.add_field(name="Server Roles", value=str(len(ctx.message.server.roles) - 1))
+            em.add_field(name="\a", value="\a")
+            em.add_field(name="Server Owner", value=str(ctx.message.server.owner.name))
             em.add_field(name="Owner ID", value=str(ctx.message.server.owner.id))
             em.add_field(name="Owner Nick", value=str(ctx.message.server.owner.nick))
             em.add_field(name="Owner Status", value=str(ctx.message.server.owner.status))
+            em.add_field(name="\a", value="\a")
+            em.add_field(name="\a", value="\a")
             em.add_field(name="Total Bots", value=str(len(bots)))
             em.add_field(name="Bots Online", value=str(len(bots - offline)))
             em.add_field(name="Bots Offline", value=str(len(bots & offline)))
+            em.add_field(name="\a", value="\a")
+            em.add_field(name="\a", value="\a")
+            em.add_field(name="\a", value="\a")
             em.add_field(name="Total Users", value=str(len(users)))
             em.add_field(name="Online Users", value=str(len(users - offline)))
             em.add_field(name="Offline Users", value=str(len(users & offline)))
-            em.add_field(name="Channel Name", value=str(ctx.message.channel.name))
-            em.add_field(name="Channel ID", value=str(ctx.message.channel.id))
-            em.add_field(name="Channel Default", value=str(ctx.message.channel.is_default))
-            em.add_field(name="Channel Position", value=str(ctx.message.channel.position + 1))
-            em.add_field(name="Channel Created At", value=str(channel_created_at))
+            em.add_field(name="\a", value="\a")
+            em.add_field(name="\a", value="\a")
+            em.add_field(name="\a", value="\a")
+            em2 = discord.Embed(color=0X008CFF)
+            em2.add_field(name="Channel Name", value=str(ctx.message.channel.name))
+            em2.add_field(name="Channel ID", value=str(ctx.message.channel.id))
+            em2.add_field(name="\a", value="\a")
+            em2.add_field(name="Channel Default", value=str(ctx.message.channel.is_default))
+            em2.add_field(name="Channel Position", value=str(ctx.message.channel.position + 1))
+            em2.add_field(name="Channel Created At", value=str(channel_created_at))
             if ctx.message.channel.topic != None:
                 em.add_field(name="Channel Topic", value=(ctx.message.channel.topic))
             else:
                 pass
             await self.bot.say(embed=em)
+            await self.bot.say(embed=em2)
         except discord.HTTPException:
-            await self.bot.say("An unknown error occured while sending the embedded message, maybe try giving me the `embed links` permission?")
+            await self.bot.say("An unknown error occured while sending the embedded message.")
 
     @_server.command(pass_context=True, no_pm=True)
     async def channelinfo(self, ctx, channel : discord.Channel = None):
+        """Gives you some channel information."""
         if channel == None:
             channel = ctx.message.channel
         passed = (ctx.message.timestamp - channel.created_at).days
@@ -196,14 +209,19 @@ class Serverinfo:
         """Shows you the info for the given user, or yours if you didn't give a user."""
         if user == None:
             user = ctx.message.author
-        comma = ", "
         roles = [r.name for r in user.roles if r.name != "@everyone"]
         if roles:
             roles = sorted(roles, key=[x.name for x in ctx.message.server.role_hierarchy if x.name != "@everyone"].index)
-            roles = comma.join(roles)
         else:
             roles = "None"
-
+            
+        print(len(roles))
+            
+        if len(roles) > 16:
+            roles = "Too much to show here."
+        else:
+            roles = ", ".join(roles)
+            
         em = discord.Embed(description="{} here you go:".format(
             ctx.message.author.mention), title="User Info", color=0X008CFF)
         if user.avatar_url:
@@ -222,15 +240,21 @@ class Serverinfo:
             em.add_field(name="Playing", value=user.game)
         else:
             em.add_field(name="Playing", value="Nothing")
+        em.add_field(name="\a", value="\a")
+        em.add_field(name="\a", value="\a")
         em.add_field(name="Is AFK", value=user.is_afk)
         em.add_field(name="Is bot", value=user.bot)
+        em.add_field(name="\a", value="\a")
+        em.add_field(name="\a", value="\a")
+        em.add_field(name="Muted in this server", value=user.mute)
+        em.add_field(name="Deafened in this server", value=user.deaf)
+        em.add_field(name="\a", value="\a")
+        em.add_field(name="\a", value="\a")
+        em.add_field(name="Joined discord at", value=user.created_at.strftime("%d %b %Y %H:%M"))
+        em.add_field(name="Joined server at", value=user.joined_at.strftime("%d %b %Y %H:%M"))
+        em.add_field(name="\a", value="\a")
+        em.add_field(name="\a", value="\a")
         em.add_field(name="Highest role color", value=user.color)
-        em.add_field(name="Serverwide muted", value=user.mute)
-        em.add_field(name="Serverwide deafened", value=user.deaf)
-        em.add_field(name="Joined discord at",
-                     value=user.created_at.strftime("%d %b %Y %H:%M"))
-        em.add_field(name="Joined server at",
-                     value=user.joined_at.strftime("%d %b %Y %H:%M"))
         em.add_field(name="Roles", value=roles)
 
         await self.bot.say(embed=em)
