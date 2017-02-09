@@ -102,7 +102,12 @@ class Memes:
         if ctx.message.server.id not in self.settings:
             self.settings[ctx.message.server.id] = {'memes': self.memelist, 'disabled': False}
             self.save_settings()
-        await self.bot.say(choice(self.settings[ctx.message.server.id]['memes']))
+        color = ["".join(choice("ABCDEF0123456789")) for i in range(6)]
+        colorCopy = color[::]
+        color = ""
+        for char in colorCopy:
+            color += char
+        await self.bot.say(embed=discord.Embed(color=int(color, 16)).set_image(url=choice(self.settings[ctx.message.server.id]['memes'])))
         
     @commands.command(pass_context=True, no_pm=True)
     async def addmeme(self, ctx, memelink_imgurpls):
@@ -198,9 +203,15 @@ class Memes:
             except Exception as e:
                 print(e)
                 print("Memes error D: I couldn't download the file, so we're gonna use the url instead.")
-            await self.bot.send_file(ctx.message.channel, fp="data/memes/datboi.png", filename="datboi.png")
+            try:
+                await self.bot.send_file(ctx.message.channel, fp="data/memes/datboi.png", filename="datboi.png")
+            except:
+                await self.bot.say("http://i.imgur.com/KEb9OJv.jpg")
         else:
-            await self.bot.send_file(ctx.message.channel, fp="data/memes/datboi.png", filename="datboi.png")
+            try:
+                await self.bot.send_file(ctx.message.channel, fp="data/memes/datboi.png", filename="datboi.png")
+            except:
+                await self.bot.say("http://i.imgur.com/KEb9OJv.jpg")
             
     @commands.command(pass_context=True, name="airhorn", no_pm=True)
     async def _airhorn(self, ctx):
@@ -252,39 +263,30 @@ class Memes:
         if self.bot.is_voice_connected(server):
             try:
                 airhornchoice = choice(self.airhorn)
-                vcdc = self.bot.voice_client_in(server)
-                await vcdc.disconnect()
-                await asyncio.sleep(0.5)
-                airhorn_join = await self.bot.join_voice_channel(ctx.message.author.voice_channel)
-                airhorn = airhorn_join.create_ffmpeg_player(airhornchoice)
-                airhorn.start()
-                ahplaying = True
+                airhorn = await self.bot.voice_client_in(ctx.message.server).create_ffmpeg_player(airhornchoice)
+                await airhorn.start()
                 if airhornchoice == "data/memes/airhorns/airhorn1.mp3":
                     await asyncio.sleep(1.75)
                 elif airhornchoice == "data/memes/airhorns/airhorn2.mp3":
                     await asyncio.sleep(1.5)
                 else:
                     await asyncio.sleep(3)
-                vcdc = self.bot.voice_client_in(server)
-                await vcdc.disconnect()
-                ahplaying = False
+                await airhorn.stop()
                 return
             except:
                 return
         else:
             try:
                 airhornchoice = choice(self.airhorn)
-                airhorn_join = await self.bot.join_voice_channel(ctx.message.author.voice_channel)
-                airhorn = airhorn_join.create_ffmpeg_player(airhornchoice)
-                airhorn.start()
+                airhorn = await self.bot.join_voice_channel(ctx.message.author.voice_channel).create_ffmpeg_player(airhornchoice)
+                await airhorn.start()
                 if airhornchoice == "data/memes/airhorns/airhorn1.mp3":
                     await asyncio.sleep(1.75)
                 elif airhornchoice == "data/memes/airhorns/airhorn2.mp3":
                     await asyncio.sleep(1.5)
                 else:
                     await asyncio.sleep(3)
-                vcdc = self.bot.voice_client_in(server)
-                await vcdc.disconnect()
+                await airhorn.stop()
                 return
             except:
                 return
