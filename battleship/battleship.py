@@ -22,6 +22,7 @@ class Battleship:
         ]
 
     @commands.command(pass_context=True, aliases=["seabattle"])
+    @commands.cooldown(1, 60, commands.BucketType.user)
     async def battleship(self, ctx):
         """Play Battleship with the bot. I swear I won't cheat ;)"""
         status = await self.bot.say("Generating my sea...")
@@ -31,7 +32,6 @@ class Battleship:
             while position in botsea:
                 position = random.choice(self.positions)
             botsea.append(position)
-        print(str(botsea)) # DEBUGGER
         await asyncio.sleep(1) # so it looks a bit legit like it's actually doing something.
         await self.bot.edit_message(status, "Generating your sea...")
         usersea = []
@@ -45,11 +45,14 @@ class Battleship:
         first = random.choice([False, True])
         if first:
             await self.bot.say("I'll go first.")
-            while len(usersea) >= 0:
+            while True:
                 bomb = random.choice(self.positions)
                 if bomb in usersea:
                     usersea.remove(bomb)
-                    await self.bot.say("I've hit one of your ships! I hit {}, you have **{}** left ({} ships). Your turn.".format(bomb, "**, **".join(usersea), len(usersea)))
+                    if len(usersea) > 0:
+                        await self.bot.say("I've hit one of your ships! I hit {}, you have **{}** left ({} ships). Your turn.".format(bomb, "**, **".join(usersea), len(usersea)))
+                    else:
+                        await self.bot.say("I've hit you last ship! I hit {}, so I win.".format(bomb))
                 else:
                     await self.bot.say("I missed, your turn.")
                 bomb = await self.bot.wait_for_message(author=ctx.message.author, timeout=30)
@@ -74,7 +77,7 @@ class Battleship:
                     await self.bot.say("You missed, my turn.")
         else:
             await self.bot.say("You'll go first.")
-            while len(usersea) >= 0:
+            while True:
                 bomb = await self.bot.wait_for_message(author=ctx.message.author, timeout=30)
                 if (bomb == None) or (bomb.content.upper() == "STOP"):
                     await self.bot.say("K then, I'll stop.")
@@ -98,7 +101,10 @@ class Battleship:
                 bomb = random.choice(self.positions)
                 if bomb in usersea:
                     usersea.remove(bomb)
-                    await self.bot.say("I've hit one of your ships! I hit {}, you have **{}** left ({} ships). Your turn.".format(bomb, "**, **".join(usersea), len(usersea)))
+                    if len(usersea) > 0:
+                        await self.bot.say("I've hit one of your ships! I hit {}, you have **{}** left ({} ships). Your turn.".format(bomb, "**, **".join(usersea), len(usersea)))
+                    else:
+                        await self.bot.say("I've hit you last ship! I hit {}, so I win.".format(bomb))
                 else:
                     await self.bot.say("I missed, your turn.")
             
