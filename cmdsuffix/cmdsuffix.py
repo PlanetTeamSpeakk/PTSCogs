@@ -37,10 +37,11 @@ class CMDSuffix:
         self.save_settings()
         
     async def on_message(self, message):
-        if message.server.id in self.settings:
-            if message.content.endswith(self.settings[message.server.id]['suffix']) and not self.settings[message.server.id]['disabled']:
-                message.content = list(self.bot.command_prefix(self.bot, message))[0] + message.content[:(len(message.content) - len(self.settings[message.server.id]['suffix']))]
-                await self.bot.process_commands(message)
+        if message.server != None:
+            if message.server.id in self.settings:
+                if message.content.endswith(self.settings[message.server.id]['suffix']) and not self.settings[message.server.id]['disabled']:
+                    message.content = list(self.bot.command_prefix(self.bot, message))[0] + message.content[:(len(message.content) - len(self.settings[message.server.id]['suffix']))]
+                    await self.bot.process_commands(message)
         
     def save_settings(self):
         dataIO.save_json("data/cmdsuffix/settings.json", self.settings)
