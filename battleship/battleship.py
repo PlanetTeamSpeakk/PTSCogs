@@ -21,11 +21,6 @@ class Battleship:
         'J1', 'J2', 'J3', 'J4', 'J5', 'J6', 'J7', 'J8', 'J9', 'J10'
         ]
 
-    @commands.command()
-    @commands.cooldown(1, 60, commands.BucketType.user)
-    async def cooldown(self):
-        await self.bot.edit_message(status, "Cooldown started.")
-        
     @commands.command(pass_context=True, aliases=["seabattle"])
     @commands.cooldown(1, 60, commands.BucketType.user)
     async def battleship(self, ctx):
