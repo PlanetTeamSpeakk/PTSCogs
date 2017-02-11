@@ -23,7 +23,7 @@ class Autorole:
             await self.bot.say("```Role: {}\nEnabled: {}```".format(self.settings[ctx.message.server.id]['role'], self.settings[ctx.message.server.id]['toggled']))
 
     @autorole.command(pass_context=True)
-    async def setrole(self, ctx, role:discord.Role):
+    async def setrole(self, ctx, *, role:discord.Role):
         """Set the role the bot should assign on join, the highest role that the bot has should be higher than this one."""
         self.settings[ctx.message.server.id]['role'] = role.id
         self.save_settings()
@@ -36,12 +36,12 @@ class Autorole:
             self.settings[ctx.message.server.id]['toggled'] = True
             await self.bot.say("The bot will once again assign a role on member join.")
         else:
-            self.settings[ctx.message.server.id]['toggled'] = True
+            self.settings[ctx.message.server.id]['toggled'] = False
             await self.bot.say("The bot will no longer assign a role on member join.")
         self.save_settings()
         
     async def on_member_join(self, member):
-        if (member.server.id in self.settings) and (self.settings[member.server.id]['role'] != None):
+        if (member.server.id in self.settings) and (self.settings[member.server.id]['role'] != None) and self.settings[member.server.id]['toggled']:
             role = discord.utils.get(member.server.roles, id=self.settings[member.server.id]['role'])
             if role != None:
                 try:
