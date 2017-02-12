@@ -44,6 +44,7 @@ class BetterHelp:
             if not ctx.message.channel.is_private:
                 await self.bot.edit_message(msg, "I've sent you help in dms!")
         else:
+            ctx.prefix = ctx.prefix.replace("\\", "\\\\") # for my own bot, Impulse Beta (private)
             for cmd in self.bot.commands.keys():
                 if cmd == command.split()[0]:
                     if len(command.split()) == 2:
@@ -61,7 +62,13 @@ class BetterHelp:
                         params = []
                         for param in paramsCopy:
                             if (str(param) != "self") and (str(param) != "ctx"):
-                                params.append(param)
+                                for attr in dir(self.bot.cogs[self.bot.commands[command.split()[0]].cog_name]):
+                                    if command.split()[1].lower() in attr:
+                                        if dict(self.bot.cogs[self.bot.commands[command.split()[0]].cog_name].__getattribute__(attr).params)[param].default != None: # For if it's optional ;), finally found a way.
+                                            params.append("<" + param + ">")
+                                        else:
+                                            params.append("[" + param + "]")
+                                        break
                         help = self.bot.commands[command.split()[0]].commands[command.split()[1]].help
                         if hasattr(self.bot.commands[command.split()[0]], "commands"):
                             if hasattr(self.bot.commands[command.split()[0]].commands[command.split()[1]], "commands"):
@@ -70,12 +77,12 @@ class BetterHelp:
                                 subcommands = []
                         if subcommands != []:
                             if params != []:
-                                await self.bot.say("**{}{} {} <{}>**:\n\n{}\n\n**Commands**:\n\t{}".format(ctx.prefix, command.split()[0], command.split()[1], "> <".join(list(params)), help, "\n\t".join(subcommands)))
+                                await self.bot.say("**{}{} {} {}**:\n\n{}\n\n**Commands**:\n\t{}".format(ctx.prefix, command.split()[0], command.split()[1], " ".join(list(params)), help, "\n\t".join(subcommands)))
                             else:
                                 await self.bot.say("**{}{} {}**:\n\n{}\n\n**Commands**:\n\t{}".format(ctx.prefix, command.split()[0], command.split()[1], help, "\n\t".join(subcommands)))
                         else:
                             if params != []:
-                                await self.bot.say("**{}{} {} <{}>**:\n\n{}".format(ctx.prefix, command.split()[0], command.split()[1], "> <".join(list(params)), help))
+                                await self.bot.say("**{}{} {} {}**:\n\n{}".format(ctx.prefix, command.split()[0], command.split()[1], " ".join(list(params)), help))
                             else:
                                 await self.bot.say("**{}{} {}**:\n\n{}".format(ctx.prefix, command.split()[0], command.split()[1], help))
                     elif len(command.split()) == 3:
@@ -91,19 +98,28 @@ class BetterHelp:
                                         paramsCopy = params[::]
                                         params = []
                                         for param in paramsCopy:
-                                            if (param != "self") and (param != "ctx"):
-                                                params.append(param)
+                                            if (str(param) != "self") and (str(param) != "ctx"):
+                                                for attr in dir(self.bot.cogs[self.bot.commands[command.split()[0]].cog_name]):
+                                                    if command.split()[2].lower() in attr:
+                                                        if dict(self.bot.cogs[self.bot.commands[command.split()[0]].cog_name].__getattribute__(attr).params)[param].default != None: # For if it's optional ;), finally found a way.
+                                                            params.append("<" + param + ">")
+                                                        else:
+                                                            params.append("[" + param + "]")
+                                                        break
                                         if params != []:
-                                            await self.bot.say("**{}{} <{}>**:\n\n{}".format(ctx.prefix, command, "> <".join(params), help))
+                                            await self.bot.say("**{}{} {}**:\n\n{}".format(ctx.prefix, command, " ".join(params), help))
                                         else:
                                             await self.bot.say("**{}{}**:\n\n{}".format(ctx.prefix, command, help))
                                     else:
-                                        await self.bot.say("That's not a valid subcommand.")
+                                        await self.bot.say("That's not a valid subcommand of that subcommand.")
                                 else:
                                     await self.bot.say("That subcommand has no other subcommands.")
                             else:
                                 await self.bot.say("That command has no subcommands.")
                     else:
+                        if command not in self.bot.commands:
+                            await self.bot.say("That's not a valid command")
+                            return
                         if hasattr(self.bot.commands[command], "command"):
                             subcommands = self.bot.commands[command].commands
                         else:
@@ -114,13 +130,18 @@ class BetterHelp:
                         params = []
                         for param in paramsCopy:
                             if (str(param) != "self") and (str(param) != "ctx"): # the list will turn into a NoneType if you remove the 'self' param with params.remove("self")
-                                params.append(param)
+                                for attr in dir(self.bot.cogs[self.bot.commands[command.split()[0]].cog_name]):
+                                    if command.lower() in attr:
+                                        if dict(self.bot.cogs[self.bot.commands[command].cog_name].__getattribute__(command).params)[param].default != None: # For if it's optional ;), finally found a way.
+                                            params.append("<" + param + ">")
+                                        else:
+                                            params.append("[" + param + "]")
                         help = self.bot.commands[command].help
                         if params != []:
                             if subcommands != []:
-                                await self.bot.say("**{}{} <{}>**:\n\n{}\n\n**Commands**:\n\t{}".format(ctx.prefix, command, "> <".join(list(params)), help, "\n\t".join(subcommands)))
+                                await self.bot.say("**{}{} {}**:\n\n{}\n\n**Commands**:\n\t{}".format(ctx.prefix, command, " ".join(list(params)), help, "\n\t".join(subcommands)))
                             else:
-                                await self.bot.say("**{}{} <{}>**:\n\n{}".format(ctx.prefix, command, "> <".join(list(params)), help))
+                                await self.bot.say("**{}{} {}**:\n\n{}".format(ctx.prefix, command, " ".join(list(params)), help))
                         else:
                             if subcommands != []:
                                 await self.bot.say("**{}{}**:\n\n{}\n\n**Commands**:\n\t{}".format(ctx.prefix, command, help, "\n\t".join(subcommands)))
