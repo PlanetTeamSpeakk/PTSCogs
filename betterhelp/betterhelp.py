@@ -69,8 +69,6 @@ class BetterHelp:
                                                 if hasattr(self.bot.cogs[self.bot.commands[command.split()[0]].cog_name].__getattribute__(attr1), "params") and command.split()[1] in attr1:
                                                     attr = attr1
                                                     break
-                                        print(dict(self.bot.cogs[self.bot.commands[command.split()[0]].cog_name].__getattribute__(attr).params))
-                                        print(attr)
                                         if dict(self.bot.cogs[self.bot.commands[command.split()[0]].cog_name].__getattribute__(attr).params)[param].default != None: # For if it's optional ;), finally found a way.
                                             params.append("<" + param + ">")
                                         else:
