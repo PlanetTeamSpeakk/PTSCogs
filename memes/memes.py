@@ -102,25 +102,21 @@ class Memes:
         if ctx.message.server.id not in self.settings:
             self.settings[ctx.message.server.id] = {'memes': self.memelist, 'disabled': False}
             self.save_settings()
-        color = ["".join(choice("ABCDEF0123456789")) for i in range(6)]
-        colorCopy = color[::]
-        color = ""
-        for char in colorCopy:
-            color += char
+        color = "".join(["".join(choice("ABCDEF0123456789")) for i in range(6)])
         await self.bot.say(embed=discord.Embed(color=int(color, 16)).set_image(url=choice(self.settings[ctx.message.server.id]['memes'])))
         
     @commands.command(pass_context=True, no_pm=True)
-    async def addmeme(self, ctx, memelink_imgurpls):
+    async def addmeme(self, ctx, memelink_impulsecdnpls):
         """Adds a meme to the list of memes of this server."""
-        memelink = memelink_imgurpls
-        if memelink.startswith("http://i.imgur.com/"):
+        memelink = memelink_impulsecdnpls
+        if memelink.startswith("https://cdn.impulsebot.com/"):
             if ctx.message.server.id not in self.settings:
                 self.settings[ctx.message.server.id] = {'memes': self.memelist, 'disabled': False}
             self.settings[ctx.message.server.id]['memes'].append(memelink + " by {}.".format(str(ctx.message.author)))
             self.save_settings()
             await self.bot.say("Meme added!")
         else:
-            await self.bot.say("Memelink was not an imgur link, an example imgur link would be: <http://i.imgur.com/OyNz2uG.png>")
+            await self.bot.say("Memelink was not an impulse cdn link, an example impulse cdn link would be: <https://cdn.impulsebot.com/yNn6yI1p5L.png>")
         
     @commands.command(pass_context=True, no_pm=True)
     @checks.mod_or_permissions()
@@ -128,7 +124,7 @@ class Memes:
         """Deletes a meme.
         
         Example:
-        [p]delmeme http://i.imgur.com/OyNz2uG.png
+        [p]delmeme https://cdn.impulsebot.com/yNn6yI1p5L.png
         """
         if ctx.message.server.id not in self.settings:
             await self.bot.say("This server has no memes to delete.")
@@ -150,8 +146,8 @@ class Memes:
     async def massadd(self, memelink_imgur_pls):
         """Add a meme to every list of memes for every server, also adds it to the default list."""
         meme = memelink_imgur_pls
-        if not meme.startswith("http://i.imgur.com/"):
-            await self.bot.say("Memelink was not an imgur link, an example imgur link would be: <http://i.imgur.com/OyNz2uG.png>")
+        if not meme.startswith("https://cdn.impulsebot.com/"):
+            await self.bot.say("Memelink was not an impulse cdn link, an example impulse cdn link would be: <https://cdn.impulsebot.com/yNn6yI1p5L.png>")
         else:
             for server in self.settings:
                 if server != "default_memes":
