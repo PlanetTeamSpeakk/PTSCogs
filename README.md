@@ -1,4 +1,4 @@
-[![Discord Server](https://img.shields.io/badge/Discord%20Server-Impulse-orange.svg)](https://discord.gg/tzsmCyk) [![Website](https://img.shields.io/badge/Website-impulsebot.co.nf-yellow.svg)](http://impulsebot.co.nf)
+[![Discord Server](https://img.shields.io/badge/Discord%20Server-Impulse-orange.svg)](https://discord.gg/tzsmCyk) [![Website](https://img.shields.io/badge/Website-impulsebot.co.nf-yellow.svg)](http://impulsebot.com)
 # PTSCogs
 
 1. [Description](#description)
