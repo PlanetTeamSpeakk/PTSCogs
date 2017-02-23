@@ -38,6 +38,6 @@ class fuckoff:
         except discord.Forbidden:
             pass
         await self.bot.say("{} {}. ".format(randchoice(self.foffmsg), item))
-
+ 
 def setup(bot):
     bot.add_cog(fuckoff(bot))
