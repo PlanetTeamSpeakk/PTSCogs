@@ -105,7 +105,7 @@ class BetterHelp:
                                         for param in paramsCopy:
                                             if (str(param) != "self") and (str(param) != "ctx"):
                                                 for attr in dir(self.bot.cogs[self.bot.commands[command.split()[0]].cog_name]):
-                                                    if command.split()[2].lower() in attr and hasattr(self.bot.cogs[self.bot.commands[command].cog_name].__getattribute__(attr), "params"):
+                                                    if command.split()[2].lower() in attr and hasattr(self.bot.cogs[self.bot.commands[command.split()[0]].cog_name].__getattribute__(attr), "params"):
                                                         if dict(self.bot.cogs[self.bot.commands[command.split()[0]].cog_name].__getattribute__(attr).params)[param].default != None: # For if it's optional ;), finally found a way.
                                                             params.append("<" + param + ">")
                                                         else:
