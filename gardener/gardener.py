@@ -12,7 +12,8 @@ class Gardener:
     def __init__(self, bot):
         self.bot = bot
         self.times = {'second': 1, 'minute': 60, 'hour': 3600, 'day': 86400, 'week': 604800, 'month': 18144000}
-        self.plants = {'apple tree': {'growthtime': 3*self.times['hour'], 'growthtime-worded': '3 hours', 'item': 'apple', 'value': 3000, 'price': 750}, 
+        self.plants = { 
+                    # === VEGETABLES ===
                     'carrots': {'growthtime': 15*self.times['minute'], 'growthtime-worded': '15 minutes', 'item': 'carrot', 'value': 250, 'price': 65},
                     'potatoes': {'growthtime': 15*self.times['minute'], 'growthtime-worded': '15 minutes', 'item': 'potatoe', 'value': 250, 'price': 65},
                     'melon': {'growthtime': 1*self.times['hour'], 'growthtime-worded': '1 hour', 'item': 'melon', 'value': 1000, 'price': 250},
@@ -22,7 +23,7 @@ class Gardener:
                     'cucumber': {'growthtime': 45*self.times['minute'], 'growthtime-worded': '45 minutes', 'item': 'cucumber', 'value': 750, 'price': 190},
                     'onions': {'growthtime': 30*self.times['minute'], 'growthtime-worded': '30 minutes', 'item': 'onion', 'value': 500, 'price': 125},
                     'broccoli': {'growthtime': 1*self.times['hour'], 'growthtime-worded': '1 hour', 'item': 'broccoli', 'value': 1000, 'price': 250},
-                    'lettuce': {'growthtime': 45*self.times['minute'], 'growthtime-worded': '45 minutes', 'itemt': 'lettuce', 'value': 750, 'price': 190},
+                    'lettuce': {'growthtime': 45*self.times['minute'], 'growthtime-worded': '45 minutes', 'item': 'lettuce', 'value': 750, 'price': 190},
                     'spinach': {'growthtime': 45*self.times['minute'], 'growthtime-worded': '45 minutes', 'item': 'spinach', 'value': 750, 'price': 190},
                     'eggplant': {'growthtime': 1*self.times['hour'], 'growthtime-worded': '1 hour', 'item': 'eggplant', 'value': 1000, 'price': 250},
                     'cauliflower': {'growthtime': 1*self.times['hour'], 'growthtime-worded': '1 hour', 'item': 'cauliflower', 'value': 1000, 'price': 250},
@@ -42,7 +43,38 @@ class Gardener:
                     'artichoke': {'growthtime': 45*self.times['minute'], 'growthtime-worded': '45 minutes', 'item': 'artichoke', 'value': 750, 'price': 190},
                     'chilli pepper': {'growthtime': 15*self.times['minute'], 'growthtime-worded': '15 minutes', 'item': 'chilli pepper', 'value': 250, 'price': 65},
                     'red cabbage': {'growthtime': 1*self.times['hour'], 'growthtime-worded': '1 hour', 'item': 'red cabbage', 'value': 1000, 'price': 250},
-                    'adobe rainbow': {'growthtime': 1*self.times['week'], 'growthtime-worded': '1 week', 'item': 'adobe rainbow', 'value': 168000, 'price': 42000}}
+                    # === FRUITS ===
+                    'apple tree': {'growthtime': 3*self.times['hour'], 'growthtime-worded': '3 hours', 'item': 'apple', 'value': 3000, 'price': 750},
+                    'orange tree': {'growthtime': 3*self.times['hour'], 'growthtime-worded': '3 hours', 'item': 'orange', 'value': 3000, 'price': 750},
+                    'banana tree': {'growthtime': 3*self.times['hour'], 'growthtime-worded': '3 hours', 'item': 'banana', 'value': 3000, 'price': 750},
+                    'grapevine': {'growthtime': 2*self.times['hour'], 'growthtime-worded': '2 hours', 'item': 'grape', 'value': 2000, 'price': 500},
+                    'strawberry bush': {'growthtime': 30*self.times['minute'], 'growthtime-worded': '30 minutes', 'item': 'strawberry', 'value': 500, 'price': 125},
+                    'pear tree': {'growthtime': 3*self.times['hour'], 'growthtime-worded': '3 hours', 'item': 'pear', 'value': 3000, 'price': 750},
+                    'pineapple': {'growthtime': 1*self.times['hour'], 'growthtime-worded': '1 hour', 'item': 'pineapple', 'value': 1000, 'price': 250},
+                    'cherry tree': {'growthtime': 3*self.times['hour'], 'growthtime-worded': '3 hours', 'item': 'cherry', 'value': 3000, 'price': 750},
+                    'lemon tree': {'growthtime': 3*self.times['hour'], 'growthtime-worded': '3 hours', 'item': 'lemon', 'value': 3000, 'price': 750}, # why do so many goddamn fruits grow on trees?
+                    'peach tree': {'growthtime': 3*self.times['hour'], 'growthtime-worded': '3 hours', 'item': 'peach', 'value': 3000, 'price': 750}, # value = (seconds / 60) / 15 * 4
+                    'mango tree': {'growthtime': 3*self.times['hour'], 'growthtime-worded': '3 hours', 'item': 'mango', 'value': 3000, 'price': 750}, # price = value / 4
+                    'berry tree': {'growthtime': 3*self.times['hour'], 'growthtime-worded': '3 hours', 'item': 'berry', 'value': 3000, 'price': 750},
+                    'watermelon': {'growthtime': 45*self.times['minute'], 'growthtime-worded': '45 minutes', 'item': 'watermelon', 'value': 750, 'price': 190},
+                    'grapefruit tree': {'growthtime': 3*self.times['hour'], 'growthtime-worded': '3 hours', 'item': 'grapefruit', 'value': 3000, 'price': 750},
+                    'kiwi tree': {'growthtime': 3*self.times['hour'], 'growthtime-worded': '3 hours', 'item': 'kiwi', 'value': 3000, 'price': 750},
+                    'papaya tree': {'growthtime': 3*self.times['hour'], 'growthtime-worded': '3 hours', 'item': 'papaya', 'value': 3000, 'price': 750},
+                    'pomegranate tree': {'growthtime': 3*self.times['hour'], 'growthtime-worded': '3 hours', 'item': 'pomegranate', 'value': 3000, 'price': 750}, 
+                    'fig tree': {'growthtime': 3*self.times['hour'], 'growthtime-worded': '3 hours', 'item': 'fig', 'value': 3000, 'price': 750},
+                    'avocado tree': {'growthtime': 3*self.times['hour'], 'growthtime-worded': '3 hours', 'item': 'avocado', 'value': 3000, 'price': 750},
+                    'apricot tree': {'growthtime': 3*self.times['hour'], 'growthtime-worded': '3 hours', 'item': 'apricot', 'value': 3000, 'price': 750}, # SO MUCH TREES
+                    'blackberry bush': {'growthtime': 2*self.times['hour'], 'growthtime-worded': '2 hours', 'item': 'blackberry', 'value': 2000, 'price': 500},
+                    'cranberry bush': {'growthtime': 2*self.times['hour'], 'growthtime-worded': '2 hours', 'item': 'cranberry', 'value': 2000, 'price': 500}, # finally a fruit that does not grow on a tree.
+                    'cantaloupe bush': {'growthtime': 2*self.times['hour'], 'growthtime-worded': '2 hours', 'item': 'cantaloupe', 'value': 2000, 'price': 500},
+                    'palm tree': {'growthtime': 4*self.times['hour'], 'growthtime-worded': '4 hours', 'item': 'coconut', 'value': 4000, 'price': 1000},
+                    'passion fruit bush': {'growthtime': 2*self.times['hour'], 'growthtime-worded': '2 hours', 'item': 'passion fruit', 'value': 2000, 'price': 500},
+                    'olive tree': {'growthtime': 3*self.times['hour'], 'growthtime-worded': '3 hours', 'item': 'olive', 'value': 3000, 'price': 750},
+                    'raspberry': {'growthtime': 30*self.times['hour'], 'growthtime-worded': '30 minutes', 'item': 'raspberry', 'value': 500, 'price': 125},
+                    'lime tree': {'growthtime': 3*self.times['hour'], 'growthtime-worded': '3 hours', 'item': 'lime', 'value': 3000, 'price': 750},
+                    # === REMAINING === 
+                    'adobe rainbow': {'growthtime': 1*self.times['week'], 'growthtime-worded': '1 week', 'item': 'adobe rainbow', 'value': 168000, 'price': 42000}
+                    }
         self.settings = dataIO.load_json("data/gardener/settings.json")
         self.started = False
 
@@ -124,17 +156,17 @@ class Gardener:
     @garden.command(pass_context=True, name="plants")
     async def _plants(self, ctx):
         """Shows you all available plants and the ones you have planted."""
-        msg = "```css\nAvailable plants\nPlant\t\t\tPrice\tValue\tGrowth time\n"
+        msg = "```css\nAvailable plants\nPlant\t\t\t\tPrice\tValue\tGrowth time\tItem\n"
         for plant in list(self.plants.keys()):
-            msg += "{}{}{}{}{}{}{}\n".format(plant, " " * (17 - len(plant)), str(self.plants[plant]['price']), " " * (9 - len(str(self.plants[plant]['price']))), str(self.plants[plant]['value']), " " * (9 - len(str(self.plants[plant]['value']))), self.plants[plant]['growthtime-worded'])
+            msg += "{}{}{}{}{}{}{}{}{}\n".format(plant, " " * (21 - len(plant)), str(self.plants[plant]['price']), " " * (9 - len(str(self.plants[plant]['price']))), str(self.plants[plant]['value']), " " * (9 - len(str(self.plants[plant]['value']))), self.plants[plant]['growthtime-worded'], " " * (15 - len(str(self.plants[plant]['growthtime-worded']))), self.plants[plant]['item'])
             if len(msg) > 1750:
                 await self.bot.say(msg + "```")
                 msg = "```css\n"
         user = ctx.message.author
         if user.id in self.settings['gardeners']:
-            msg += "\nYour plants\nPlant\t\t\tTime left\tValue\n"
+            msg += "\nYour plants\nPlant\t\t\t\tTime left\tValue\tItem\n"
             for plant in list(self.settings['gardeners'][user.id]['plants'].keys()):
-                msg += "{}{}{}{}{}\n".format(plant, " " * (17 - len(plant)), str(self.settings['gardeners'][user.id]['plants'][plant]['growthtime']), " " * (12 - len(str(self.plants[plant]['price']))), str(self.plants[plant]['value']))
+                msg += "{}{}{}{}{}{}{}\n".format(plant, " " * (21 - len(plant)), str(self.settings['gardeners'][user.id]['plants'][plant]['growthtime']), " " * (12 - len(str(self.plants[plant]['price']))), str(self.plants[plant]['value']), " " * (9 - len(str(self.plants[plant]['value']))), self.plants[plant]['item'])
                 if len(msg) > 1750:
                     await self.bot.say(msg + "```")
                     msg = "```css\n"
@@ -200,10 +232,15 @@ class Gardener:
         elif plant not in self.settings['gardeners'][user.id]['plants']:
             await self.bot.say("You do not have that plant planted.")
         else:
-            bank.withdraw_credits(user, payments[level])
-            self.settings['gardeners'][user.id]['plants'][plant]['growthtime'] -= times[level]
-            self.save_settings()
-            await self.bot.say("The growth time for **{}** has been successfully lowered by **{}** seconds and is now at **{}** seconds.".format(plant, times[level], self.settings['gardeners'][user.id]['plants'][plant]['growthtime']))
+            await self.bot.say("Are you sure you want to buy **a growthpulse of level {}** for **{} credits**? (yes/no)".format(level, payments[level]))
+            confirm = await self.bot.wait_for_message(author=user, timeout=15)
+            if (confirm == None) or (confirm.content.lower() != "yes"):
+                await self.bot.say("Okay, then not.")
+            else:
+                bank.withdraw_credits(user, payments[level])
+                self.settings['gardeners'][user.id]['plants'][plant]['growthtime'] -= times[level]
+                self.save_settings()
+                await self.bot.say("The growth time for **{}** has been successfully lowered by **{}** seconds and is now at **{}** seconds.".format(plant, times[level], self.settings['gardeners'][user.id]['plants'][plant]['growthtime']))
             
     def save_settings(self):
         return dataIO.save_json("data/gardener/settings.json", self.settings)
