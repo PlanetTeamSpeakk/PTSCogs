@@ -4,21 +4,35 @@
 1. [Description](#description)
 2. [Installation](#installation)
 3. [Cogs](#cogs)
-  1. [CMDCommands](#cmdcommands)
-  2. [Embed](#embed)
-  3. [Fuckoff](#fuckoff)
-  4. [Harambe](#harambe)
-  5. [Lyriccommands](#lyriccommands)
-  6. [Memes](#memes)
-  7. [Randomshizzle](#randomshizzle)
-  8. [Serverinfo](#serverinfo)
-  9. [Spam](#spam)
-  10. [Useful](#useful)
-  11. [Marry](#marry)
-  12. [Adkillr](#adkillr)
-  13. [Warner](#warner)
-  14. [Coder](#coder)
-  15. [FTPStats](#ftpstats)
+  1. [Adkillr](#adkillr)
+  2. [Antifilter](#antifilter)
+  3. [Autorole](#autorole)
+  4. [Battleship](#battleship)
+  5. [Betterhelp](#betterhelp)
+  6. [CMDCommands](#cmdcommands)
+  7. [CMDSuffix](#cmdsuffix)
+  8. [Coder](#coder) 
+  9. [Embed](#embed)
+  10. [FTPStats](#ftpstats)
+  11. [Fuckoff](#fuckoff)
+  12. [Gardener](#gardener)
+  13. [Giveme](#giveme)
+  14. [Harambe](#harambe)
+  15. [Lyriccommands](#lyriccommands)
+  16. [Marry](#marry)
+  17. [Memes](#memes)
+  18. [Modlog](#modlog)
+  19. [Raidprotect](#raidprotect)
+  20. [Randomshizzle](#randomshizzle)
+  21. [Serverinfo](#serverinfo)
+  22. [Spam](#spam)
+  23. [Steam](#steam) // yet to be added
+  24. [Translator](#translator) // yet to be added
+  25. [Useful](#useful)
+  26. [Warner](#warner)
+  27. [Welcomr](#welcomr) // yet to be added
+  28. [Wordfilter](#wordfilter) // yet to be added
+  29. [WoT](#wot) // yet to be added
 4. [Needed](#needed)
 5. [Annotations](#annotations)
 6. [Assistance](#assistance)
@@ -201,6 +215,79 @@ Allows you to upload server stats to an FTP Server.
 #### FTPStats Commands
 - `[p]ftpset`¹ set the settings for the ftpstats cog.
 
+### Antifilter
+Only let messages through that you allow.
+
+#### Antifilter Commands
+- `[p]antifilter` manages settings for antifilter.
+
+### Autorole
+Automatically assign a role on join to a member.
+
+#### Autorole Commadns
+- `[p]autorole` manages settings for autorole.
+
+### Battleship
+Play that old game called Battleship with the bot.
+
+#### Battleship Commands
+- `[p]battleship` play battleship with the bot.
+
+### Betterhelp
+Replaces the old help command to a better looking one.
+
+#### Betterhelp Commands
+- `[p]help` how does this work?
+
+### CMDSuffix
+Process commands when the message ends with something instead of beginning with it.
+
+#### CMDSuffix Commands
+- `[p]setsuffix <suffix>` set the cmd suffix.
+- `[p]togglesuffix` toggle whether users should be able to use command suffixes.
+
+### Gardener
+Plant, harvest and get info on your crops.
+
+#### Gardener Commands
+- `[p]garden plant <plant>` plant a plant.
+- `[p]garden harvest <plant>` harvest a plant.
+- `[p]garden info <plant>` gives information about your plant.
+- `[p]garden plants` shows a list of available plants and your plants.
+- `[p]garden items` shows all the items you can sell.
+- `[p]garden sell <item>` sell a harvested item.
+- `[p]garden buy <item>` buy an item to let your plants grow faster.
+
+### Giveme
+Allow members to give themselves roles.
+
+#### Giveme Commands
+- `[p]giveme <role>` gives you a role.
+- `[p]giveme list` gives you a list of available roles.
+- `[p]giveme add <role>` adds a role to the list of givemes.
+- `[p]giveme remove <role>` removes a role from the list of givemes.
+- `[p]giveme getoff <role>` removes a giveme from your roles.
+
+### Modlog
+Log moderation stuff.
+
+#### Modlog Commands
+- `[p]modlogset` manages modlog settings.
+
+### Raidprotect
+Protects your server from raids.
+
+#### Raidprotect Commands
+- `[p]raidprotect toggle` toggles raidprotect on or off.
+- `[p]raidprotect setchannel <channel>` sets the channel the bot should send messages to.
+- `[p]raidprotect setmembers <members>` sets the amount of members after which the bot should turn on raidprotect.
+- `[p]raidprotect members` shows the amount set with `[p]raidprotect setmembers`.
+
+### Steam
+Get some steam info from people or games.
+
+####
+
 ## Needed
 The Useful cog needs the FFMpy library, install it with `pip3 install ffmpy`.
 
@@ -209,7 +296,7 @@ The Useful cog needs the FFMpy library, install it with `pip3 install ffmpy`.
 
 ² moderators only.
 
-<> Needed.
+<> Mandatory.
 
 [] Optional.
 
