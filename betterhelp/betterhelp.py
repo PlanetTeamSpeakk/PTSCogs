@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 import asyncio
+import inspect
 
 class BetterHelp:
     """Some better help than the default one."""
@@ -44,116 +45,122 @@ class BetterHelp:
             if not ctx.message.channel.is_private:
                 await self.bot.edit_message(msg, "I've sent you help in dms!")
         else:
-            ctx.prefix = ctx.prefix.replace("\\\\", "\\\\\\\\") # for my own bot, Impulse Beta (private)
-            for cmd in self.bot.commands.keys():
-                if cmd == command.split()[0]:
-                    if len(command.split()) == 2:
-                        if hasattr(self.bot.commands[command.split()[0]], "commands"):
-                            subcommands = self.bot.commands[command.split()[0]].commands
-                        else:
-                            await self.bot.say("That command has no subcommands.")
-                            return
-                        if command.split()[1] not in subcommands:
-                            await self.bot.say("That is not a valid subcommand.")
-                            return
-                        command = str(command) # just making sure it's still a string.
-                        params = list(self.bot.commands[command.split()[0]].commands[command.split()[1]].params)
-                        paramsCopy = params[::]
-                        params = []
-                        for param in paramsCopy:
-                            if (str(param) != "self") and (str(param) != "ctx"):
-                                for attr in dir(self.bot.cogs[self.bot.commands[command.split()[0]].cog_name]):
-                                    if command.split()[1].lower() in attr:
-                                        while not hasattr(self.bot.cogs[self.bot.commands[command.split()[0]].cog_name].__getattribute__(attr), "params"):
-                                            for attr1 in dir(self.bot.cogs[self.bot.commands[command.split()[0]].cog_name]):
-                                                if hasattr(self.bot.cogs[self.bot.commands[command.split()[0]].cog_name].__getattribute__(attr1), "params") and command.split()[1] in attr1:
-                                                    attr = attr1
-                                                    break
-                                        if dict(self.bot.cogs[self.bot.commands[command.split()[0]].cog_name].__getattribute__(attr).params)[param].default != None: # For if it's optional ;), finally found a way.
-                                            params.append("<" + param + ">")
-                                        else:
-                                            params.append("[" + param + "]")
-                                        break
-                        help = self.bot.commands[command.split()[0]].commands[command.split()[1]].help
-                        if hasattr(self.bot.commands[command.split()[0]], "commands"):
-                            if hasattr(self.bot.commands[command.split()[0]].commands[command.split()[1]], "commands"):
-                                subcommands = self.bot.commands[command.split()[0]].commands[command.split()[1]].commands
-                            else:
-                                subcommands = []
-                        if subcommands != []:
-                            if params != []:
-                                await self.bot.say("**{}{} {} {}**:\n\n{}\n\n**Commands**:\n\t{}".format(ctx.prefix, command.split()[0], command.split()[1], " ".join(list(params)), help, "\n\t".join(subcommands)))
-                            else:
-                                await self.bot.say("**{}{} {}**:\n\n{}\n\n**Commands**:\n\t{}".format(ctx.prefix, command.split()[0], command.split()[1], help, "\n\t".join(subcommands)))
-                        else:
-                            if params != []:
-                                await self.bot.say("**{}{} {} {}**:\n\n{}".format(ctx.prefix, command.split()[0], command.split()[1], " ".join(list(params)), help))
-                            else:
-                                await self.bot.say("**{}{} {}**:\n\n{}".format(ctx.prefix, command.split()[0], command.split()[1], help))
-                    elif len(command.split()) == 3:
-                        command = str(command)
-                        if hasattr(self.bot.commands[command.split()[0]], "commands"):
-                            subcommands = self.bot.commands[command.split()[0]].commands
-                            if command.split()[1] in subcommands:
-                                if hasattr(self.bot.commands[command.split()[0]].commands[command.split()[1]], "commands"):
-                                    subcommands = self.bot.commands[command.split()[0]].commands[command.split()[1]].commands
-                                    if command.split()[2] in subcommands:
-                                        help = self.bot.commands[command.split()[0]].commands[command.split()[1]].commands[command.split()[2]].help
-                                        params = list(self.bot.commands[command.split()[0]].commands[command.split()[1]].commands[command.split()[2]].params)
-                                        paramsCopy = params[::]
-                                        params = []
-                                        for param in paramsCopy:
-                                            if (str(param) != "self") and (str(param) != "ctx"):
-                                                for attr in dir(self.bot.cogs[self.bot.commands[command.split()[0]].cog_name]):
-                                                    if command.split()[2].lower() in attr and hasattr(self.bot.cogs[self.bot.commands[command.split()[0]].cog_name].__getattribute__(attr), "params"):
-                                                        if dict(self.bot.cogs[self.bot.commands[command.split()[0]].cog_name].__getattribute__(attr).params)[param].default != None: # For if it's optional ;), finally found a way.
-                                                            params.append("<" + param + ">")
-                                                        else:
-                                                            params.append("[" + param + "]")
-                                                        break
-                                        if params != []:
-                                            await self.bot.say("**{}{} {}**:\n\n{}".format(ctx.prefix, command, " ".join(params), help))
-                                        else:
-                                            await self.bot.say("**{}{}**:\n\n{}".format(ctx.prefix, command, help))
-                                    else:
-                                        await self.bot.say("That's not a valid subcommand of that subcommand.")
-                                else:
-                                    await self.bot.say("That subcommand has no other subcommands.")
-                            else:
-                                await self.bot.say("That command has no subcommands.")
+            await self.send_cmd_help(ctx, command)
+            
+    async def send_cmd_help(self, ctx, command=None):
+        ctx.prefix = ctx.prefix.replace("\\\\", "\\\\\\\\") # for my own bot, Impulse Beta (private)
+        if command == None:
+            command = str(ctx.command)
+        for cmd in self.bot.commands.keys():
+            if cmd == command.split()[0]:
+                if len(command.split()) == 2:
+                    if hasattr(self.bot.commands[command.split()[0]], "commands"):
+                        subcommands = self.bot.commands[command.split()[0]].commands
                     else:
-                        if command not in self.bot.commands:
-                            await self.bot.say("That's not a valid command")
-                            return
-                        if hasattr(self.bot.commands[command], "command"):
-                            subcommands = self.bot.commands[command].commands
+                        await self.bot.send_message(ctx.message.channel, "That command has no subcommands.")
+                        return
+                    if command.split()[1] not in subcommands:
+                        await self.bot.send_message(ctx.message.channel, "That is not a valid subcommand.")
+                        return
+                    command = str(command) # just making sure it's still a string.
+                    params = list(self.bot.commands[command.split()[0]].commands[command.split()[1]].params)
+                    paramsCopy = params[::]
+                    params = []
+                    for param in paramsCopy:
+                        if (str(param) != "self") and (str(param) != "ctx"):
+                            for attr in dir(self.bot.cogs[self.bot.commands[command.split()[0]].cog_name]):
+                                if command.split()[1].lower() in attr:
+                                    while not hasattr(self.bot.cogs[self.bot.commands[command.split()[0]].cog_name].__getattribute__(attr), "params"):
+                                        for attr1 in dir(self.bot.cogs[self.bot.commands[command.split()[0]].cog_name]):
+                                            if hasattr(self.bot.cogs[self.bot.commands[command.split()[0]].cog_name].__getattribute__(attr1), "params") and command.split()[1] in attr1:
+                                                attr = attr1
+                                                break
+                                    if dict(self.bot.cogs[self.bot.commands[command.split()[0]].cog_name].__getattribute__(attr).params)[param].default == inspect._empty:
+                                        params.append("<" + param + ">")
+                                    else:
+                                        params.append("[" + param + "]")
+                                    break
+                    help = self.bot.commands[command.split()[0]].commands[command.split()[1]].help
+                    if hasattr(self.bot.commands[command.split()[0]], "commands"):
+                        if hasattr(self.bot.commands[command.split()[0]].commands[command.split()[1]], "commands"):
+                            subcommands = self.bot.commands[command.split()[0]].commands[command.split()[1]].commands
                         else:
                             subcommands = []
-                        command = str(command) # just making sure it's still a string.
-                        params = list(self.bot.commands[command].params)
-                        paramsCopy = params[::] 
-                        params = []
-                        for param in paramsCopy:
-                            if (str(param) != "self") and (str(param) != "ctx"): # the list will turn into a NoneType if you remove the 'self' param with params.remove("self")
-                                for attr in dir(self.bot.cogs[self.bot.commands[command].cog_name]):
-                                    if command.lower() in attr and hasattr(self.bot.cogs[self.bot.commands[command].cog_name].__getattribute__(attr), "params"):
-                                        if dict(self.bot.cogs[self.bot.commands[command].cog_name].__getattribute__(attr).params)[param].default != None: # For if it's optional ;), finally found a way.
-                                            params.append("<" + param + ">")
-                                        else:
-                                            params.append("[" + param + "]")
-                                        break
-                        help = self.bot.commands[command].help
+                    if subcommands != []:
                         if params != []:
-                            if subcommands != []:
-                                await self.bot.say("**{}{} {}**:\n\n{}\n\n**Commands**:\n\t{}".format(ctx.prefix, command, " ".join(list(params)), help, "\n\t".join(subcommands)))
-                            else:
-                                await self.bot.say("**{}{} {}**:\n\n{}".format(ctx.prefix, command, " ".join(list(params)), help))
+                            await self.bot.send_message(ctx.message.channel, "**{}{} {} {}**:\n\n{}\n\n**Commands**:\n\t{}".format(ctx.prefix, command.split()[0], command.split()[1], " ".join(list(params)), help, "\n\t".join(subcommands)))
                         else:
-                            if subcommands != []:
-                                await self.bot.say("**{}{}**:\n\n{}\n\n**Commands**:\n\t{}".format(ctx.prefix, command, help, "\n\t".join(subcommands)))
+                            await self.bot.send_message(ctx.message.channel, "**{}{} {}**:\n\n{}\n\n**Commands**:\n\t{}".format(ctx.prefix, command.split()[0], command.split()[1], help, "\n\t".join(subcommands)))
+                    else:
+                        if params != []:
+                            await self.bot.send_message(ctx.message.channel, "**{}{} {} {}**:\n\n{}".format(ctx.prefix, command.split()[0], command.split()[1], " ".join(list(params)), help))
+                        else:
+                            await self.bot.send_message(ctx.message.channel, "**{}{} {}**:\n\n{}".format(ctx.prefix, command.split()[0], command.split()[1], help))
+                elif len(command.split()) == 3:
+                    command = str(command)
+                    if hasattr(self.bot.commands[command.split()[0]], "commands"):
+                        subcommands = self.bot.commands[command.split()[0]].commands
+                        if command.split()[1] in subcommands:
+                            if hasattr(self.bot.commands[command.split()[0]].commands[command.split()[1]], "commands"):
+                                subcommands = self.bot.commands[command.split()[0]].commands[command.split()[1]].commands
+                                if command.split()[2] in subcommands:
+                                    help = self.bot.commands[command.split()[0]].commands[command.split()[1]].commands[command.split()[2]].help
+                                    params = list(self.bot.commands[command.split()[0]].commands[command.split()[1]].commands[command.split()[2]].params)
+                                    paramsCopy = params[::]
+                                    params = []
+                                    for param in paramsCopy:
+                                        if (str(param) != "self") and (str(param) != "ctx"):
+                                            for attr in dir(self.bot.cogs[self.bot.commands[command.split()[0]].cog_name]):
+                                                if command.split()[2].lower() in attr and hasattr(self.bot.cogs[self.bot.commands[command.split()[0]].cog_name].__getattribute__(attr), "params"):
+                                                    if dict(self.bot.cogs[self.bot.commands[command.split()[0]].cog_name].__getattribute__(attr).params)[param].default == inspect._empty:
+                                                        params.append("<" + param + ">")
+                                                    else:
+                                                        params.append("[" + param + "]")
+                                                    break
+                                    if params != []:
+                                        await self.bot.send_message(ctx.message.channel, "**{}{} {}**:\n\n{}".format(ctx.prefix, command, " ".join(params), help))
+                                    else:
+                                        await self.bot.send_message(ctx.message.channel, "**{}{}**:\n\n{}".format(ctx.prefix, command, help))
+                                else:
+                                    await self.bot.send_message(ctx.message.channel, "That's not a valid subcommand of that subcommand.")
                             else:
-                                await self.bot.say("**{}{}**:\n\n{}".format(ctx.prefix, command, help))
+                                await self.bot.send_message(ctx.message.channel, "That subcommand has no other subcommands.")
+                        else:
+                            await self.bot.send_message(ctx.message.channel, "That command has no subcommands.")
+                else:
+                    if command not in self.bot.commands:
+                        await self.bot.send_message(ctx.message.channel, "That's not a valid command")
+                        return
+                    if hasattr(self.bot.commands[command], "command"):
+                        subcommands = self.bot.commands[command].commands
+                    else:
+                        subcommands = []
+                    command = str(command) # just making sure it's still a string.
+                    params = list(self.bot.commands[command].params)
+                    paramsCopy = params[::] 
+                    params = []
+                    for param in paramsCopy:
+                        if (str(param) != "self") and (str(param) != "ctx"): # the list will turn into a NoneType if you remove the 'self' param with params.remove("self")
+                            for attr in dir(self.bot.cogs[self.bot.commands[command].cog_name]):
+                                if command.lower() in attr and hasattr(self.bot.cogs[self.bot.commands[command].cog_name].__getattribute__(attr), "params"):
+                                    if dict(self.bot.cogs[self.bot.commands[command].cog_name].__getattribute__(attr).params)[param].default == inspect._empty:
+                                        params.append("<" + param + ">")
+                                    else:
+                                        params.append("[" + param + "]")
+                                    break
+                    help = self.bot.commands[command].help
+                    if params != []:
+                        if subcommands != []:
+                            await self.bot.send_message(ctx.message.channel, "**{}{} {}**:\n\n{}\n\n**Commands**:\n\t{}".format(ctx.prefix, command, " ".join(list(params)), help, "\n\t".join(subcommands)))
+                        else:
+                            await self.bot.send_message(ctx.message.channel, "**{}{} {}**:\n\n{}".format(ctx.prefix, command, " ".join(list(params)), help))
+                    else:
+                        if subcommands != []:
+                            await self.bot.send_message(ctx.message.channel, "**{}{}**:\n\n{}\n\n**Commands**:\n\t{}".format(ctx.prefix, command, help, "\n\t".join(subcommands)))
+                        else:
+                            await self.bot.send_message(ctx.message.channel, "**{}{}**:\n\n{}".format(ctx.prefix, command, help))
         
 def setup(bot):
     bot.remove_command("help") # removing the old help command to be replaced by the new one.
+    bot.send_cmd_help = BetterHelp(bot).send_cmd_help
     bot.add_cog(BetterHelp(bot))
