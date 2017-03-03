@@ -10,45 +10,56 @@ class BetterHelp:
         self.bot = bot
 
     @commands.command(pass_context=True, aliases=['cmds', 'commands'])
+    @commands.cooldown(3, 10, commands.BucketType.user)
     async def help(self, ctx, *, command=None):
         """How does this work?"""
         if command == None:
             if not ctx.message.channel.is_private:
                 msg = await self.bot.say("I am sending you help in dms!")
+            commands = {}
             help_msg = ""
             counter = 0
             for cog in self.bot.cogs:
-                help_msg += "**{}**\n".format(cog)
+                commands[cog] = []
                 for cmd in self.bot.commands:
-                    if len(self.bot.commands[cmd].checks) != 0:
-                        if ("owner" in str(self.bot.commands[cmd].checks[0])) and (ctx.message.author.id != self.bot.settings.owner):
-                            continue
-                        elif ("mod" in str(self.bot.commands[cmd].checks[0])):
-                            mod_role = self.bot.settings.get_server_mod(ctx.message.server)
-                            found = False
-                            for role in ctx.message.server.roles:
-                                if role.name.lower() == mod_role.lower():
-                                    mod_role = role
-                                    break
-                            for role in ctx.message.author.roles:
-                                if role == mod_role:
-                                    found = True
-                                    break
-                            if not found:
+                    if self.bot.commands[cmd].cog_name == cog:
+                        if len(self.bot.commands[cmd].checks) != 0:
+                            if ("owner" in str(self.bot.commands[cmd].checks[0])) and (ctx.message.author.id != self.bot.settings.owner):
                                 continue
-                        elif ("admin" in str(self.bot.commands[cmd].checks[0])):
-                            admin_role = self.bot.settings.get_server_admin(ctx.message.server)
-                            found = False
-                            for role in ctx.message.server.roles:
-                                if role.name.lower() == admin_role.lower():
-                                    admin_role = role
-                                    break
-                            for role in ctx.message.author.roles:
-                                if role == admin_role:
-                                    found = True
-                                    break
-                            if not found:
-                                continue
+                            elif ("mod" in str(self.bot.commands[cmd].checks[0])):
+                                mod_role = self.bot.settings.get_server_mod(ctx.message.server)
+                                found = False
+                                for role in ctx.message.server.roles:
+                                    if role.name.lower() == mod_role.lower():
+                                        mod_role = role
+                                        break
+                                for role in ctx.message.author.roles:
+                                    if role == mod_role:
+                                        found = True
+                                        break
+                                if not found:
+                                    continue
+                            elif ("admin" in str(self.bot.commands[cmd].checks[0])):
+                                admin_role = self.bot.settings.get_server_admin(ctx.message.server)
+                                found = False
+                                for role in ctx.message.server.roles:
+                                    if role.name.lower() == admin_role.lower():
+                                        admin_role = role
+                                        break
+                                for role in ctx.message.author.roles:
+                                    if role == admin_role:
+                                        found = True
+                                        break
+                                if not found:
+                                    continue
+                            commands[cog].append(cmd)
+            commandsCopy = commands.copy()
+            for cog in commandsCopy:
+                if len(commands[cog]) == 0:
+                    del commands[cog]
+            for cog in list(commands.keys()):
+                help_msg += "**{}**\n".format(cog)
+                for cmd in commands[cog]:
                     if (self.bot.commands[cmd].cog_name == cog) and not (self.bot.commands[cmd].hidden):
                         if self.bot.commands[cmd].help == None:
                             help_msg += "\t\t**{}**\n".format(cmd)
