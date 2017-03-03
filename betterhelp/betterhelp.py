@@ -23,7 +23,7 @@ class BetterHelp:
                 commands[cog] = []
                 for cmd in self.bot.commands:
                     if self.bot.commands[cmd].cog_name == cog:
-                        if len(self.bot.commands[cmd].checks) != 0:
+                        if (len(self.bot.commands[cmd].checks) != 0) and (ctx.message.server != None):
                             if ("owner" in str(self.bot.commands[cmd].checks[0])) and (ctx.message.author.id != self.bot.settings.owner):
                                 continue
                             elif ("mod" in str(self.bot.commands[cmd].checks[0])):
@@ -52,7 +52,7 @@ class BetterHelp:
                                         break
                                 if not found:
                                     continue
-                            commands[cog].append(cmd)
+                        commands[cog].append(cmd)
             commandsCopy = commands.copy()
             for cog in commandsCopy:
                 if len(commands[cog]) == 0:
