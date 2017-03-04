@@ -13,6 +13,7 @@ import random
 from cogs.utils.dataIO import dataIO
 import requests
 import json
+from time import perf_counter
 from random import choice
 from subprocess import check_output
 try:
@@ -745,6 +746,14 @@ class Useful:
                 await self.bot.say(msg + "```")
                 msg = "```"
         
+    @commands.command(pass_context=True, name="ping", aliases=['pong'])
+    async def _ping(self, ctx):
+        """Pong!"""
+        t1 = perf_counter()
+        await self.bot.send_typing(ctx.message.channel)
+        t2 = perf_counter()
+        await self.bot.say("Pong! Response time: **{} ms**.".format(str((t2 - t1) * 1000)[:5]))
+        
     def short(self, url):
         shorten = Shortener('Bitly', bitly_token='dd800abec74d5b12906b754c630cdf1451aea9e0')
         return shorten.short(url)
@@ -793,4 +802,5 @@ def setup(bot):
         raise ModuleNotFound("Pyshorteners is not installed, install it with pip3 install pyshorteners.")
     check_folders()
     check_files()
+    bot.remove_command("ping") # to be replaced with a new one that does count response time instead of only a 'pong' response.
     bot.add_cog(Useful(bot))
