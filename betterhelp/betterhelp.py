@@ -11,8 +11,13 @@ class BetterHelp:
 
     @commands.command(pass_context=True, aliases=['cmds', 'commands'])
     @commands.cooldown(3, 10, commands.BucketType.user)
-    async def help(self, ctx, *, command=None):
-        """How does this work?"""
+    async def help(self, ctx, *, command_or_cog=None):
+        """How does this work?
+        Example:
+        [p]help
+        [p]help trivia
+        [p]help Trivia (Note the capital T to get all the commands for that cog/category.)"""
+        command = command_or_cog
         if command == None:
             if not ctx.message.channel.is_private:
                 msg = await self.bot.say("I am sending you help in dms!")
@@ -24,11 +29,15 @@ class BetterHelp:
                 for cmd in self.bot.commands:
                     if self.bot.commands[cmd].cog_name == cog:
                         if (len(self.bot.commands[cmd].checks) != 0) and (ctx.message.server != None):
-                            if ("owner" in str(self.bot.commands[cmd].checks[0])) and (ctx.message.author.id != self.bot.settings.owner):
+                            found = False
+                            if ("serverowner" in str(self.bot.commands[cmd].checks[0])) and (ctx.message.author.id == ctx.message.server.owner.id):
+                                commands[cog].append(cmd)
+                                continue
+                            if ("owner" in str(self.bot.commands[cmd].checks[0])) and (ctx.message.author.id == self.bot.settings.owner):
+                                commands[cog].append(cmd)
                                 continue
                             elif ("mod" in str(self.bot.commands[cmd].checks[0])):
                                 mod_role = self.bot.settings.get_server_mod(ctx.message.server)
-                                found = False
                                 for role in ctx.message.server.roles:
                                     if role.name.lower() == mod_role.lower():
                                         mod_role = role
@@ -37,11 +46,8 @@ class BetterHelp:
                                     if role == mod_role:
                                         found = True
                                         break
-                                if not found:
-                                    continue
                             elif ("admin" in str(self.bot.commands[cmd].checks[0])):
                                 admin_role = self.bot.settings.get_server_admin(ctx.message.server)
-                                found = False
                                 for role in ctx.message.server.roles:
                                     if role.name.lower() == admin_role.lower():
                                         admin_role = role
@@ -50,8 +56,10 @@ class BetterHelp:
                                     if role == admin_role:
                                         found = True
                                         break
-                                if not found:
-                                    continue
+                            else: # no idea what the permission is
+                                found = True
+                            if not found:
+                                continue
                         commands[cog].append(cmd)
             commandsCopy = commands.copy()
             for cog in commandsCopy:
@@ -85,7 +93,60 @@ class BetterHelp:
             if not ctx.message.channel.is_private:
                 await self.bot.edit_message(msg, "I've sent you help in dms!")
         else:
-            await self.send_cmd_help(ctx, command)
+            if command in self.bot.cogs:
+                await self.send_cog_help(ctx, command)
+            elif command in self.bot.commands:
+                await self.send_cmd_help(ctx, command)
+            else:
+                await self.bot.say("That's not a valid command nor a cog/category.")
+            
+    async def send_cog_help(self, ctx, cog):
+        if cog not in self.bot.cogs: # for if it's used from anywhere else which will be very rare and unusual.
+            raise TypeError("That's not a valid cog.")
+        else:
+            commands = []
+            for cmd in self.bot.commands:
+                if self.bot.commands[cmd].cog_name == cog:
+                    if (len(self.bot.commands[cmd].checks) != 0) and (ctx.message.server != None):
+                        found = False
+                        if ("serverowner" in str(self.bot.commands[cmd].checks[0])) and (ctx.message.author.id == ctx.message.server.owner.id):
+                            commands.append(cmd)
+                            continue
+                        if ("owner" in str(self.bot.commands[cmd].checks[0])) and (ctx.message.author.id == self.bot.settings.owner):
+                            commands.append(cmd)
+                            continue
+                        elif ("mod" in str(self.bot.commands[cmd].checks[0])):
+                            mod_role = self.bot.settings.get_server_mod(ctx.message.server)
+                            for role in ctx.message.server.roles:
+                                if role.name.lower() == mod_role.lower():
+                                    mod_role = role
+                                    break
+                            for role in ctx.message.author.roles:
+                                if role == mod_role:
+                                    found = True
+                                    break
+                        elif ("admin" in str(self.bot.commands[cmd].checks[0])):
+                            admin_role = self.bot.settings.get_server_admin(ctx.message.server)
+                            for role in ctx.message.server.roles:
+                                if role.name.lower() == admin_role.lower():
+                                    admin_role = role
+                                    break
+                            for role in ctx.message.author.roles:
+                                if role == admin_role:
+                                    found = True
+                                    break
+                        else: # no idea what the permission is
+                            found = True
+                        if not found:
+                            continue
+                    commands.append(cmd)
+            help_msg = "**{}**:\n\n{}\n\n**Commands**:\n\t".format(cog, self.bot.cogs[cog].__doc__)
+            for cmd in commands:
+                help_msg += "{}: {}\n\t".format(cmd, self.bot.commands[cmd].short_doc)
+                if len(help_msg) >= 1750:
+                    await self.bot.send_message(ctx.message.channel, help_msg)
+                    help_msg = ""
+            await self.bot.send_message(ctx.message.channel, help_msg)
             
     async def send_cmd_help(self, ctx, command=None):
         ctx.prefix = ctx.prefix.replace("\\\\", "\\\\\\\\") # for my own bot, Impulse Beta (private)
