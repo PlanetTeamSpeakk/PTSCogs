@@ -89,7 +89,8 @@ class Gardener:
     async def plant(self, ctx, *, plant):
         """Plant a crop.
         Please do [p]garden plants first to get a list of plants."""
-        if plant.lower() not in self.plants.keys():
+        plant = plant.lower()
+        if plant not in self.plants.keys():
             await self.bot.say("That's not a valid plant, for a list of valid plants type {}garden plants.".format(ctx.prefix))
         else:
             bank = self.bot.get_cog('Economy').bank
@@ -116,14 +117,15 @@ class Gardener:
     @garden.command(pass_context=True)
     async def harvest(self, ctx, *, plant):
         """Harvest one of your plants."""
-        if plant.lower() not in self.plants.keys():
+        plant = plant.lower()
+        if plant not in self.plants.keys():
             await self.bot.say("That's not a valid plant, for a list of valid plants type {}garden plants.".format(ctx.prefix))
         else:
             if ctx.message.author.id not in self.settings['gardeners']:
                 await self.bot.say("You don't have any plants planted to harvest.")
             elif plant not in self.settings['gardeners'][ctx.message.author.id]['plants']:
                 await self.bot.say("You didn't plant that plant yet.")
-            elif (self.settings['gardeners'][ctx.message.author.id]['plants'][plant]['growthtime'] <= 0) == False:
+            elif self.settings['gardeners'][ctx.message.author.id]['plants'][plant]['growthtime'] >= 0:
                 await self.bot.say("That plant isn't ready to be harvested yet.")
             else:
                 if self.plants[plant]['item'] not in self.settings['gardeners'][ctx.message.author.id]['items']:
