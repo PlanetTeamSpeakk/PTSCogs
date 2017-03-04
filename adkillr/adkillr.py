@@ -21,8 +21,6 @@ class Adkillr:
                 return
             serverid = message.server.id
             ad = message
-            self.adkillr = None
-            self.adkillr = dataIO.load_json("data/adkillr/adkillr.json")
             if ad.server is None:
                 pass
             try:
