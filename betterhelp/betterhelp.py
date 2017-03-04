@@ -38,12 +38,17 @@ class BetterHelp:
                                 continue
                             elif ("mod" in str(self.bot.commands[cmd].checks[0])):
                                 mod_role = self.bot.settings.get_server_mod(ctx.message.server)
+                                admin_role = self.bot.settings.get_server_admin(ctx.message.server)
                                 for role in ctx.message.server.roles:
                                     if role.name.lower() == mod_role.lower():
                                         mod_role = role
-                                        break
+                                    elif role.name.lower() == admin_role.lower():
+                                        admin_role = role
                                 for role in ctx.message.author.roles:
                                     if role == mod_role:
+                                        found = True
+                                        break
+                                    elif role == admin_role:
                                         found = True
                                         break
                             elif ("admin" in str(self.bot.commands[cmd].checks[0])):
@@ -117,12 +122,17 @@ class BetterHelp:
                             continue
                         elif ("mod" in str(self.bot.commands[cmd].checks[0])):
                             mod_role = self.bot.settings.get_server_mod(ctx.message.server)
+                            admin_role = self.bot.settings.get_server_admin(ctx.message.server)
                             for role in ctx.message.server.roles:
                                 if role.name.lower() == mod_role.lower():
                                     mod_role = role
-                                    break
+                                elif role.name.lower() == admin_role.lower():
+                                    admin_role = role
                             for role in ctx.message.author.roles:
                                 if role == mod_role:
+                                    found = True
+                                    break
+                                elif role == admin_role:
                                     found = True
                                     break
                         elif ("admin" in str(self.bot.commands[cmd].checks[0])):
@@ -168,7 +178,7 @@ class BetterHelp:
                     paramsCopy = params[::]
                     params = []
                     for param in paramsCopy:
-                        if (str(param) != "self") and (str(param) != "ctx"):
+                        if (str(param) != "self") and (str(param) != "ctx") and (str(param) != "context"):
                             for attr in dir(self.bot.cogs[self.bot.commands[command.split()[0]].cog_name]):
                                 if command.split()[1].lower() in attr:
                                     while not hasattr(self.bot.cogs[self.bot.commands[command.split()[0]].cog_name].__getattribute__(attr), "params"):
@@ -215,7 +225,7 @@ class BetterHelp:
                                     paramsCopy = params[::]
                                     params = []
                                     for param in paramsCopy:
-                                        if (str(param) != "self") and (str(param) != "ctx"):
+                                        if (str(param) != "self") and (str(param) != "ctx") and (str(param) != "context"):
                                             for attr in dir(self.bot.cogs[self.bot.commands[command.split()[0]].cog_name]):
                                                 if command.split()[2].lower() in attr and hasattr(self.bot.cogs[self.bot.commands[command.split()[0]].cog_name].__getattribute__(attr), "params"):
                                                     if dict(self.bot.cogs[self.bot.commands[command.split()[0]].cog_name].__getattribute__(attr).params)[param].default == inspect._empty:
@@ -246,7 +256,7 @@ class BetterHelp:
                     paramsCopy = params[::] 
                     params = []
                     for param in paramsCopy:
-                        if (str(param) != "self") and (str(param) != "ctx"): # the list will turn into a NoneType if you remove the 'self' param with params.remove("self")
+                        if (str(param) != "self") and (str(param) != "ctx") and (str(param) != "context"): # the list will turn into a NoneType if you remove the 'self' param with params.remove("self")
                             for attr in dir(self.bot.cogs[self.bot.commands[command].cog_name]):
                                 if command.lower() in attr and hasattr(self.bot.cogs[self.bot.commands[command].cog_name].__getattribute__(attr), "params"):
                                     while param not in dict(self.bot.cogs[self.bot.commands[command].cog_name].__getattribute__(attr).params):
