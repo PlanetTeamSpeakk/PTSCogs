@@ -31,18 +31,16 @@ class BetterHelp:
                         if (len(self.bot.commands[cmd].checks) != 0) and (ctx.message.server != None):
                             found = False
                             if ("serverowner" in str(self.bot.commands[cmd].checks[0])) and (ctx.message.author.id == ctx.message.server.owner.id):
-                                commands[cog].append(cmd)
-                                continue
-                            if ("owner" in str(self.bot.commands[cmd].checks[0])) and (ctx.message.author.id == self.bot.settings.owner):
-                                commands[cog].append(cmd)
-                                continue
+                                found = True
+                            elif ctx.message.author.id == self.bot.settings.owner:
+                                found = True
                             elif ("mod" in str(self.bot.commands[cmd].checks[0])):
                                 mod_role = self.bot.settings.get_server_mod(ctx.message.server)
                                 admin_role = self.bot.settings.get_server_admin(ctx.message.server)
                                 for role in ctx.message.server.roles:
-                                    if role.name.lower() == mod_role.lower():
+                                    if role.name.lower() == str(mod_role).lower():
                                         mod_role = role
-                                    elif role.name.lower() == admin_role.lower():
+                                    elif role.name.lower() == str(admin_role).lower():
                                         admin_role = role
                                 for role in ctx.message.author.roles:
                                     if role == mod_role:
@@ -54,7 +52,7 @@ class BetterHelp:
                             elif ("admin" in str(self.bot.commands[cmd].checks[0])):
                                 admin_role = self.bot.settings.get_server_admin(ctx.message.server)
                                 for role in ctx.message.server.roles:
-                                    if role.name.lower() == admin_role.lower():
+                                    if role.name.lower() == str(admin_role).lower():
                                         admin_role = role
                                         break
                                 for role in ctx.message.author.roles:
@@ -115,18 +113,16 @@ class BetterHelp:
                     if (len(self.bot.commands[cmd].checks) != 0) and (ctx.message.server != None):
                         found = False
                         if ("serverowner" in str(self.bot.commands[cmd].checks[0])) and (ctx.message.author.id == ctx.message.server.owner.id):
-                            commands.append(cmd)
-                            continue
-                        if ("owner" in str(self.bot.commands[cmd].checks[0])) and (ctx.message.author.id == self.bot.settings.owner):
-                            commands.append(cmd)
-                            continue
+                            found = True
+                        elif ctx.message.author.id == self.bot.settings.owner:
+                            found = True
                         elif ("mod" in str(self.bot.commands[cmd].checks[0])):
                             mod_role = self.bot.settings.get_server_mod(ctx.message.server)
                             admin_role = self.bot.settings.get_server_admin(ctx.message.server)
                             for role in ctx.message.server.roles:
-                                if role.name.lower() == mod_role.lower():
+                                if role.name.lower() == str(mod_role).lower():
                                     mod_role = role
-                                elif role.name.lower() == admin_role.lower():
+                                elif role.name.lower() == str(admin_role).lower():
                                     admin_role = role
                             for role in ctx.message.author.roles:
                                 if role == mod_role:
@@ -138,7 +134,7 @@ class BetterHelp:
                         elif ("admin" in str(self.bot.commands[cmd].checks[0])):
                             admin_role = self.bot.settings.get_server_admin(ctx.message.server)
                             for role in ctx.message.server.roles:
-                                if role.name.lower() == admin_role.lower():
+                                if role.name.lower() == str(admin_role).lower():
                                     admin_role = role
                                     break
                             for role in ctx.message.author.roles:
