@@ -787,7 +787,7 @@ class Useful:
                 else:
                     timestamp += request['dstOffset'] + request['rawOffset'] - 3600
                     time = datetime.datetime.fromtimestamp(timestamp)
-                    await self.bot.edit_message(message, "**{}**\n\t{} ({})".format(time.strftime("%d %b %Y %H:%M"), fulladdr, request['timeZoneName']))
+                    await self.bot.edit_message(message, "**{}**\n\t{} ({})".format(time.strftime("%d %b %Y %H:%M:%S"), fulladdr, request['timeZoneName']))
             else:
                 await self.bot.say("An unknown error occured while getting the longitude and latitude from the Google API.")
         
