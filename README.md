@@ -1,4 +1,4 @@
-[![Discord Server](https://img.shields.io/badge/Discord%20Server-Impulse-orange.svg)](https://discord.gg/tzsmCyk) [![Website](https://img.shields.io/badge/Website-impulsebot.co.nf-yellow.svg)](https://impulsebot.com)[![Build Status](https://travis-ci.org/PlanetTeamSpeakk/PTSCogs.svg?branch=master)](https://travis-ci.org/PlanetTeamSpeakk/PTSCogs)
+[![Discord Server](https://img.shields.io/badge/Discord%20Server-Impulse-orange.svg)](https://discord.gg/tzsmCyk) [![Website](https://img.shields.io/badge/Website-impulsebot.co.nf-yellow.svg)](https://impulsebot.com) [![Build Status](https://travis-ci.org/PlanetTeamSpeakk/PTSCogs.svg?branch=master)](https://travis-ci.org/PlanetTeamSpeakk/PTSCogs)
 # PTSCogs
 
 1. [Description](#description)
@@ -26,13 +26,13 @@
   20. [Randomshizzle](#randomshizzle)
   21. [Serverinfo](#serverinfo)
   22. [Spam](#spam)
-  23. [Steam](#steam) // yet to be added
-  24. [Translator](#translator) // yet to be added
+  23. [Steam](#steam)
+  24. [Translator](#translator)
   25. [Useful](#useful)
   26. [Warner](#warner)
-  27. [Welcomr](#welcomr) // yet to be added
-  28. [Wordfilter](#wordfilter) // yet to be added
-  29. [WoT](#wot) // yet to be added
+  27. [Welcomr](#welcomr)
+  28. [Wordfilter](#wordfilter)
+  29. [WoT](#wot)
 4. [Needed](#needed)
 5. [Annotations](#annotations)
 6. [Assistance](#assistance)
@@ -286,7 +286,41 @@ Protects your server from raids.
 ### Steam
 Get some steam info from people or games.
 
-####
+#### Steam Commands
+- `[p]setsteamkey` sets the steam api key for the user lookup command.
+- `[p]steam userid` tells you how to get someone's userid.
+- `[p]steam getuserinfo <userid>` gets user's information using their Steam 64 ID.
+- `[p]steam donatekey <key>` donates a Steam API key if not yet set.
+- `[p]steam applookup <appid>` gets information for an app or game.
+- `[p]steam top100forever` gives you the top 100 games played by people since march 2009.
+- `[p]steam top100in2weeks` gives you the top 100 games played by people since 2 weeks ago.
+
+### Translator
+Translate text using Google translate, for free.
+
+#### Translator Commands
+- `[p]translate <to_lang> <text>` translate text using google translate.
+- `[p]translate langlist` shows a list of available languages.
+
+### Welcomr
+Welcome new members and say goodbye to old ones!
+
+#### Welcomr Commands
+- `[p]welcomeset` manages settings.
+
+### Wordfilter
+Filter out words so people can't say those.
+
+#### Wordfilter Commands
+- `[p]wordfilter` manages settings.
+
+### WoT
+Get some user and tanks information.
+
+#### WoT Commands
+- `[p]wot setapikey <key>` sets the api key to use.
+- `[p]wot getuserinfo <user> <server>` get some info from users.
+- `[p]wot gettankinfo <tank>` get info on a tank, uses NA server.
 
 ## Needed
 The Useful cog needs the FFMpy library, install it with `pip3 install ffmpy`.
