@@ -752,7 +752,10 @@ class Useful:
         t1 = perf_counter()
         await self.bot.send_typing(ctx.message.channel)
         t2 = perf_counter()
-        await self.bot.say("Pong! Response time: **{} ms**.".format(str((t2 - t1) * 1000)[:5]))
+        time = str((t2 - t1) * 1000) # converting to milliseconds.
+        t1 = time.split(".")[0]      # everything before the dot is needed.
+        t2 = time.split(".")[1][:2]  # only 2 decimals behind the dot.
+        await self.bot.say("Pong! Response time: **{} ms**.".format(t1 + "." + t2))
         
     def short(self, url):
         shorten = Shortener('Bitly', bitly_token='dd800abec74d5b12906b754c630cdf1451aea9e0')
