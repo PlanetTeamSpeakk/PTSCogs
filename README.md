@@ -1,4 +1,4 @@
-[![Discord Server](https://img.shields.io/badge/Discord%20Server-Impulse-orange.svg)](https://discord.gg/tzsmCyk) [![Website](https://img.shields.io/badge/Website-impulsebot.co.nf-yellow.svg)](https://impulsebot.com)
+[![Discord Server](https://img.shields.io/badge/Discord%20Server-Impulse-orange.svg)](https://discord.gg/tzsmCyk) [![Website](https://img.shields.io/badge/Website-impulsebot.co.nf-yellow.svg)](https://impulsebot.com)[![Build Status](https://travis-ci.org/PlanetTeamSpeakk/PTSCogs.svg?branch=master)](https://travis-ci.org/PlanetTeamSpeakk/PTSCogs)
 # PTSCogs
 
 1. [Description](#description)
