@@ -11,10 +11,14 @@ class Adkillr:
     def __init__(self, bot):
         self.bot = bot
         self.adkillr = dataIO.load_json("data/adkillr/adkillr.json")
+        self.counter = 0
         
     async def adkill(self, message):
         """Kill them ads!"""
         if message.server is not None:
+            self.counter += 1
+            if self.counter % 10 == 0:
+                self.adkillr = dataIO.load_json("data/adkillr/adkillr.json")
             try:
                 temp = message.author.roles
             except AttributeError:
