@@ -1,21 +1,24 @@
-from discord.ext import commands
-from .utils import checks
-from __main__ import settings
 import os
 import discord
 import glob
-from .utils.chat_formatting import pagify, box
 import re
 import os
 import aiohttp
 import asyncio
 import random
-from cogs.utils.dataIO import dataIO
 import requests
 import json
+import datetime
+
+from discord.ext import commands
+from .utils import checks
+from __main__ import settings
+from cogs.utils.dataIO import dataIO
+from .utils.chat_formatting import pagify, box
 from time import perf_counter
 from random import choice
 from subprocess import check_output
+
 try:
     import ffmpy
     ffmpyinstalled = True
@@ -657,7 +660,7 @@ class Useful:
     async def setclientid(self, id:str):
         """Sets the client id of this bot."""
         self.settings['client_id'] = id
-        dataIO.save_json("data/useful/settings.json", self.settings)
+        self.save_settings()
         await self.bot.say("Client id set, now set the authorization header with [p]setauth.")
         
     @commands.command()
@@ -675,7 +678,7 @@ class Useful:
             await self.bot.say(e)
             return
         self.settings['auth_key'] = auth
-        dataIO.save_json("data/useful/settings.json", self.settings)
+        self.save_settings()
         await self.bot.say("Auth key set and servercount updated.")
         
     @commands.command()
@@ -691,7 +694,7 @@ class Useful:
             await self.bot.say(e)
             return
         self.settings['auth_key_dl'] = auth
-        dataIO.save_json("data/useful/settings.json", self.settings)
+        self.save_settings()
         await self.bot.say("Auth key set and servercount updated.")
         
     @commands.command()
@@ -757,6 +760,58 @@ class Useful:
         t2 = time.split(".")[1][:2]  # only 2 decimals behind the dot.
         await self.bot.say("Pong! Response time: **{} ms**.".format(t1 + "." + t2))
         
+    @commands.command(pass_context=True)
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def time(self, ctx, *, place):
+        """Get the time of a place somewhere on the earth
+        Example:
+        [p]time Los Angeles
+        [p]time Amsterdam, Netherlands"""
+        if "geocodingkey" not in self.settings or self.settings['geocodingkey'] == "key_here":
+            await self.bot.say("The geocoding key is not yet set if you're my owner you can set it with {}setgeocodingkey.".format(ctx.prefix))
+        elif "timezonekey" not in self.settings or self.settings['timezonekey'] == "key_here":
+            await self.bot.say("The timezone key is not yet set if you're my owner you can set it with {}settimezonekey.".format(ctx.prefix))
+        else:
+            message = await self.bot.say("Getting data...")
+            request = requests.get("https://maps.googleapis.com/maps/api/geocode/json?address={}&key={}".format(place, self.settings['geocodingkey'])).json()
+            if request['status'] == "ZERO_RESULTS":
+                await self.bot.say("Could not find any results for **{}**.".format(place))
+            elif request['status'] == "OK":
+                lng = request['results'][0]['geometry']['location']['lng']
+                lat = request['results'][0]['geometry']['location']['lat']
+                fulladdr = request['results'][0]['formatted_address']
+                timestamp = int(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).timestamp())
+                request = requests.get("https://maps.googleapis.com/maps/api/timezone/json?location={},{}&timestamp={}&key={}".format(lat, lng, timestamp, self.settings['timezonekey'])).json()
+                if request['status'] != "OK":
+                    await self.bot.say("An unknown error occured while getting the time and timezone from the Google API.")
+                else:
+                    timestamp += request['dstOffset'] + request['rawOffset'] - 3600
+                    time = datetime.datetime.fromtimestamp(timestamp)
+                    await self.bot.edit_message(message, "**{}**\n\t{} ({})".format(time.strftime("%d %b %Y %H:%M"), fulladdr, request['timeZoneName']))
+            else:
+                await self.bot.say("An unknown error occured while getting the longitude and latitude from the Google API.")
+        
+    @commands.command()
+    @checks.is_owner()
+    async def setgeocodingkey(self, key):
+        """Set the geocoding key for the Google API.
+        You can get one for free at https://developers.google.com/maps/documentation/geocoding/get-api-key"""
+        self.settings['geocodingkey'] = key
+        self.save_settings()
+        await self.bot.say("Key set!")
+        
+    @commands.command()
+    @checks.is_owner()
+    async def settimezonekey(self, key):
+        """Set the timezone key for the Google API.
+        You can get one for free at https://developers.google.com/maps/documentation/timezone/get-api-key"""
+        self.settings['timezonekey'] = key
+        self.save_settings()
+        await self.bot.say("Key set!")
+        
+    def save_settings(self):
+        return dataIO.save_json("data/useful/settings.json", self.settings)
+        
     def short(self, url):
         shorten = Shortener('Bitly', bitly_token='dd800abec74d5b12906b754c630cdf1451aea9e0')
         return shorten.short(url)
@@ -793,7 +848,7 @@ def check_folders():
 def check_files():
     if not os.path.exists("data/useful/settings.json"):
         print("Creating data/useful/settings.json file...")
-        dataIO.save_json("data/useful/settings.json", {'auth_key': 'key_here', 'client_id': 'client_id_here'})
+        dataIO.save_json("data/useful/settings.json", {'auth_key': 'key_here', 'client_id': 'client_id_here', 'geocodingkey': 'key_here', 'timezonekey': 'key_here'})
         
 class ModuleNotFound(Exception):
     pass
