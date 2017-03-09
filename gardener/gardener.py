@@ -257,10 +257,13 @@ class Gardener:
                         self.settings['gardeners'][gardener]['plants'][plant]['growthtime'] -= 1
                 counter += 1
                 if counter % 10 == 0: # just so we don't save it every second, but every 10 seconds instead.
-                    try:
-                        self.save_settings()
-                    except:
-                        pass
+                    error = True
+                    while error:
+                        try:
+                            self.save_settings()
+                            error = False
+                        except:
+                            error = True
                 await sleep(1)
             
 def check_folders():
@@ -277,5 +280,9 @@ def setup(bot):
     check_folders()
     check_files()
     if bot.get_cog('Economy') == None:
-        raise RuntimeError("Economy cog has to be loaded, you can load it with [p]load economy.")
+        cogs = dataIO.load_json("data/red/cogs.json")
+        if not cogs['cogs.economy']:
+            raise RuntimeError("Economy cog has to be loaded, you can load it with [p]load economy.")
+        else:
+            bot.load_cog("cogs.economy")
     bot.add_cog(Gardener(bot))
