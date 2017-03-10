@@ -761,7 +761,7 @@ class Useful:
         await self.bot.say("Pong! Response time: **{} ms**.".format(t1 + "." + t2))
         
     @commands.command(pass_context=True)
-    @commands.cooldown(1, 10, commands.BucketType.user)
+    @commands.cooldown(1, 30, commands.BucketType.user)
     async def time(self, ctx, *, place):
         """Get the time of a place somewhere on the earth
         Example:
@@ -808,6 +808,11 @@ class Useful:
         self.settings['timezonekey'] = key
         self.save_settings()
         await self.bot.say("Key set!")
+        
+    @commands.command()
+    async def servercount(self):
+        """Counts all the servers the bot is currently in."""
+        await self.bot.say("I am currently in **{} servers** with **{} members**.".format(len(self.bot.servers), len(list(self.bot.get_all_members()))))
         
     def save_settings(self):
         return dataIO.save_json("data/useful/settings.json", self.settings)
@@ -861,4 +866,5 @@ def setup(bot):
     check_folders()
     check_files()
     bot.remove_command("ping") # to be replaced with a new one that does count response time instead of only a 'pong' response.
+    bot.remove_command("servercount") if "servercount" in bot.commands# so there are no conflicts with the admin cog by Tekulvw
     bot.add_cog(Useful(bot))
