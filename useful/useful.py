@@ -775,7 +775,7 @@ class Useful:
         await self.bot.say("Pong! Response time: **{} ms**.".format(t1 + "." + t2))
         
     @commands.command(pass_context=True)
-    @commands.cooldown(1, 30, commands.BucketType.user)
+    @commands.cooldown(1, 10, commands.BucketType.user)
     async def time(self, ctx, *, place):
         """Get the time of a place somewhere on the earth
         Example:
