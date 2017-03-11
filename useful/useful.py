@@ -866,5 +866,5 @@ def setup(bot):
     check_folders()
     check_files()
     bot.remove_command("ping") # to be replaced with a new one that does count response time instead of only a 'pong' response.
-    bot.remove_command("servercount") if "servercount" in bot.commands# so there are no conflicts with the admin cog by Tekulvw
+    bot.remove_command("servercount") # so there are no conflicts with the admin cog by Tekulvw
     bot.add_cog(Useful(bot))
