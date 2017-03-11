@@ -537,7 +537,7 @@ class Useful:
         for server in servers:
             if not "bots" in server.name.lower():
                 try:
-                    await self.bot.send_message(server.default_channel, "{} ~ {}.".format(msg, str(ctx.message.author)))                    
+                    await self.bot.send_message(server.default_channel, "{} ~ {}.".format(msg, str(ctx.message.author)))
                 except:
                     pass
                 sent += 1
@@ -794,12 +794,12 @@ class Useful:
                 lng = request['results'][0]['geometry']['location']['lng']
                 lat = request['results'][0]['geometry']['location']['lat']
                 fulladdr = request['results'][0]['formatted_address']
-                timestamp = int(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).timestamp())
+                timestamp = int(datetime.datetime.utcnow().timestamp())
                 request = requests.get("https://maps.googleapis.com/maps/api/timezone/json?location={},{}&timestamp={}&key={}".format(lat, lng, timestamp, self.settings['timezonekey'])).json()
                 if request['status'] != "OK":
                     await self.bot.say("An unknown error occured while getting the time and timezone from the Google API.")
                 else:
-                    timestamp += request['dstOffset'] + request['rawOffset'] - 3600
+                    timestamp += request['dstOffset'] + request['rawOffset']
                     time = datetime.datetime.fromtimestamp(timestamp)
                     await self.bot.edit_message(message, "**{}**\n\t{} ({})".format(time.strftime("%d %b %Y %H:%M:%S"), fulladdr, request['timeZoneName']))
             else:
