@@ -527,22 +527,36 @@ class Useful:
     @checks.is_owner()
     async def serverwidemessage(self, ctx, *, msg):
         """Sends a message in every server."""
-        await self.bot.say("Sending message...")
+        statusMsg = "Sending message to all servers {}..."
+        sent = 0
+        status = str(sent) + "/" + str(len(self.bot.servers))
+        sending = await self.bot.say(statusMsg.format(status))
         servers = []
         for server in self.bot.servers:
             servers.append(server)
         for server in servers:
             if not "bots" in server.name.lower():
                 try:
-                    await self.bot.send_message(server.default_channel, "{} ~ {}.".format(msg, str(ctx.message.author)))
+                    await self.bot.send_message(server.default_channel, "{} ~ {}.".format(msg, str(ctx.message.author)))                    
                 except:
                     pass
-        await self.bot.edit_message(msg, "Done!")
+                sent += 1
+                status = str(sent) + "/" + str(len(self.bot.servers))
+                if sent % 5 == 0:
+                    await self.bot.edit_message(sending, statusMsg.format(status))
+        await self.bot.edit_message(sending, "Done!")
         
     @commands.command(pass_context=True)
     @checks.is_owner()
     async def serverwideembed(self, ctx, is_announcement, color, title, description, footer):
         """Sends an embedded message in every server."""
+        if "true" in is_announcement.lower():
+            is_announcement = True
+        elif "false" in is_announcement.lower():
+            is_announcement = False
+        else:
+            await self.bot.say("is_announcement should either be true or false.")
+            return
         try:
             await self.bot.delete_message(ctx.message)
         except discord.Forbidden:
