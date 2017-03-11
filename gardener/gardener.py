@@ -284,5 +284,5 @@ def setup(bot):
         if not cogs['cogs.economy']:
             raise RuntimeError("Economy cog has to be loaded, you can load it with [p]load economy.")
         else:
-            bot.load_cog("cogs.economy")
+            bot.load_extension("cogs.economy")
     bot.add_cog(Gardener(bot))
