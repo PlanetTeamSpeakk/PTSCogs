@@ -167,14 +167,14 @@ class Randomshizzle:
     async def cancermeter(self, *, torate=None):
         """Tells you how cancerous something is."""
         if torate != None:
-            await self.bot.say("\n".join(["```Cancer meter for '{}':".format(torate)
-                                "0    1    2    3    4    5    6    7    8    9   10"
+            await self.bot.say("\n".join(["```Cancer meter for '{}':".format(torate),
+                                "0    1    2    3    4    5    6    7    8    9   10",
                                 "|----|----|----|----|----|----|----|----|----|----|"])
                                 + "     " * random.randint(0, 5)+ "^```")
         else:
-            await self.bot.say("```Cancer meter:\n"
-                                "0    1    2    3    4    5    6    7    8    9   10\n"
-                                "|----|----|----|----|----|----|----|----|----|----|\n"
+            await self.bot.say("\n".join(["```Cancer meter:\n",
+                                "0    1    2    3    4    5    6    7    8    9   10\n",
+                                "|----|----|----|----|----|----|----|----|----|----|\n"])
                                 + "     " * random.randint(0, 5)+ "^```")
                                 
     @commands.command(pass_context=True)
