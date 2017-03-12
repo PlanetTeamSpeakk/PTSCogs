@@ -774,7 +774,7 @@ class Useful:
         t2 = time.split(".")[1][:2]  # only 2 decimals behind the dot.
         await self.bot.say("Pong! Response time: **{} ms**.".format(t1 + "." + t2))
         
-    @commands.command(pass_context=True, name="ping", aliases=['apong', 'admingpong', 'aping'])
+    @commands.command(pass_context=True, name="adminping", aliases=['apong', 'admingpong', 'aping'])
     @checks.admin_or_permissions()
     async def adminping(self, ctx):
         """Pong!"""
