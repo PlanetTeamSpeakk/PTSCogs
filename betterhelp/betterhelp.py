@@ -28,11 +28,7 @@ class BetterHelp:
                 commands[cog] = []
                 for cmd in self.bot.commands:
                     if self.bot.commands[cmd].cog_name == cog:
-                        isalias = False
-                        for cmd2 in self.bot.commands:
-                            if cmd in self.bot.commands[cmd2].aliases:
-                                isalias = True
-                        if isalias:
+                        if cmd != self.bot.commands[cmd].name:
                             continue
                         if (len(self.bot.commands[cmd].checks) != 0) and (ctx.message.server != None):
                             found = False
@@ -116,11 +112,7 @@ class BetterHelp:
             commands = []
             for cmd in self.bot.commands:
                 if self.bot.commands[cmd].cog_name == cog:
-                    isalias = False
-                    for cmd2 in self.bot.commands:
-                        if cmd in self.bot.commands[cmd2].aliases:
-                            isalias = True
-                    if isalias:
+                    if cmd != self.bot.commands[cmd].name:
                         continue
                     if (len(self.bot.commands[cmd].checks) != 0) and (ctx.message.server != None):
                         found = False
