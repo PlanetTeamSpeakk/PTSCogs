@@ -774,6 +774,18 @@ class Useful:
         t2 = time.split(".")[1][:2]  # only 2 decimals behind the dot.
         await self.bot.say("Pong! Response time: **{} ms**.".format(t1 + "." + t2))
         
+    @commands.command(pass_context=True, name="ping", aliases=['apong', 'admingpong', 'aping'])
+    @checks.admin_or_permissions()
+    async def adminping(self, ctx):
+        """Pong!"""
+        t1 = perf_counter()
+        await self.bot.send_typing(ctx.message.channel)
+        t2 = perf_counter()
+        time = str((t2 - t1) * 1000) # converting to milliseconds.
+        t1 = time.split(".")[0]      # everything before the dot is needed.
+        t2 = time.split(".")[1][:2]  # only 2 decimals behind the dot.
+        await self.bot.say("Pong! Response time: **{} ms**.".format(t1 + "." + t2))
+        
     @commands.command(pass_context=True)
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def time(self, ctx, *, place):
