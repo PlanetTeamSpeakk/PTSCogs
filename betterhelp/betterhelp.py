@@ -9,7 +9,7 @@ class BetterHelp:
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(pass_context=True, aliases=['cmds', 'commands'])
+    @commands.command(pass_context=True, aliases=['cmds', 'commands', 'cmdlist', 'commandlist'])
     @commands.cooldown(3, 10, commands.BucketType.user)
     async def help(self, ctx, *, command_or_cog=None):
         """How does this work?
@@ -22,12 +22,18 @@ class BetterHelp:
             if not ctx.message.channel.is_private:
                 msg = await self.bot.say("I am sending you help in dms!")
             commands = {}
-            help_msg = ""
+            help_msg = "{}\n\n".format(self.bot.description)
             counter = 0
             for cog in self.bot.cogs:
                 commands[cog] = []
                 for cmd in self.bot.commands:
                     if self.bot.commands[cmd].cog_name == cog:
+                        isalias = False
+                        for cmd2 in self.bot.commands:
+                            if cmd in self.bot.commands[cmd2].aliases:
+                                isalias = True
+                        if isalias:
+                            continue
                         if (len(self.bot.commands[cmd].checks) != 0) and (ctx.message.server != None):
                             found = False
                             if ("serverowner" in str(self.bot.commands[cmd].checks[0])) and (ctx.message.author.id == ctx.message.server.owner.id):
@@ -72,13 +78,13 @@ class BetterHelp:
                 help_msg += "**{}**\n".format(cog)
                 for cmd in commands[cog]:
                     if (self.bot.commands[cmd].cog_name == cog) and not (self.bot.commands[cmd].hidden):
-                        if self.bot.commands[cmd].help == None:
+                        if self.bot.commands[cmd].short_doc == "":
                             help_msg += "\t\t**{}**\n".format(cmd)
                         else:
-                            if len(self.bot.commands[cmd].help) > 64:
-                                help_msg += "\t\t**{}**: {}...\n".format(cmd, self.bot.commands[cmd].help[:64].replace("\n", " "))
+                            if len(self.bot.commands[cmd].short_doc) > 64:
+                                help_msg += "\t\t**{}**: {}...\n".format(cmd, self.bot.commands[cmd].short_doc[:64])
                             else:
-                                help_msg += "\t\t**{}**: {}\n".format(cmd, self.bot.commands[cmd].help.replace("\n", " "))
+                                help_msg += "\t\t**{}**: {}\n".format(cmd, self.bot.commands[cmd].short_doc)
                             if len(help_msg) > 1750:
                                 if counter >= 5:
                                     await asyncio.sleep(5)
@@ -110,6 +116,12 @@ class BetterHelp:
             commands = []
             for cmd in self.bot.commands:
                 if self.bot.commands[cmd].cog_name == cog:
+                    isalias = False
+                    for cmd2 in self.bot.commands:
+                        if cmd in self.bot.commands[cmd2].aliases:
+                            isalias = True
+                    if isalias:
+                        continue
                     if (len(self.bot.commands[cmd].checks) != 0) and (ctx.message.server != None):
                         found = False
                         if ("serverowner" in str(self.bot.commands[cmd].checks[0])) and (ctx.message.author.id == ctx.message.server.owner.id):
