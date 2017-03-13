@@ -3,6 +3,9 @@ from discord.ext import commands
 import asyncio
 import inspect
 
+class CogNotFound(Exception):
+    pass
+
 class BetterHelp:
     """Some better help than the default one."""
 
@@ -100,14 +103,14 @@ class BetterHelp:
         else:
             if command in self.bot.cogs:
                 await self.send_cog_help(ctx, command)
-            elif command in self.bot.commands:
+            elif command.split()[0] in self.bot.commands:
                 await self.send_cmd_help(ctx, command)
             else:
                 await self.bot.say("That's not a valid command nor a cog/category.")
             
     async def send_cog_help(self, ctx, cog):
         if cog not in self.bot.cogs: # for if it's used from anywhere else which will be very rare and unusual.
-            raise TypeError("That's not a valid cog.")
+            raise CogNotFound("That's not a valid cog.")
         else:
             commands = []
             for cmd in self.bot.commands:
@@ -283,5 +286,5 @@ class BetterHelp:
         
 def setup(bot):
     bot.remove_command("help") # removing the old help command to be replaced by the new one.
-    bot.send_cmd_help = BetterHelp(bot).send_cmd_help
+    bot.send_cmd_help = BetterHelp(bot).send_cmd_help # replacing send_cmd_help
     bot.add_cog(BetterHelp(bot))
