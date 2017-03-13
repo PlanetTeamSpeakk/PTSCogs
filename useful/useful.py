@@ -801,7 +801,7 @@ class Useful:
             message = await self.bot.say("Getting data...")
             request = requests.get("https://maps.googleapis.com/maps/api/geocode/json?address={}&key={}".format(place, self.settings['geocodingkey'])).json()
             if request['status'] == "ZERO_RESULTS":
-                await self.bot.say("Could not find any results for **{}**.".format(place))
+                await self.bot.edit_message(message, "Could not find any results for **{}**.".format(place))
             elif request['status'] == "OK":
                 lng = request['results'][0]['geometry']['location']['lng']
                 lat = request['results'][0]['geometry']['location']['lat']
@@ -838,7 +838,7 @@ class Useful:
     @commands.command()
     async def servercount(self):
         """Counts all the servers the bot is currently in."""
-        await self.bot.say("I am currently in **{} servers** with **{} members**.".format(len(self.bot.servers), len(list(self.bot.get_all_members()))))
+        await self.bot.say("I am currently in **{} servers** with **{} members** and **{} private channels**.".format(len(self.bot.servers), len(list(self.bot.get_all_members())), len(self.bot.private_channels)))
         
     def save_settings(self):
         return dataIO.save_json("data/useful/settings.json", self.settings)
