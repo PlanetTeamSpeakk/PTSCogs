@@ -205,16 +205,7 @@ class BetterHelp:
                             subcommands = self.bot.commands[command.split()[0]].commands[command.split()[1]].commands
                         else:
                             subcommands = []
-                    if subcommands != []:
-                        if params != []:
-                            await self.bot.send_message(ctx.message.channel, "**{}{} {} {}**:\n\n{}\n\n**Commands**:\n\t{}".format(ctx.prefix, command.split()[0], command.split()[1], " ".join(list(params)), help, "\n\t".join(subcommands)))
-                        else:
-                            await self.bot.send_message(ctx.message.channel, "**{}{} {}**:\n\n{}\n\n**Commands**:\n\t{}".format(ctx.prefix, command.split()[0], command.split()[1], help, "\n\t".join(subcommands)))
-                    else:
-                        if params != []:
-                            await self.bot.send_message(ctx.message.channel, "**{}{} {} {}**:\n\n{}".format(ctx.prefix, command.split()[0], command.split()[1], " ".join(list(params)), help))
-                        else:
-                            await self.bot.send_message(ctx.message.channel, "**{}{} {}**:\n\n{}".format(ctx.prefix, command.split()[0], command.split()[1], help))
+                    await self.send_final_help(ctx, command, params, help, subcommands)
                 elif len(command.split()) == 3:
                     command = str(command)
                     if hasattr(self.bot.commands[command.split()[0]], "commands"):
@@ -236,10 +227,7 @@ class BetterHelp:
                                                     else:
                                                         params.append("[" + param + "]")
                                                     break
-                                    if params != []:
-                                        await self.bot.send_message(ctx.message.channel, "**{}{} {}**:\n\n{}".format(ctx.prefix, command, " ".join(params), help))
-                                    else:
-                                        await self.bot.send_message(ctx.message.channel, "**{}{}**:\n\n{}".format(ctx.prefix, command, help))
+                                    await self.send_final_help(ctx, command, params, help, [])
                                 else:
                                     await self.bot.send_message(ctx.message.channel, "That's not a valid subcommand of that subcommand.")
                             else:
@@ -273,16 +261,47 @@ class BetterHelp:
                                         params.append("[" + param + "]")
                                     break
                     help = self.bot.commands[command].help
-                    if params != []:
-                        if subcommands != []:
-                            await self.bot.send_message(ctx.message.channel, "**{}{} {}**:\n\n{}\n\n**Commands**:\n\t{}".format(ctx.prefix, command, " ".join(list(params)), help, "\n\t".join(subcommands)))
-                        else:
-                            await self.bot.send_message(ctx.message.channel, "**{}{} {}**:\n\n{}".format(ctx.prefix, command, " ".join(list(params)), help))
-                    else:
-                        if subcommands != []:
-                            await self.bot.send_message(ctx.message.channel, "**{}{}**:\n\n{}\n\n**Commands**:\n\t{}".format(ctx.prefix, command, help, "\n\t".join(subcommands)))
-                        else:
-                            await self.bot.send_message(ctx.message.channel, "**{}{}**:\n\n{}".format(ctx.prefix, command, help))
+                    await self.send_final_help(ctx, command, params, help, subcommands)
+        
+    async def send_final_help(self, ctx, command, params, help, subcommands):
+        if len(command.split()) == 1:
+            aliases = self.bot.commands[command.split()[0]].aliases
+        elif len(command.split()) == 2:
+            aliases = self.bot.commands[command.split()[0]].commands[command.split()[1]].aliases
+        elif len(command.split()) == 3:
+            aliases = self.bot.commands[command.split()[0]].commands[command.split()[1]].commands[command.split()[2]].aliases
+        else:
+            aliases = [] # very unlikely that this will ever be used ¯\_(ツ)_/¯
+        if len(command.split()) == 1:
+            for subcommand in subcommands.copy():
+                if subcommand != self.bot.commands[command].commands[subcommand].name:
+                    del subcommands[subcommand]
+        elif len(command.split()) == 2:
+            for subcommand in subcommands.copy():
+                if subcommand != self.bot.commands[command.split()[0]].commands[command.split()[1]].commands[subcommand].name:
+                    del subcommands[subcommand]
+        if params != []:
+            if subcommands != []:
+                if aliases != []:
+                    await self.bot.send_message(ctx.message.channel, "**{}{} {}**:\n\n{}\n\n**Aliases**:\n\t{}\n\n**Commands**:\n\t{}".format(ctx.prefix, command, " ".join(list(params)), help, "\n\t".join(aliases), "\n\t".join(subcommands)))
+                else:
+                    await self.bot.send_message(ctx.message.channel, "**{}{} {}**:\n\n{}\n\n**Commands**:\n\t{}".format(ctx.prefix, command, " ".join(list(params)), help, "\n\t".join(subcommands)))
+            else:
+                if aliases != []:
+                    await self.bot.send_message(ctx.message.channel, "**{}{} {}**:\n\n{}\n\n**Aliases**:\n\t{}".format(ctx.prefix, command, " ".join(list(params)), help, "\n\t".join(aliases)))
+                else:
+                    await self.bot.send_message(ctx.message.channel, "**{}{} {}**:\n\n{}".format(ctx.prefix, command, " ".join(list(params)), help))
+        else:
+            if subcommands != []:
+                if aliases != []:
+                    await self.bot.send_message(ctx.message.channel, "**{}{}**:\n\n{}\n\n**Aliases**:\n\t{}\n\n**Commands**:\n\t{}".format(ctx.prefix, command, help, "\n\t".join(aliases), "\n\t".join(subcommands)))
+                else:
+                    await self.bot.send_message(ctx.message.channel, "**{}{}**:\n\n{}\n\n**Commands**:\n\t{}".format(ctx.prefix, command, help, "\n\t".join(subcommands)))
+            else:
+                if aliases != []:
+                    await self.bot.send_message(ctx.message.channel, "**{}{}**:\n\n{}\n\n**Aliases**:\n\t{}".format(ctx.prefix, command, help, "\n\t".join(aliases)))
+                else:
+                    await self.bot.send_message(ctx.message.channel, "**{}{}**:\n\n{}".format(ctx.prefix, command, help))
         
 def setup(bot):
     bot.remove_command("help") # removing the old help command to be replaced by the new one.
