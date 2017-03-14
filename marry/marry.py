@@ -214,7 +214,7 @@ class Marry:
     @commands.command(pass_context=True, no_pm=True)
     async def marrylimit(self, ctx):
         """Shows you the current marrylimit."""
-        if ctx.message.server.id not in self.settings:
+        if (ctx.message.server.id not in self.settings) or ("marrylimit" not in self.settings[ctx.message.server.id]):
             await self.bot.say("There is no marry limit.")
         elif self.settings[ctx.message.server.id]['marrylimit'] == 0:
             await self.bot.say("There is no marry limit.")
@@ -317,6 +317,9 @@ def check_folders():
     if not os.path.exists("data/marry"):
         print("Creating data/marry folder...")
         os.makedirs("data/marry")
+    if not os.path.exists("data/marry/images"):
+        print("Creating data/marry/images folder...")
+        os.makedirs("data/marry/images")
         
 def check_files():
     if not os.path.exists("data/marry/settings.json"):
