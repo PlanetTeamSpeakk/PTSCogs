@@ -840,6 +840,17 @@ class Useful:
         """Counts all the servers the bot is currently in."""
         await self.bot.say("I am currently in **{} servers** with **{} members** and **{} private channels**.".format(len(self.bot.servers), len(list(self.bot.get_all_members())), len(self.bot.private_channels)))
         
+    @commands.command()
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def averagemsgs(self, seconds:int):
+        """Calculates the average amount of messages the bot reads per second within the given amount of seconds."""
+        status = await self.bot.say("Calculating...")
+        before = self.bot.counter['messages_read']
+        await asyncio.sleep(seconds)
+        after = self.bot.counter['messages_read']
+        result = after - before
+        await self.bot.edit_message(status, "Done! I got **{} messages** within **{} seconds** with an average of **{} messages per second**.".format(str(result), str(seconds), str(result / seconds)))
+        
     def save_settings(self):
         return dataIO.save_json("data/useful/settings.json", self.settings)
         
