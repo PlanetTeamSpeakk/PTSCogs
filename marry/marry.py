@@ -175,7 +175,7 @@ class Marry:
     async def divorce(self, ctx, divorce_id):
         """Divorce your ex."""
         try:
-            married_role = getRoleObj(divorce_id, ctx.message.server)
+            married_role = discord.utils.get(ctx.message.server.roles, id=divorce_id)
             if not "❤" in married_role.name.split():
                 await self.bot.say("That's not a valid ID.")
                 return
@@ -307,11 +307,6 @@ class Marry:
         
     def save_settings(self):
         dataIO.save_json("data/marry/settings.json", self.settings)
-            
-def getRoleObj(roleID, server):
-    for role in server.roles:
-        if role.id == roleID:
-            return role
         
 def check_folders():
     if not os.path.exists("data/marry"):
