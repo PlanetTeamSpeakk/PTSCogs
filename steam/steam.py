@@ -12,6 +12,8 @@ class Steam:
     def __init__(self, bot):
         self.bot = bot
         self.key = dataIO.load_json("data/steam/key.json")[0]
+        if self.key != None:
+            donatekey.hidden = True
 
     @commands.command()
     @checks.is_owner()
@@ -104,7 +106,7 @@ class Steam:
             request = json.loads(request.content.decode("utf-8"))['applist']['apps']
             found = False
             for game in range(len(request)):
-                if request[game]['name'].lower() == app.lower():
+                if app.lower() in request[game]['name'].lower():
                     request = requests.get("https://steamspy.com/api.php?request=appdetails&appid=" + str(request[game]['appid']))
                     request = json.loads(request.content.decode("utf-8"))
                     found = True
@@ -154,7 +156,7 @@ class Steam:
         """Counts the amount of apps and games on Steam."""
         request = requests.get("http://api.steampowered.com/ISteamApps/GetAppList/v0002/")
         request = json.loads(request.content.decode("utf-8"))['applist']['apps']
-        await self.bot.say("```fix\nThere are currently {} apps and games on Steam (latest game: {}).```".format(len(request), request[len(request) - 1]['name']))
+        await self.bot.say("There are currently **{} apps and games** on Steam (latest game: {}).".format(len(request), request[len(request) - 1]['name']))
     
 def check_folders():
     if not os.path.exists("data/steam"):
