@@ -12,8 +12,6 @@ class Steam:
     def __init__(self, bot):
         self.bot = bot
         self.key = dataIO.load_json("data/steam/key.json")[0]
-        if self.key != None:
-            donatekey.hidden = True
 
     @commands.command()
     @checks.is_owner()
@@ -157,6 +155,10 @@ class Steam:
         request = requests.get("http://api.steampowered.com/ISteamApps/GetAppList/v0002/")
         request = json.loads(request.content.decode("utf-8"))['applist']['apps']
         await self.bot.say("There are currently **{} apps and games** on Steam (latest game: {}).".format(len(request), request[len(request) - 1]['name']))
+    
+    async def on_command(self, command, ctx):
+        if self.key != None:
+            self.bot.commands['steam'].commands['donatekey'].hidden = True
     
 def check_folders():
     if not os.path.exists("data/steam"):
