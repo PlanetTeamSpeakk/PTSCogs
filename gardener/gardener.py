@@ -17,7 +17,7 @@ class Gardener:
                     'carrots': {'growthtime': 15*self.times['minute'], 'growthtime-worded': '15 minutes', 'item': 'carrot', 'value': 250, 'price': 65},
                     'potatoes': {'growthtime': 15*self.times['minute'], 'growthtime-worded': '15 minutes', 'item': 'potatoe', 'value': 250, 'price': 65},
                     'melon': {'growthtime': 1*self.times['hour'], 'growthtime-worded': '1 hour', 'item': 'melon', 'value': 1000, 'price': 250},
-                    'pumpkin': {'growthtime': 1*self.times['hour'], 'growthtime-worded': '1 hour', 'item': 'melon', 'value': 1000, 'price': 250},
+                    'pumpkin': {'growthtime': 1*self.times['hour'], 'growthtime-worded': '1 hour', 'item': 'pumpkin', 'value': 1000, 'price': 250},
                     'tomatoes': {'growthtime': 30*self.times['minute'], 'growthtime-worded': '30 minutes', 'item': 'tomatoe', 'value': 500, 'price': 125},
                     'cabbage': {'growthtime': 30*self.times['minute'], 'growthtime-worded': '30 minutes', 'item': 'cabbage', 'value': 500, 'price': 125},
                     'cucumber': {'growthtime': 45*self.times['minute'], 'growthtime-worded': '45 minutes', 'item': 'cucumber', 'value': 750, 'price': 190},
@@ -70,7 +70,7 @@ class Gardener:
                     'palm tree': {'growthtime': 4*self.times['hour'], 'growthtime-worded': '4 hours', 'item': 'coconut', 'value': 4000, 'price': 1000},
                     'passion fruit bush': {'growthtime': 2*self.times['hour'], 'growthtime-worded': '2 hours', 'item': 'passion fruit', 'value': 2000, 'price': 500},
                     'olive tree': {'growthtime': 3*self.times['hour'], 'growthtime-worded': '3 hours', 'item': 'olive', 'value': 3000, 'price': 750},
-                    'raspberry': {'growthtime': 30*self.times['hour'], 'growthtime-worded': '30 minutes', 'item': 'raspberry', 'value': 500, 'price': 125},
+                    'raspberry': {'growthtime': 30*self.times['minute'], 'growthtime-worded': '30 minutes', 'item': 'raspberry', 'value': 500, 'price': 125},
                     'lime tree': {'growthtime': 3*self.times['hour'], 'growthtime-worded': '3 hours', 'item': 'lime', 'value': 3000, 'price': 750},
                     # === REMAINING === 
                     'adobe rainbow': {'growthtime': 1*self.times['week'], 'growthtime-worded': '1 week', 'item': 'adobe rainbow', 'value': 168000, 'price': 42000}
