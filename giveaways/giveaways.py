@@ -42,7 +42,7 @@ class Giveaways:
         # Setting all of the settings.
         for setting in settings:
             if not setdict:
-                settings = {"name": "", "length": -1, "maxentries": -1, "entries": 0, "users": [], "started": True}
+                settings = {"name": "", "length": -1, "maxentries": -1, "users": [], "started": True}
                 setdict = True
             if setting.startswith("name: "):
                 if setting[6:] in self.settings[ctx.message.server.id]:
@@ -175,7 +175,7 @@ class Giveaways:
             await self.bot.say("That's not a valid giveaway running in this server.")
         else:
             settings = self.settings[server.id][giveaway]
-            await self.bot.say("Name: **{}**\nTime left: **{}**\nMax entries: **{}**\nEntries: **{}**".format(giveaway, self.secondsToText(settings['length']), settings['maxentries'], settings['entries']))
+            await self.bot.say("Name: **{}**\nTime left: **{}**\nMax entries: **{}**\nEntries: **{}**".format(giveaway, self.secondsToText(settings['length']), settings['maxentries'], len(settings['users'])))
         
     def save_settings(self):
         return dataIO.save_json("data/giveaways/settings.json", self.settings)
@@ -198,7 +198,6 @@ class Giveaways:
                 else:
                     print("Giveaways loop stopped, cog not loaded anymore.")
                     break
-                    
                     
     # http://bit.ly/2ofiay3
     def secondsToText(self, secs):
