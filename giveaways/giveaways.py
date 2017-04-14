@@ -163,6 +163,20 @@ class Giveaways:
         else:
             await self.bot.say("This server has the following giveaways running:\n\t{}".format("\n\t".join(list(self.settings[server.id].keys()))))
         
+    @giveaway.command(pass_context=True)
+    async def info(self, ctx, *, giveaway):
+        """Get information for a giveaway.
+        Example:
+        [p]giveaway info Minecraft account"""
+        server = ctx.message.server
+        if server.id not in self.settings:
+            await self.bot.say("This server has no giveaways running.")
+        elif giveaway not in self.settings[server.id]:
+            await self.bot.say("That's not a valid giveaway running in this server.")
+        else:
+            settings = self.settings[server.id][giveaway]
+            await self.bot.say("Name: **{}**\nTime left: **{}**\nMax entries: **{}**\nEntries: **{}**".format(giveaway, self.secondsToText(settings['length']), settings['maxentries'], settings['entries']))
+        
     def save_settings(self):
         return dataIO.save_json("data/giveaways/settings.json", self.settings)
             
@@ -184,6 +198,19 @@ class Giveaways:
                 else:
                     print("Giveaways loop stopped, cog not loaded anymore.")
                     break
+                    
+                    
+    # http://bit.ly/2ofiay3
+    def secondsToText(self, secs):
+        days = secs//86400
+        hours = (secs - days*86400)//3600
+        minutes = (secs - days*86400 - hours*3600)//60
+        seconds = secs - days*86400 - hours*3600 - minutes*60
+        result = ("{0} day{1}, ".format(days, "s" if days!=1 else "") if days else "") + \
+        ("{0} hour{1}, ".format(hours, "s" if hours!=1 else "") if hours else "") + \
+        ("{0} minute{1}, ".format(minutes, "s" if minutes!=1 else "") if minutes else "") + \
+        ("{0} second{1}".format(seconds, "s" if seconds!=1 else "") if seconds else "")
+        return result
             
 def check_folders():
     if not os.path.exists("data/giveaways"):
