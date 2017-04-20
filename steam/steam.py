@@ -104,7 +104,7 @@ class Steam:
             request = json.loads(request.content.decode("utf-8"))['applist']['apps']
             found = False
             for game in range(len(request)):
-                if app.lower() in request[game]['name'].lower():
+                if request[game]['name'].lower() == app.lower():
                     request = requests.get("https://steamspy.com/api.php?request=appdetails&appid=" + str(request[game]['appid']))
                     request = json.loads(request.content.decode("utf-8"))
                     found = True
@@ -154,12 +154,47 @@ class Steam:
         """Counts the amount of apps and games on Steam."""
         request = requests.get("http://api.steampowered.com/ISteamApps/GetAppList/v0002/")
         request = json.loads(request.content.decode("utf-8"))['applist']['apps']
-        await self.bot.say("There are currently **{} apps and games** on Steam (latest game: {}).".format(len(request), request[len(request) - 1]['name']))
+        await self.bot.say("```fix\nThere are currently {} apps and games on Steam (latest game: {}).```".format(len(request), request[len(request) - 1]['name']))
     
-    async def on_command(self, command, ctx):
-        if self.key != None:
-            self.bot.commands['steam'].commands['donatekey'].hidden = True
-    
+    @steam.command(alliases=['getscgostats'])
+    async def getcsgostats(self, *, username):
+        """Get CS:GO stats from a user.
+        Example:
+        [p]steam getcsgostats PlanetTeamSpeak (Warning: I am noob)
+        [p]steam getcsgostats 76561198187354157 (Same user but with Steam 64 ID)"""
+        status = await self.bot.say("Getting data, please stand by...")
+        if not username.isdigit():
+            request = requests.get("http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key={}&vanityurl={}".format(self.key, username))
+            request = json.loads(request.content.decode("utf-8"))['response']
+            if request['success'] == 42:
+                await self.bot.edit_message(status, "That's not a valid user ID.")
+                return
+            else:
+                userid = request['steamid']
+                username = requests.get("http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key={}&steamids={}".format(self.key, userid)).json()['response']['players'][0]['personaname']
+        request = requests.get("http://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v0002/?appid=730&key={}&steamid={}".format(self.key, userid)).json()['playerstats']['stats']
+        if request == {}:
+            await self.bot.edit_message(status, "That's not a valid username or this user has no CS:GO.")
+        else:
+            requestCopy = request.copy()
+            request = {}
+            for i in range(len(requestCopy)):
+                request[requestCopy[i]['name']] = requestCopy[i]['value']
+            await self.bot.edit_message(status, "```fix\nUsername: {}\nUser ID: {}\nTotal kills: {}\nTotal deaths: {}\nKDR: {}\nTotal time played: {}\nTotal bombs planted: {}\nTotal wins: {}\nTotal damage done: {}\nTotal money earned: {}\nHeadshots done: {}\nTotal shots fired: {}\nTotal shots hit: {}\nHit ratio: {}\nTotal rounds played: {}```".format(
+            username, userid, request['total_kills'], request['total_deaths'], request['total_kills'] / request['total_deaths'], self.secondsToText(request['total_time_played']), request['total_planted_bombs'], request['total_wins'], request['total_damage_done'], request['total_money_earned'], request['total_kills_headshot'], request['total_shots_fired'], request['total_shots_hit'], request['total_shots_fired'] / request['total_shots_hit'], request['total_rounds_played']))
+        
+    # http://bit.ly/2ofiay3
+    def secondsToText(self, secs):
+        days = secs//86400
+        hours = (secs - days*86400)//3600
+        minutes = (secs - days*86400 - hours*3600)//60
+        seconds = secs - days*86400 - hours*3600 - minutes*60
+        result = ("{0} day{1}, ".format(days, "s" if days!=1 else "") if days else "") + \
+        ("{0} hour{1}, ".format(hours, "s" if hours!=1 else "") if hours else "") + \
+        ("{0} minute{1}, ".format(minutes, "s" if minutes!=1 else "") if minutes else "") + \
+        ("{0} second{1}".format(seconds, "s" if seconds!=1 else "") if seconds else "")
+        return result
+        
 def check_folders():
     if not os.path.exists("data/steam"):
         print("Creating data/steam folder...")
