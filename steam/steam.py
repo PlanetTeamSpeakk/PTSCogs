@@ -167,11 +167,17 @@ class Steam:
             request = requests.get("http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key={}&vanityurl={}".format(self.key, username))
             request = json.loads(request.content.decode("utf-8"))['response']
             if request['success'] == 42:
-                await self.bot.edit_message(status, "That's not a valid user ID.")
+                await self.bot.edit_message(status, "That's not a valid username.")
                 return
             else:
                 userid = request['steamid']
-                username = requests.get("http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key={}&steamids={}".format(self.key, userid)).json()['response']['players'][0]['personaname']
+        else:
+            userid = username
+            request = requests.get("http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key={}&steamids={}".format(self.key, userid)).json()
+            if request == {}:
+                await self.bot.say("That's not a valid user ID.")
+            else:
+                username = request['response']['players'][0]['personaname']
         request = requests.get("http://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v0002/?appid=730&key={}&steamid={}".format(self.key, userid)).json()['playerstats']['stats']
         if request == {}:
             await self.bot.edit_message(status, "That's not a valid username or this user has no CS:GO.")
