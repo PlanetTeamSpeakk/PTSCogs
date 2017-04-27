@@ -67,7 +67,6 @@ class BetterHelp:
                                         break
                             else: # no idea what the permission is
                                 found = False
-                                print("Could not find permission, skipping...", self.bot.commands[cmd].checks)
                             if not found:
                                 continue
                         commands[cog].append(cmd)
