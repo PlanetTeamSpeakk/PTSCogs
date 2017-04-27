@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 import asyncio
 import inspect
+import os
 
 class CogNotFound(Exception):
     pass
@@ -65,7 +66,8 @@ class BetterHelp:
                                         found = True
                                         break
                             else: # no idea what the permission is
-                                found = True
+                                found = False
+                                print("Could not find permission, skipping...", self.bot.commands[cmd].checks)
                             if not found:
                                 continue
                         commands[cog].append(cmd)
@@ -268,8 +270,6 @@ class BetterHelp:
             aliases = self.bot.commands[command.split()[0]].aliases
         elif len(command.split()) == 2:
             aliases = self.bot.commands[command.split()[0]].commands[command.split()[1]].aliases
-        elif len(command.split()) == 3:
-            aliases = self.bot.commands[command.split()[0]].commands[command.split()[1]].commands[command.split()[2]].aliases
         else:
             aliases = [] # very unlikely that this will ever be used ¯\_(ツ)_/¯
         if len(command.split()) == 1:
