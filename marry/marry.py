@@ -207,19 +207,22 @@ class Marry:
     @checks.admin_or_permissions()
     async def setmarrylimit(self, ctx, times:int):
         """Sets the limit someone can marry someone. 0 is unlimited."""
-        self.settings[ctx.message.server.id] = {'marry_limit': times}
+        if ctx.message.server.id not in self.settings:
+            self.settings[ctx.message.server.id] = {}
+        self.settings[ctx.message.server.id]['marry_limit'] = times
         self.save_settings()
         await self.bot.say("Done!")
        
     @commands.command(pass_context=True, no_pm=True)
     async def marrylimit(self, ctx):
         """Shows you the current marrylimit."""
-        if (ctx.message.server.id not in self.settings) or ("marrylimit" not in self.settings[ctx.message.server.id]):
+        self.settings = dataIO.load_json("data/marry/settings.json")
+        if (ctx.message.server.id not in self.settings) or ("marry_limit" not in self.settings[ctx.message.server.id]):
             await self.bot.say("There is no marry limit.")
-        elif self.settings[ctx.message.server.id]['marrylimit'] == 0:
+        elif self.settings[ctx.message.server.id]['marry_limit'] == 0:
             await self.bot.say("There is no marry limit.")
         else:
-            await self.bot.say("The marry limit is {}.".format(self.settings[ctx.message.server.id]['marrylimit']))
+            await self.bot.say("The marry limit is {}.".format(self.settings[ctx.message.server.id]['marry_limit']))
         
     @commands.command(pass_context=True, no_pm=True)
     @checks.admin_or_permissions()
