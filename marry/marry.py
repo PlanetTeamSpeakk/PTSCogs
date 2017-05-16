@@ -95,7 +95,7 @@ class Marry:
     @checks.admin_or_permissions()
     async def forcemarry(self, ctx, person:discord.Member, lovedone:discord.Member):
         """Now you can finally marry your loved one."""
-        if ctx.message.server.id not in self.settings:
+        if (ctx.message.server.id not in self.settings) or ("marry_limit" not in self.settings[ctx.message.server.id]):
             self.settings[ctx.message.server.id] = {'marry_limit': 0, 'disabled': False}
             self.save_settings()
         if 'disabled' not in self.settings[ctx.message.server.id]:
