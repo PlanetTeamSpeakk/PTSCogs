@@ -148,10 +148,10 @@ class Gardener:
                 await self.bot.say("You didn't plant that plant yet.")
             else:
                 em = discord.Embed(color=discord.Color.green(), title="Info on {}".format(plant))
-                em.add_field(name="Growth time left (seconds)", value=str(self.settings['gardeners'][ctx.message.author.id]['plants'][plant]['growthtime']))
+                em.add_field(name="Growth time left", value=self.secondsToText(self.settings['gardeners'][ctx.message.author.id]['plants'][plant]['growthtime']))
                 em.add_field(name="\a", value="\a")
                 em.add_field(name="\a", value="\a")
-                em.add_field(name="Original growth time", value="{} ({})".format(self.plants[plant]['growthtime-worded'], str(self.plants[plant]['growthtime'])))
+                em.add_field(name="Original growth time", value="{}".format(self.plants[plant]['growthtime-worded']))
                 em.add_field(name="Reward", value=self.plants[plant]['item'])
                 await self.bot.say(embed=em)
                 
@@ -166,9 +166,9 @@ class Gardener:
                 msg = "```css\n"
         user = ctx.message.author
         if user.id in self.settings['gardeners']:
-            msg += "\nYour plants\nPlant\t\t\t\tTime left\tValue\tItem\n"
+            msg += "\nYour plants\nPlant\t\t\t\tTime left\t\t\t\tValue\tItem\n"
             for plant in list(self.settings['gardeners'][user.id]['plants'].keys()):
-                msg += "{}{}{}{}{}{}{}\n".format(plant, " " * (21 - len(plant)), str(self.settings['gardeners'][user.id]['plants'][plant]['growthtime']), " " * (12 - len(str(self.plants[plant]['price']))), str(self.plants[plant]['value']), " " * (9 - len(str(self.plants[plant]['value']))), self.plants[plant]['item'])
+                msg += "{}{}{}{}{}{}{}\n".format(plant, " " * (21 - len(plant)), self.secondsToText(self.settings['gardeners'][user.id]['plants'][plant]['growthtime']), " " * (6 - len(str(self.plants[plant]['price']))), str(self.plants[plant]['value']), " " * (9 - len(str(self.plants[plant]['value']))), self.plants[plant]['item'])
                 if len(msg) > 1750:
                     await self.bot.say(msg + "```")
                     msg = "```css\n"
@@ -242,7 +242,7 @@ class Gardener:
                 bank.withdraw_credits(user, payments[level])
                 self.settings['gardeners'][user.id]['plants'][plant]['growthtime'] -= times[level]
                 self.save_settings()
-                await self.bot.say("The growth time for **{}** has been successfully lowered by **{}** seconds and is now at **{}** seconds.".format(plant, times[level], self.settings['gardeners'][user.id]['plants'][plant]['growthtime']))
+                await self.bot.say("The growth time for **{}** has been successfully lowered by **{}** and is now at **{}**.".format(plant, self.secondsToText(times[level]), self.secondsToText(self.settings['gardeners'][user.id]['plants'][plant]['growthtime'])))
             
     def save_settings(self):
         return dataIO.save_json("data/gardener/settings.json", self.settings)
@@ -265,7 +265,19 @@ class Gardener:
                         except:
                             error = True
                 await sleep(1)
-            
+       
+    # http://bit.ly/2ofiay3
+    def secondsToText(self, secs):
+        days = secs//86400
+        hours = (secs - days*86400)//3600
+        minutes = (secs - days*86400 - hours*3600)//60
+        seconds = secs - days*86400 - hours*3600 - minutes*60
+        result = ("{0} day{1}, ".format(days, "s" if days!=1 else "") if days else "") + \
+        ("{0} hour{1}, ".format(hours, "s" if hours!=1 else "") if hours else "") + \
+        ("{0} minute{1}, ".format(minutes, "s" if minutes!=1 else "") if minutes else "") + \
+        ("{0} second{1}".format(seconds, "s" if seconds!=1 else "") if seconds else "")
+        return result
+       
 def check_folders():
     if not os.path.exists("data/gardener"):
         print("Creating data/gardener folder...")
