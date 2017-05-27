@@ -19,9 +19,33 @@ class Autorole:
             self.settings[ctx.message.server.id] = {'role': None, 'toggled': False}
             self.save_settings()
         if not ctx.invoked_subcommand:
+            role = discord.utils.get(ctx.message.server.roles, id=self.settings[ctx.message.server.id]['role'])
+            if role == None:
+                role = "DELETED"
+            else:
+                role = role.name
             await self.bot.send_cmd_help(ctx)
-            await self.bot.say("```Role: {}\nEnabled: {}```".format(self.settings[ctx.message.server.id]['role'], self.settings[ctx.message.server.id]['toggled']))
+            await self.bot.say("```Role: {}\nEnabled: {}```".format(role, self.settings[ctx.message.server.id]['toggled']))
 
+    @autorole.command(pass_context=True)
+    async def fixroles(self, ctx):
+        """Adds the role members were supposed to get when they joined but didn't."""
+        counter = 0
+        role = discord.utils.get(ctx.message.server.roles, id=self.settings[ctx.message.server.id]['role'])
+        if role == None:
+            await self.bot.say("The role set doesn't exist anymore.")
+            return
+        status = await self.bot.say("Adding roles...")
+        for m in ctx.message.server.members:
+            if [r.name for r in m.roles] == ["@everyone"]:
+                try:
+                    await self.bot.add_roles(m, role)
+                    counter += 1
+                except discord.Forbidden:
+                    await self.bot.say("I am not allowed to add roles.")
+                    return
+        await self.bot.edit_message(status, "Added the **{}** role to **{}** members.".format(role.name, str(counter)))
+            
     @autorole.command(pass_context=True)
     async def setrole(self, ctx, *, role:discord.Role):
         """Set the role the bot should assign on join, the highest role that the bot has should be higher than this one."""
