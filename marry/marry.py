@@ -62,7 +62,7 @@ class Marry:
                 await self.bot.say("The user you tried to marry didn't say yes, I'm sorry.")
                 return
             try:
-                married_role = await self.bot.create_role(server=ctx.message.server, name="{} ❤ {}".format(ctx.message.author.name, yourlovedone.name), colour=discord.Colour(value=0XFF00EE), hoist=True)
+                married_role = await self.bot.create_role(server=ctx.message.server, name="{} ❤ {}".format(ctx.message.author.name, yourlovedone.name), colour=discord.Colour(value=0XFF00EE))
             except discord.Forbidden:
                 await self.bot.say("I do not have the `manage roles` permission, you can't marry untill I do.")
                 return
@@ -137,7 +137,7 @@ class Marry:
                     await self.bot.say("I'd only marry my owner.")
                     return
             try:
-                married_role = await self.bot.create_role(server=ctx.message.server, name="{} ❤ {}".format(person.name, lovedone.name), colour=discord.Colour(value=0XFF00EE), hoist=True)
+                married_role = await self.bot.create_role(server=ctx.message.server, name="{} ❤ {}".format(person.name, lovedone.name), colour=discord.Colour(value=0XFF00EE))
             except discord.Forbidden:
                 await self.bot.say("I do not have the `manage roles` permission, you can't marry untill I do.")
                 return
