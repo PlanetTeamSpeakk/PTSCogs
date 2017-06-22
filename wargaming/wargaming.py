@@ -171,7 +171,7 @@ class Wargaming:
                         request['last_battle_time'] = last_battle_time
                         request['created_at'] = created_at
                         request['winrate'] = (100 / request['battles']) * request['wins']
-                        await self.bot.edit_message(msg, "**```fix\nUser ID: {}\nUsername: {}\nCreated at: {}(DD/MM/YY)\nLast battle: {} (DD/MM/YY)\nMax xp earned: {}\nSpotted: {}\nAmmoracked someone: {}\nFree xp: {}\nBattles done: {}\nSurived battles: {}\nBattles won: {}\nBattles lost: {}\nBattles drawn: {}\nWin rate (percent): {}\nDropped capture points: {}\nTotal damage dealt: {}```**"
+                        await self.bot.edit_message(msg, "**```fix\nUser ID: {}\nUsername: {}\nCreated at: {}(DD/MM/YY)\nLast battle: {} (DD/MM/YY)\nMax xp earned: {}\nSpotted: {}\nFrags: {}\nFree xp: {}\nBattles done: {}\nSurived battles: {}\nBattles won: {}\nBattles lost: {}\nBattles drawn: {}\nWin rate (percent): {}\nDropped capture points: {}\nTotal damage dealt: {}```**"
                         "".format(str(user), request['nickname'], datetime.fromtimestamp(request['created_at']).strftime("%d/%m/%Y %X"), datetime.fromtimestamp(request['last_battle_time']).strftime("%d/%m/%Y %X"), request['max_xp'], request['ships_spotted'], request['frags'], request['xp'], request['battles'], request['survived_battles'], request['wins'], request['losses'], request['draws'], request['winrate'], request['dropped_capture_points'], request['damage_dealt']))
                     else:
                         await self.bot.say("That's not a valid option.")
@@ -188,7 +188,7 @@ class Wargaming:
                     request['last_battle_time'] = last_battle_time
                     request['created_at'] = created_at
                     request['winrate'] = (100 / request['battles']) * request['wins']
-                    await self.bot.edit_message(msg, "**```fix\nUser ID: {}\nUsername: {}\nCreated at: {}(DD/MM/YY)\nLast battle: {} (DD/MM/YY)\nMax xp earned: {}\nSpotted: {}\nAmmoracked someone: {}\nFree xp: {}\nBattles done: {}\nSurived battles: {}\nBattles won: {}\nBattles lost: {}\nBattles drawn: {}\nWin rate (percent): {}\nDropped capture points: {}\nTotal damage dealt: {}```**"
+                    await self.bot.edit_message(msg, "**```fix\nUser ID: {}\nUsername: {}\nCreated at: {}(DD/MM/YY)\nLast battle: {} (DD/MM/YY)\nMax xp earned: {}\nSpotted: {}\nFrags: {}\nFree xp: {}\nBattles done: {}\nSurived battles: {}\nBattles won: {}\nBattles lost: {}\nBattles drawn: {}\nWin rate (percent): {}\nDropped capture points: {}\nTotal damage dealt: {}```**"
                     "".format(str(user), request['nickname'], datetime.fromtimestamp(request['created_at']).strftime("%d/%m/%Y %X"), datetime.fromtimestamp(request['last_battle_time']).strftime("%d/%m/%Y %X"), request['max_xp'], request['ships_spotted'], request['frags'], request['xp'], request['battles'], request['survived_battles'], request['wins'], request['losses'], request['draws'], request['winrate'], request['dropped_capture_points'], request['damage_dealt']))
         else:
             await self.bot.say("My owner hasn't set an API key yet.")
