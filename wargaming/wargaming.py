@@ -141,7 +141,7 @@ class Wargaming:
                 await self.bot.say("That's not a valid server, you can pick from {}.".format(", ".join(list(self.servers.keys()))))
             else:
                 server = self.servers[server]
-                request = requests.get("https://api.worldoftanks." + server + "/wot/account/list/?application_id=" + self.key + "&search=" + user)
+                request = requests.get("https://api.worldofwarships." + server + "/wows/account/list/?application_id=" + self.key + "&search=" + user)
                 request = json.loads(request.content.decode("utf-8"))
                 if 'error' in request:
                     await self.bot.say("An error occured while getting the user information: {}, {}".format(request['error']['code'], request['error']['message']))
@@ -161,43 +161,36 @@ class Wargaming:
                     elif int(response.content) in users:
                         user = users[int(response.content)]['id']
                         msg = await self.bot.say("Gathering data for **{}**...".format(users[int(response.content)]['username']))
-                        request = requests.get("https://api.worldoftanks." + server + "/wot/account/info/?application_id=" + self.key + "&account_id=" + str(user))
+                        request = requests.get("https://api.worldofwarships." + server + "/wows/account/info/?application_id=" + self.key + "&account_id=" + str(user))
                         request = json.loads(request.content.decode("utf-8"))['data'][str(user)]
                         username = request['nickname']
-                        global_rating = request['global_rating']
                         client_language = request['client_language']
                         last_battle_time = request['last_battle_time']
                         created_at = request['created_at']
                         request = request['statistics']['all']
                         request['nickname'] = username
-                        request['global_rating'] = global_rating
-                        request['client_language'] = client_language
                         request['last_battle_time'] = last_battle_time
                         request['created_at'] = created_at
                         request['winrate'] = (100 / request['battles']) * request['wins']
-                        await self.bot.edit_message(msg, "**```fix\nUser ID: {}\nUsername: {}\nCreated at: {}(DD/MM/YY)\nLast battle: {} (DD/MM/YY)\nGlobal rating: {}\nClient language: {}\nSpotted: {}\nMax xp earned: {}\nAverage damage blocked: {}\nDirect hits received: {}\nAmmoracked someone: {}\nPenetrations received: {}\nPenetrations done: {}\nHits: {}\nHit percentage: {}\nFree xp: {}\nBattles done: {}\nSurived battles: {}\nBattles won: {}\nBattles lost: {}\nWin rate (percent): {}\nBattles drawn: {}\nDropped capture points: {}\nTotal damage dealt: {}```**"
-                        "".format(str(user), request['nickname'], datetime.fromtimestamp(request['created_at']).strftime("%d/%m/%Y %X"), datetime.fromtimestamp(request['last_battle_time']).strftime("%d/%m/%Y %X"), request['global_rating'], request['client_language'], request['spotted'], request['max_xp'], request['avg_damage_blocked'], request['direct_hits_received'], request['explosion_hits'], request['piercings_received'], request['piercings'], request['hits'], request['hits_percents'], request['xp'], request['battles'], request['survived_battles'], request['wins'], request['losses'], request['winrate'], request['draws'], request['dropped_capture_points'], request['damage_dealt']))
+                        await self.bot.edit_message(msg, "**```fix\nUser ID: {}\nUsername: {}\nCreated at: {}(DD/MM/YY)\nLast battle: {} (DD/MM/YY)\nClient language: {}\nSpotted: {}\nMax xp earned: {}\nAverage damage blocked: {}\nDirect hits received: {}\nAmmoracked someone: {}\nPenetrations received: {}\nPenetrations done: {}\nHits: {}\nHit percentage: {}\nFree xp: {}\nBattles done: {}\nSurived battles: {}\nBattles won: {}\nBattles lost: {}\nWin rate (percent): {}\nBattles drawn: {}\nDropped capture points: {}\nTotal damage dealt: {}```**"
+                        "".format(str(user), request['nickname'], datetime.fromtimestamp(request['created_at']).strftime("%d/%m/%Y %X"), datetime.fromtimestamp(request['last_battle_time']).strftime("%d/%m/%Y %X"), request['client_language'], request['spotted'], request['max_xp'], request['avg_damage_blocked'], request['direct_hits_received'], request['explosion_hits'], request['piercings_received'], request['piercings'], request['hits'], request['hits_percents'], request['xp'], request['battles'], request['survived_battles'], request['wins'], request['losses'], request['winrate'], request['draws'], request['dropped_capture_points'], request['damage_dealt']))
                     else:
                         await self.bot.say("That's not a valid option.")
                 elif request['meta']['count'] == 1:
                     user = request['data'][0]['account_id']
                     msg = await self.bot.say("Gathering data for **{}**...".format(request['data'][0]['nickname']))
-                    request = requests.get("https://api.worldoftanks." + server + "/wot/account/info/?application_id=" + self.key + "&account_id=" + str(user))
+                    request = requests.get("https://api.worldofwarships." + server + "/wows/account/info/?application_id=" + self.key + "&account_id=" + str(user))
                     request = json.loads(request.content.decode("utf-8"))['data'][str(user)]
                     username = request['nickname']
-                    global_rating = request['global_rating']
-                    client_language = request['client_language']
                     last_battle_time = request['last_battle_time']
                     created_at = request['created_at']
-                    request = request['statistics']['all']
+                    request = request['statistics']['pvp']
                     request['nickname'] = username
-                    request['global_rating'] = global_rating
-                    request['client_language'] = client_language
                     request['last_battle_time'] = last_battle_time
                     request['created_at'] = created_at
                     request['winrate'] = (100 / request['battles']) * request['wins']
-                    await self.bot.edit_message(msg, "**```fix\nUser ID: {}\nUsername: {}\nCreated at: {}(DD/MM/YY)\nLast battle: {} (DD/MM/YY)\nGlobal rating: {}\nClient language: {}\nSpotted: {}\nMax xp earned: {}\nAverage damage blocked: {}\nDirect hits received: {}\nAmmoracked someone: {}\nPenetrations received: {}\nPenetrations done: {}\nHits: {}\nHit percentage: {}\nFree xp: {}\nBattles done: {}\nSurived battles: {}\nBattles won: {}\nBattles lost: {}\nBattles drawn: {}\nWin rate (percent): {}\nDropped capture points: {}\nTotal damage dealt: {}```**"
-                    "".format(str(user), request['nickname'], datetime.fromtimestamp(request['created_at']).strftime("%d/%m/%Y %X"), datetime.fromtimestamp(request['last_battle_time']).strftime("%d/%m/%Y %X"), request['global_rating'], request['client_language'], request['spotted'], request['max_xp'], request['avg_damage_blocked'], request['direct_hits_received'], request['explosion_hits'], request['piercings_received'], request['piercings'], request['hits'], request['hits_percents'], request['xp'], request['battles'], request['survived_battles'], request['wins'], request['losses'], request['draws'], request['winrate'], request['dropped_capture_points'], request['damage_dealt']))
+                    await self.bot.edit_message(msg, "**```fix\nUser ID: {}\nUsername: {}\nCreated at: {}(DD/MM/YY)\nLast battle: {} (DD/MM/YY)\nMax xp earned: {}\nSpotted: {}\nAmmoracked someone: {}\nFree xp: {}\nBattles done: {}\nSurived battles: {}\nBattles won: {}\nBattles lost: {}\nBattles drawn: {}\nWin rate (percent): {}\nDropped capture points: {}\nTotal damage dealt: {}```**"
+                    "".format(str(user), request['nickname'], datetime.fromtimestamp(request['created_at']).strftime("%d/%m/%Y %X"), datetime.fromtimestamp(request['last_battle_time']).strftime("%d/%m/%Y %X"), request['max_xp'], request['ships_spotted'], request['frags'], request['xp'], request['battles'], request['survived_battles'], request['wins'], request['losses'], request['draws'], request['winrate'], request['dropped_capture_points'], request['damage_dealt']))
         else:
             await self.bot.say("My owner hasn't set an API key yet.")
         
