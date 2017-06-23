@@ -156,24 +156,32 @@ class Gardener:
                 await self.bot.say(embed=em)
                 
     @garden.command(pass_context=True, name="plants")
+    @commands.cooldown(1, 30, commands.BucketType.user)
     async def _plants(self, ctx):
-        """Shows you all available plants and the ones you have planted."""
+        """Shows you all available plants."""
         msg = "```css\nAvailable plants\nPlant\t\t\t\tPrice\tValue\tGrowth time\tItem\n"
         for plant in list(self.plants.keys()):
             msg += "{}{}{}{}{}{}{}{}{}\n".format(plant, " " * (21 - len(plant)), str(self.plants[plant]['price']), " " * (9 - len(str(self.plants[plant]['price']))), str(self.plants[plant]['value']), " " * (9 - len(str(self.plants[plant]['value']))), self.plants[plant]['growthtime-worded'], " " * (15 - len(str(self.plants[plant]['growthtime-worded']))), self.plants[plant]['item'])
             if len(msg) > 1750:
                 await self.bot.say(msg + "```")
                 msg = "```css\n"
+        await self.bot.say(msg + "```")
+            
+    @garden.command(pass_context=True)
+    async def myplants(self, ctx):
+        """Shows you all the plants you have planted."""
         user = ctx.message.author
         if user.id in self.settings['gardeners']:
-            msg += "\nYour plants\nPlant\t\t\t\tTime left\t\t\t\tValue\tItem\n"
+            msg = "```css\nYour plants\nPlant\t\t\t\tTime left\t\t\t\tValue\tItem\n"
             for plant in list(self.settings['gardeners'][user.id]['plants'].keys()):
                 msg += "{}{}{}{}{}{}{}\n".format(plant, " " * (21 - len(plant)), self.secondsToText(self.settings['gardeners'][user.id]['plants'][plant]['growthtime']), " " * (6 - len(str(self.plants[plant]['price']))), str(self.plants[plant]['value']), " " * (9 - len(str(self.plants[plant]['value']))), self.plants[plant]['item'])
                 if len(msg) > 1750:
                     await self.bot.say(msg + "```")
                     msg = "```css\n"
-        await self.bot.say(msg + "```")
-            
+            await self.bot.say(msg + "```")
+        else:
+            await self.bot.say("You don't have any plants planted.")
+    
     @garden.command(pass_context=True)
     async def items(self, ctx):
         """Shows you all the items you have farmed."""
