@@ -171,8 +171,8 @@ class Wargaming:
                         request['last_battle_time'] = last_battle_time
                         request['created_at'] = created_at
                         request['winrate'] = (100 / request['battles']) * request['wins']
-                        await self.bot.edit_message(msg, "**```fix\nUser ID: {}\nUsername: {}\nCreated at: {}(DD/MM/YY)\nLast battle: {} (DD/MM/YY)\nMax xp earned in a battle: {}\nSpotted: {}\nFrags: {}\nTotal xp earned untill now: {}\nBattles done: {}\nSurived battles: {}\nBattles won: {}\nBattles lost: {}\nBattles drawn: {}\nWin rate (percent): {}\nTotal damage dealt: {}```**"
-                        "".format(str(user), request['nickname'], datetime.fromtimestamp(request['created_at']).strftime("%d/%m/%Y %X"), datetime.fromtimestamp(request['last_battle_time']).strftime("%d/%m/%Y %X"), request['max_xp'], request['ships_spotted'], request['frags'], request['xp'], request['battles'], request['survived_battles'], request['wins'], request['losses'], request['draws'], request['winrate'], request['damage_dealt']))
+                        await self.bot.edit_message(msg, "**```fix\nUser ID: {}\nUsername: {}\nCreated at: {}(DD/MM/YY)\nLast battle: {} (DD/MM/YY)\nMax xp earned in a battle: {}\nSpotted: {}\nFrags: {}\nTotal xp earned untill now: {}\nBattles done: {}\nSurived battles: {}\nBattles won: {}\nBattles lost: {}\nBattles drawn: {}\nWin rate (percent): {}\nTotal damage dealt: {}\nProfile URL: {}```**"
+                        "".format(str(user), request['nickname'], datetime.fromtimestamp(request['created_at']).strftime("%d/%m/%Y %X"), datetime.fromtimestamp(request['last_battle_time']).strftime("%d/%m/%Y %X"), request['max_xp'], request['ships_spotted'], request['frags'], request['xp'], request['battles'], request['survived_battles'], request['wins'], request['losses'], request['draws'], request['winrate'], request['damage_dealt'], "https://worldofwarships." + server + "/en/community/accounts/" + str(user) + "-" + request['nickname']))
                     else:
                         await self.bot.say("That's not a valid option.")
                 elif request['meta']['count'] == 1:
@@ -188,8 +188,8 @@ class Wargaming:
                     request['last_battle_time'] = last_battle_time
                     request['created_at'] = created_at
                     request['winrate'] = (100 / request['battles']) * request['wins']
-                    await self.bot.edit_message(msg, "**```fix\nUser ID: {}\nUsername: {}\nCreated at: {}(DD/MM/YY)\nLast battle: {} (DD/MM/YY)\nMax xp earned in a battle: {}\nSpotted: {}\nFrags: {}\nTotal xp earned untill now: {}\nBattles done: {}\nSurived battles: {}\nBattles won: {}\nBattles lost: {}\nBattles drawn: {}\nWin rate (percent): {}\nTotal damage dealt: {}```**"
-                    "".format(str(user), request['nickname'], datetime.fromtimestamp(request['created_at']).strftime("%d/%m/%Y %X"), datetime.fromtimestamp(request['last_battle_time']).strftime("%d/%m/%Y %X"), request['max_xp'], request['ships_spotted'], request['frags'], request['xp'], request['battles'], request['survived_battles'], request['wins'], request['losses'], request['draws'], request['winrate'], request['damage_dealt']))
+                    await self.bot.edit_message(msg, "**```fix\nUser ID: {}\nUsername: {}\nCreated at: {}(DD/MM/YY)\nLast battle: {} (DD/MM/YY)\nMax xp earned in a battle: {}\nSpotted: {}\nFrags: {}\nTotal xp earned untill now: {}\nBattles done: {}\nSurived battles: {}\nBattles won: {}\nBattles lost: {}\nBattles drawn: {}\nWin rate (percent): {}\nTotal damage dealt: {}\nProfile URL: {}```**"
+                    "".format(str(user), request['nickname'], datetime.fromtimestamp(request['created_at']).strftime("%d/%m/%Y %X"), datetime.fromtimestamp(request['last_battle_time']).strftime("%d/%m/%Y %X"), request['max_xp'], request['ships_spotted'], request['frags'], request['xp'], request['battles'], request['survived_battles'], request['wins'], request['losses'], request['draws'], request['winrate'], request['damage_dealt'], "https://worldofwarships." + server + "/en/community/accounts/" + str(user) + "-" + request['nickname']))
         else:
             await self.bot.say("My owner hasn't set an API key yet.")
         
