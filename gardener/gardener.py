@@ -113,6 +113,8 @@ class Gardener:
                     self.settings['gardeners'][ctx.message.author.id]['plants'][plant] = {'growthtime': self.plants[plant]['growthtime']}
                     self.save_settings()
                     await self.bot.say("A **{}** has been planted, it will take **{}** to grow, you can always get information on the growth status with **{}garden info {}**, you can also buy a growth pulse with **{}garden buy growthpulse 1-3 {}**.".format(plant, self.plants[plant]['growthtime-worded'], ctx.prefix, plant, ctx.prefix, plant))
+            if str(ctx.message.server.me.status) == "offline":
+                await self.bot.shutdown()
             
     @garden.command(pass_context=True)
     async def harvest(self, ctx, *, plant):
