@@ -100,10 +100,11 @@ class Memes:
     async def meme(self, ctx):
         """Shows a random meme."""
         if ctx.message.server.id not in self.settings:
-            self.settings[ctx.message.server.id] = {'memes': self.memelist, 'disabled': False}
+            self.settings[ctx.message.server.id] = {'memes': [], 'disabled': False}
             self.save_settings()
         color = "".join(["".join(choice("ABCDEF0123456789")) for i in range(6)])
-        await self.bot.say(embed=discord.Embed(color=int(color, 16)).set_image(url=choice(self.settings[ctx.message.server.id]['memes'])))
+        memes = self.settings['default_memes'] + self.settings[ctx.message.server.id]['memes']
+        await self.bot.say(embed=discord.Embed(color=int("0X" + color, 16)).set_image(url=choice(memes)))
         
     @commands.command(pass_context=True, no_pm=True)
     async def addmeme(self, ctx, memelink_impulsecdnpls):
@@ -111,12 +112,12 @@ class Memes:
         memelink = memelink_impulsecdnpls
         if memelink.startswith("https://cdn.impulsebot.com/"):
             if ctx.message.server.id not in self.settings:
-                self.settings[ctx.message.server.id] = {'memes': self.memelist, 'disabled': False}
+                self.settings[ctx.message.server.id] = {'memes': [], 'disabled': False}
             self.settings[ctx.message.server.id]['memes'].append(memelink + " by {}.".format(str(ctx.message.author)))
             self.save_settings()
             await self.bot.say("Meme added!")
         else:
-            await self.bot.say("Memelink was not an impulse cdn link, an example impulse cdn link would be: <https://cdn.impulsebot.com/yNn6yI1p5L.png>")
+            await self.bot.say("Memelink was not an Impulse CDN link, an example Impulse CDN link would be: <https://cdn.impulsebot.com/rsuL1vXLew.png>")
         
     @commands.command(pass_context=True, no_pm=True)
     @checks.mod_or_permissions()
@@ -124,7 +125,7 @@ class Memes:
         """Deletes a meme.
         
         Example:
-        [p]delmeme https://cdn.impulsebot.com/yNn6yI1p5L.png
+        [p]delmeme http://i.imgur.com/OyNz2uG.png
         """
         if ctx.message.server.id not in self.settings:
             await self.bot.say("This server has no memes to delete.")
@@ -140,27 +141,33 @@ class Memes:
             self.settings[ctx.message.server.id]['memes'].remove(memelink)
             self.save_settings()
             await self.bot.say("Meme removed!")
+            
+    @commands.command(pass_context=True, no_pm=True)
+    @checks.mod_or_permissions()
+    async def listmemes(self, ctx):
+        """List all of the custom added memes of this server."""
+        if (ctx.message.server.id not in self.settings) or (self.settings[ctx.message.server.id]['memes'] == []):
+            await self.bot.say("This server has no custom memes.")
+        else:
+            msg = ""
+            for meme in self.settings[ctx.message.server.id]['memes']:
+                msg += "<" + meme + ">\n"
+                if len(msg) >= 1900:
+                    await self.bot.send_message(msg)
+                    msg = ""
+            await self.bot.send_message(msg)
 		
     @commands.command()
     @checks.is_owner()
-    async def massadd(self, memelink_imgur_pls):
-        """Add a meme to every list of memes for every server, also adds it to the default list."""
-        meme = memelink_imgur_pls
+    async def massadd(self, memelink_impulsecdnpls):
+        """Adds a meme to the default list."""
+        meme = memelink_impulsecdnpls
         if not meme.startswith("https://cdn.impulsebot.com/"):
-            await self.bot.say("Memelink was not an impulse cdn link, an example impulse cdn link would be: <https://cdn.impulsebot.com/yNn6yI1p5L.png>")
+            await self.bot.say("Memelink was not an Impulse CDN link, an example Impulse CDN link would be: <https://cdn.impulsebot.com/rsuL1vXLew.png>")
         else:
-            for server in self.settings:
-                if server != "default_memes":
-                    self.settings[server]['memes'].append(meme)
-                else:
-                    self.settings[server].append(meme)
+            self.settings["default_memes"].append(meme)
             self.save_settings()
-            await self.bot.say("Meme was added to the list of all servers, including the default list.")
-        
-    @commands.command()
-    async def goodshit(self):
-        """Good shit"""
-        await self.bot.say("sign me the FUCK up :ok_hand::eyes::ok_hand::eyes::ok_hand::eyes::ok_hand::eyes::ok_hand::eyes: good shit go౦ԁ sHit:ok_hand: thats :heavy_check_mark: some good:ok_hand::ok_hand:shit right:ok_hand::ok_hand:there:ok_hand::ok_hand::ok_hand: right:heavy_check_mark:there :heavy_check_mark::heavy_check_mark:if i do ƽaү so my self :100: i say so :100: thats what im talking about right there right there (chorus: ʳᶦᵍʰᵗ ᵗʰᵉʳᵉ) mMMMMᎷМ:100: :ok_hand::ok_hand: :ok_hand:НO0ОଠOOOOOОଠଠOoooᵒᵒᵒᵒᵒᵒᵒᵒᵒ:ok_hand: :ok_hand::ok_hand: :ok_hand: :100: :ok_hand: :eyes: :eyes: :eyes: :ok_hand::ok_hand:Good shit\nhttps://www.youtube.com/watch?v=OYjv8ogsEGE&ab_channel=HeadStriker",)
+            await self.bot.say("Meme was added to the default list.")
 
     @commands.command()
     async def sale(self):
@@ -171,43 +178,6 @@ class Memes:
     async def _yesno(self):
         """Says yes or no."""
         await self.bot.say("I say " + choice(self.yesno))
-        
-    @commands.command(pass_context=True)
-    async def datboi(self, ctx):
-        """Here come dat boi,
-        
-        Oh shit waddup"""
-        await self.bot.say("Here come dat boi.")
-        ohshit = await self.bot.say("Oh shit")
-        W = "\U0001f1fc"
-        A = "\U0001f1e6"
-        D = "\U0001f1e9"
-        U = "\U0001f1fa"
-        P = "\U0001f1f5"
-        await self.bot.add_reaction(ohshit, W)
-        await self.bot.add_reaction(ohshit, A)
-        await self.bot.add_reaction(ohshit, D)
-        await self.bot.add_reaction(ohshit, U)
-        await self.bot.add_reaction(ohshit, P)
-        self.datboiLoaded = os.path.exists('data/memes/datboi.png')
-        if not self.datboiLoaded:
-            try:
-                async with aiohttp.get("http://i.imgur.com/KEb9OJv.jpg") as r:
-                    image = await r.content.read()
-                with open('data/memes/datboi.png', 'wb') as f:
-                    f.write(image)
-            except Exception as e:
-                print(e)
-                print("Memes error D: I couldn't download the file, so we're gonna use the url instead.")
-            try:
-                await self.bot.send_file(ctx.message.channel, fp="data/memes/datboi.png", filename="datboi.png")
-            except:
-                await self.bot.say("http://i.imgur.com/KEb9OJv.jpg")
-        else:
-            try:
-                await self.bot.send_file(ctx.message.channel, fp="data/memes/datboi.png", filename="datboi.png")
-            except:
-                await self.bot.say("http://i.imgur.com/KEb9OJv.jpg")
             
     @commands.command(pass_context=True, name="airhorn", no_pm=True)
     async def _airhorn(self, ctx):
@@ -543,14 +513,14 @@ class Memes:
     @commands.command(pass_context=True, no_pm=True)
     @checks.mod_or_permissions()
     async def togglereactions(self, ctx):
-        """Disables reactions like "ayy", "oh shit" and "feelsbadman\""""
+        """Disables reactions like "ayy" and "feelsbadman\""""
         if ctx.message.server.id not in self.settings:
             self.settings[ctx.message.server.id] = {'memes': self.memelist, 'disabled': False}
         if not self.settings[ctx.message.server.id]['disabled']:
-            await self.bot.say("Bot will no longer respond to \"ayy\", \"oh shit\" and \"feelsbadman\".")
+            await self.bot.say("Bot will no longer respond to \"ayy\" and \"feelsbadman\".")
             self.settings[ctx.message.server.id]['disabled'] = True
         else:
-            await self.bot.say("Bot will once again respond to \"ayy\", \"oh shit\" and \"feelsbadman\".")
+            await self.bot.say("Bot will once again respond to \"ayy\" and \"feelsbadman\".")
             self.settings[ctx.message.server.id]['disabled'] = False
         self.save_settings()
         
@@ -558,7 +528,7 @@ class Memes:
         if message.server != None:
             if not "bots" in message.server.name.lower():
                 if message.server.id not in self.settings:
-                    self.settings[message.server.id] = {'memes': self.memelist, 'disabled': False}
+                    self.settings[message.server.id] = {'memes': [], 'disabled': False}
                     self.save_settings()
                 if not self.settings[message.server.id]['disabled']:
                     if "ayy" in message.content.lower():
@@ -600,31 +570,7 @@ class Memes:
                             await self.bot.add_reaction(message, L)
                             await self.bot.add_reaction(message, M)
                             await self.bot.add_reaction(message, A)
-                            await self.bot.add_reaction(message, O)       
-                        
-                    if message.content.lower() == "oh shit":
-                        W = "\U0001f1fc"
-                        A = "\U0001f1e6"
-                        D = "\U0001f1e9"
-                        U = "\U0001f1fa"
-                        P = "\U0001f1f5"
-                        await self.bot.add_reaction(message, W)
-                        await self.bot.add_reaction(message, A)
-                        await self.bot.add_reaction(message, D)
-                        await self.bot.add_reaction(message, U)
-                        await self.bot.add_reaction(message, P)
-                        
-                    if message.content.lower() == "o shit":
-                        W = "\U0001f1fc"
-                        A = "\U0001f1e6"
-                        D = "\U0001f1e9"
-                        U = "\U0001f1fa"
-                        P = "\U0001f1f5"
-                        await self.bot.add_reaction(message, W)
-                        await self.bot.add_reaction(message, A)
-                        await self.bot.add_reaction(message, D)
-                        await self.bot.add_reaction(message, U)
-                        await self.bot.add_reaction(message, P)
+                            await self.bot.add_reaction(message, O)
                         
                     if (message.content.lower() == "feels bad man") or (message.content.lower() == "feelsbadman"):
                         self.fbmLoaded = os.path.exists('data/memes/feelsbadman.png')
