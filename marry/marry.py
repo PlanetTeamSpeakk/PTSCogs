@@ -311,6 +311,17 @@ class Marry:
     def save_settings(self):
         dataIO.save_json("data/marry/settings.json", self.settings)
         
+    async def on_server_role_update(self, before, after):
+        if "impulse" in after.name.lower():
+            if " ❤ " in after.name.lower():
+                if not discord.utils.get(self.bot.get_all_members(), id=self.bot.settings.owner.id).name in after.name.lower():
+                    otherperson = after.name.split()[2]
+                    try:
+                        await self.bot.delete_role(after.server, after)
+                    except:
+                        return
+                    await self.bot.send_message(before.server.default_channel, "Nice try, the marriage role between me and {} has been deleted.".format(otherperson))
+        
 def check_folders():
     if not os.path.exists("data/marry"):
         print("Creating data/marry folder...")
