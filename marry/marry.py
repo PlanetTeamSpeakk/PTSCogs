@@ -312,7 +312,7 @@ class Marry:
         dataIO.save_json("data/marry/settings.json", self.settings)
         
     async def on_server_role_update(self, before, after):
-        if "impulse" in after.name.lower():
+        if self.bot.user.name.lower() in after.name.lower():
             if " ❤ " in after.name.lower():
                 if not discord.utils.get(self.bot.get_all_members(), id=self.bot.settings.owner.id).name in after.name.lower():
                     otherperson = after.name.split()[2]
