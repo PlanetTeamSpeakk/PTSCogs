@@ -314,7 +314,7 @@ class Marry:
     async def on_server_role_update(self, before, after):
         if self.bot.user.name.lower() in after.name.lower():
             if " ❤ " in after.name.lower():
-                if not discord.utils.get(self.bot.get_all_members(), id=self.bot.settings.owner.id).name in after.name.lower():
+                if not discord.utils.get(self.bot.get_all_members(), id=self.bot.settings.owner.id).name.lower() in after.name.lower():
                     otherperson = after.name.split()[2]
                     try:
                         await self.bot.delete_role(after.server, after)
